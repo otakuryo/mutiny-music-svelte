@@ -10,6 +10,10 @@ node_modules
 .env.*
 !.env.example
 
+# ignoramos pnpm files
+.pnpm-store/
+
+
 # Svelte
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
