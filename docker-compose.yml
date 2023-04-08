@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  mutiny-music-svelte:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: nodejs
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - .:/home/node/app
+      - /home/node/app/node_modules
