@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: nodejs
-    container_name: nodejs
+    container_name: mutiny-music-svelte
     restart: unless-stopped
     env_file: .env
     ports:
