@@ -1,21 +1,43 @@
 <script>
-    export let LabelSelect = "Label";
-    export let NameSelect = "Name";
-    export let ValueSelect = "Value";
-    export let IdSelect = "Id";
-    export let OptionsSelect = ["Option 1", "Option 2", "Option 3"];
+    import { ServerConfigPersistent } from '$stores/ServerConfigStore.ts';
+
+    export let labelSelect = "Label";
+    export let nameSelect = "Name";
+    export let valueSelect = "Option 1";
+    export let idSelect = "Id";
+    export let optionsSelect = ["Option 1", "Option 2", "Option 3"];
+
+    /**
+	 * @type {string | undefined}
+	 */
+     export let keyLocal = undefined;
+
+    // Si existe una keyLocal, se busca en el localStorage y se asigna el valor al listado
+    if (keyLocal) {
+        let value = ServerConfigPersistent.get()[keyLocal]
+        if (value) {
+            valueSelect = value
+        }
+    }
+
+    // Al actualizar el valor del select
+    // Y si existe una keyLocal, se guarda en el localStorage el valor del select
+    $: {
+        if (keyLocal !== undefined) { ServerConfigPersistent.setKey(keyLocal, valueSelect) }
+    }
 </script>
 
 <label class="block">
-    <span class="dark:text-zinc-200 text-black">{LabelSelect} *</span>
+    <span class="dark:text-zinc-200 text-black">{labelSelect} *</span>
     <select
         class="dark:text-zinc-600 text-black block w-full mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
-        name={NameSelect}
-        id={IdSelect}
+        name={nameSelect}
+        id={idSelect}
         required
+        bind:value={valueSelect} 
     >
-        {#each OptionsSelect as option}
-            <option value={option} selected={option === ValueSelect}>{option}</option>
+        {#each optionsSelect as option}
+            <option value={option}>{option}</option>
         {/each}
         
     </select>

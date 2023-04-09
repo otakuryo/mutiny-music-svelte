@@ -10,14 +10,14 @@
     <form action="">
         <div class="mt-8 max-w">
             <div class="grid grid-cols-1 gap-6">
-                <InputText IdInput="userConfig" LabelInput="Username" NameInput="user" />
-                <InputText IdInput="passConfig" LabelInput="Password" NameInput="password" TypeInput="password" />
+                <InputText idInput="userConfig" labelInput="Username" nameInput="user" keyLocal="username" />
+                <InputText idInput="passConfig" labelInput="Password" nameInput="password" typeInput="password" keyLocal="password" />
     
-                <InputText IdInput="urlConfig"  LabelInput="Server URL"  NameInput="serverUrl"  PHInput="https://255.255.255.255:8080" />
-                <InputText IdInput="nameConfig" LabelInput="Server Name" NameInput="serverName" ValueInput="Mutiny Server" />
+                <InputText idInput="urlConfig"  labelInput="Server URL"  nameInput="serverUrl"  phInput="https://255.255.255.255:8080" keyLocal="serverUrl" />
+                <InputText idInput="nameConfig" labelInput="Server Name" nameInput="serverName" valueInput="Mutiny Server" keyLocal="serverName"/>
 
-                <InputSelect IdSelect="typeConfig" LabelSelect="Server type" NameSelect="serverType"  OptionsSelect={['subsonic','navidrone','generic']} />
-                <InputSelect IdSelect="versionConfig" LabelSelect="Server Version" NameSelect="serverVersion" OptionsSelect={['1.0.0','1.9.0','1.10.0','1.16.1',]} />
+                <InputSelect idSelect="typeConfig" labelSelect="Server type" nameSelect="serverType"  optionsSelect={['subsonic','navidrone','generic']} keyLocal="serverType" />
+                <InputSelect idSelect="versionConfig" labelSelect="Server Version" nameSelect="serverVersion" optionsSelect={['1.0.0','1.9.0','1.10.0','1.16.1',]} keyLocal="serverVersion" />
             </div>
         </div>
         <div class="mt-8 max-w">
