@@ -1,5 +1,5 @@
 <script>
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore.ts';
+    import { ServerConfigObj, ServerConfigPersistent } from '$stores/ServerConfigStore.ts';
 
     export let labelInput = "Label";
     export let typeInput = "text";
@@ -7,6 +7,9 @@
     export let valueInput = "";
     export let nameInput = "name";
     export let idInput = "id";
+
+    // Función que se ejecuta al cambiar el valor del input
+    export let checkServer = () => {};
 
     function typeAction(node) {
         node.type = typeInput;
@@ -20,13 +23,19 @@
     // Si existe una keyLocal, se busca en el localStorage y se asigna el valor al input
     if (keyLocal) {
         let keyOnLocalstorage = ServerConfigPersistent.get()[keyLocal]
-        if (keyOnLocalstorage) { valueInput = keyOnLocalstorage }
+        if (keyOnLocalstorage) { 
+            valueInput = keyOnLocalstorage 
+            ServerConfigObj.setKey(keyLocal, keyOnLocalstorage)
+        }
     }
 
     // Al actualizar el valor del input
     // Y si existe una keyLocal, se guarda en el localStorage el valor del input
     $: {
-        if (keyLocal !== undefined) { ServerConfigPersistent.setKey(keyLocal, valueInput) }
+        if (keyLocal !== undefined) {
+            ServerConfigPersistent.setKey(keyLocal, valueInput);
+            ServerConfigObj.setKey(keyLocal, valueInput);
+        }
     }
 </script>
 
@@ -38,6 +47,7 @@
         class="dark:text-zinc-600 text-black mt-1 block w-full rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
         placeholder={phInput}
         bind:value={valueInput}
+        on:change={checkServer}
         name={nameInput}
         id={idInput}
         required

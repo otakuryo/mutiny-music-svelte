@@ -1,11 +1,14 @@
 <script>
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore.ts';
+    import { ServerConfigObj, ServerConfigPersistent } from '$stores/ServerConfigStore.ts';
 
     export let labelSelect = "Label";
     export let nameSelect = "Name";
     export let valueSelect = "Option 1";
     export let idSelect = "Id";
     export let optionsSelect = ["Option 1", "Option 2", "Option 3"];
+
+    // Función que se ejecuta al cambiar el valor del select
+    export let checkServer = () => {};
 
     /**
 	 * @type {string | undefined}
@@ -23,7 +26,10 @@
     // Al actualizar el valor del select
     // Y si existe una keyLocal, se guarda en el localStorage el valor del select
     $: {
-        if (keyLocal !== undefined) { ServerConfigPersistent.setKey(keyLocal, valueSelect) }
+        if (keyLocal !== undefined) {
+            ServerConfigPersistent.setKey(keyLocal, valueSelect)
+            ServerConfigObj.setKey(keyLocal, valueSelect)
+        }
     }
 </script>
 
@@ -35,6 +41,7 @@
         id={idSelect}
         required
         bind:value={valueSelect} 
+        on:change={checkServer}
     >
         {#each optionsSelect as option}
             <option value={option}>{option}</option>

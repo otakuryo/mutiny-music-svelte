@@ -4,6 +4,9 @@ dependencies:
   '@nanostores/persistent':
     specifier: ^0.7.0
     version: 0.7.0(nanostores@0.7.4)
+  crypto-js:
+    specifier: ^4.1.1
+    version: 4.1.1
   lucide-svelte:
     specifier: ^0.132.0
     version: 0.132.0(svelte@3.58.0)
@@ -696,6 +699,10 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
     dev: true
+
+  /crypto-js@4.1.1:
+    resolution: {integrity: sha512-o2JlM7ydqd3Qk9CA0L4NL6mTzU2sdx96a+oOfPu8Mkl/PK51vSyoi8/rQ8NknZtk44vq15lmhAj9CIAGwgeWKw==}
+    dev: false
 
   /cssesc@3.0.0:
     resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}

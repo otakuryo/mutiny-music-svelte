@@ -1,6 +1,5 @@
-import md5 from 'md5';
-import fetch from 'unfetch'
-
+import md5 from 'crypto-js';
+ 
 import type {
 	AlbumID3,
 	AlbumInfo,
@@ -177,6 +176,9 @@ export class SubsonicAPI {
 	// ----------
 
 	async ping() {
+		if (!this.#config.url) {
+			return Promise.reject(new Error('no url'));
+		}
 		return this.#requestJSON<SubsonicBaseResponse>('ping', {});
 	}
 
