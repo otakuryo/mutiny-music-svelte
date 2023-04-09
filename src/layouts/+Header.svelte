@@ -3,9 +3,9 @@
     // @ts-ignore
     import { page } from '$app/stores';
   
-    let title = "NoFuss Astro",
-    description = "No fuss Astro Template for Landing, Blog and Docs page. No complicated design and setup, just start editing.",
-    imageAlt = "Mountain Logo with NoFuss",
+    let title = "Mutiny Music on SvelteKit",
+    description = "Web client for subsonic api.",
+    imageAlt = "Music icon",
     heroImage = "/banner.png",
     canonicalURL = $page.url.href,
     contentLanguage = "es-ES";

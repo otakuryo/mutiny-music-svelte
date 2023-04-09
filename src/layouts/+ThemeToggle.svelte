@@ -2,6 +2,9 @@
     import { Moon, Sun } from "lucide-svelte";
     import { onMount } from 'svelte';
     
+    /**
+     * Toggle between dark and light theme and save the preference in localStorage
+     */
     function changeThemeAppearance() {
       
       let htmlClassList = document.documentElement.classList;
@@ -14,6 +17,9 @@
       }
     }
     
+    /**
+     * Set the theme appearance based on the preference in localStorage
+     */
     function setThemeAppearance() {
       let htmlClassList = document.documentElement.classList;
       let theme = localStorage.getItem("theme");
@@ -23,7 +29,10 @@
         htmlClassList.remove("dark");
       }
     }
-    
+
+    /**
+     * Set the theme appearance on page load
+     */
     onMount(async () => {
       setThemeAppearance();
     });
