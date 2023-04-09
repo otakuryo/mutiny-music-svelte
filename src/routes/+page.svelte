@@ -1,8 +1,8 @@
 <script>
-	import HomePlaceHolder from "$components/test/+HomePlaceHolder.svelte";
+	import FormRegister from "$components/app/settings/FormRegister.svelte";
     import Layout from "$layouts/+Layout.svelte";
 </script>
 
 <Layout>
-    <HomePlaceHolder />
+    <FormRegister />
 </Layout>

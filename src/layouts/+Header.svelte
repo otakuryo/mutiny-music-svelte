@@ -1,5 +1,6 @@
 <script>
     import "../app.css";
+    import "../global.css";
     // @ts-ignore
     import { page } from '$app/stores';
   

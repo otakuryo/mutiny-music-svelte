@@ -1,0 +1,16 @@
+/**
+ * This file is used to define global styles for the app.
+ */
+
+/* File: src/components/global/+LabelIcon.svelte */
+[data-status] [data-type]{
+    display: none;
+    transition: 1s;
+}
+[data-status="pass"] [data-type="check"]{
+    display: block!important;
+}
+
+[data-status="error"] [data-type="exclamation"]{
+    display: block!important;
+}
