@@ -1,6 +1,6 @@
 <script>
 	import Header from "./+Header.svelte";
-	import Menu from "$components/navigation/Menu.svelte";
+	import Menu from "$components/navigation/+Menu.svelte";
 
 </script>
 
