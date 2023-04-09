@@ -1,6 +1,6 @@
-<script>
-
-import { Headphones, Menu } from 'lucide-svelte';
+<script lang="ts">
+	import { GlobalPage, currentPage } from '$stores/GlobalStore';
+    import { Headphones, Menu } from 'lucide-svelte';
 
 const navbar = [
     {
@@ -29,6 +29,35 @@ const navbar = [
     },
 ];
 
+    let _currentPage_: GlobalPage;
+
+    const navbar_ = [
+        {
+            name: "Home",
+            view: GlobalPage.home,
+        },
+        {
+            name: "Directory",
+            view: GlobalPage.directory,
+        },
+        {
+            name: "Album",
+            view: GlobalPage.album,
+        },
+        {
+            name: "Artist",
+            view: GlobalPage.artist,
+        },
+        {
+            name: "Settings",
+            view: GlobalPage.settings,
+        },
+    ];
+
+    function changePage(toPage: GlobalPage) {
+        currentPage.update(() => toPage)
+    }
+
 const desktopIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block";
 const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden";
 </script>
@@ -42,11 +71,11 @@ const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hove
         </span>
     </a>
 
-    {#each navbar as { name, href }}
+    {#each navbar_ as { name, view }}
         <nav class="pt-6 flex flex-row space-x-6">
-            <a href={href} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block">
+            <div on:click={()=>{changePage(view)}} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block">
                 {name}
-            </a>
+            </div>
         </nav>
     {/each}
 
