@@ -1,5 +1,5 @@
 <script>
-    import { ServerConfigObj, ServerConfigPersistent } from '$stores/ServerConfigStore.ts';
+    import { ServerConfigObj, ServerConfigPersistent } from '$stores/ServerConfigStore';
 
     export let labelSelect = "Label";
     export let nameSelect = "Name";
@@ -17,6 +17,7 @@
 
     // Si existe una keyLocal, se busca en el localStorage y se asigna el valor al listado
     if (keyLocal) {
+        // @ts-ignore
         let value = ServerConfigPersistent.get()[keyLocal]
         if (value) {
             valueSelect = value

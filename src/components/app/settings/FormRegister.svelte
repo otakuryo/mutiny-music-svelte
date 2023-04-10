@@ -5,7 +5,7 @@
     import LabelIcon from "$components/global/+LabelIcon.svelte";
 
     import { SubsonicAPI } from '$models/servers/subsonic';
-    import { ServerConfigObj, ServerConfigPersistent } from '$stores/ServerConfigStore.ts';
+    import { ServerConfigObj, ServerConfigPersistent } from '$stores/ServerConfigStore';
 
     // Objeto para almacenar el estado de la conexion con el servidor
     let statusData = {

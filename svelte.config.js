@@ -16,6 +16,7 @@ const config = {
 			$utils: './src/utils',
 			$layouts: './src/layouts',
 			$models: './src/models',
+			$interfaces: './src/interfaces',
 		}
 	},
 	preprocess: vitePreprocess(),

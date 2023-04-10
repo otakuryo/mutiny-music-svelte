@@ -1,7 +1,8 @@
 <script lang="ts">
 	import InputSearch from '$components/global/+InputSearch.svelte';
-    import { GlobalPage, currentPage } from '$stores/GlobalStore';
+    import { currentPage } from '$stores/GlobalStore';
     import { Headphones, Menu } from 'lucide-svelte';
+    import { GlobalPage } from '$interfaces/GlobalPage';
 
     let _currentPage_: GlobalPage;
 

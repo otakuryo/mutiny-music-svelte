@@ -1,7 +1,8 @@
 <script lang="ts">
     import FormRegister from "$components/app/settings/FormRegister.svelte";
     import HomePlaceHolder from "$components/test/+HomePlaceHolder.svelte";
-    import { currentPage, GlobalPage } from "$stores/GlobalStore.ts";
+    import { currentPage } from "$stores/GlobalStore.js";
+    import { GlobalPage } from "$interfaces/GlobalPage";
 
     let _currentPage_: GlobalPage;
 
