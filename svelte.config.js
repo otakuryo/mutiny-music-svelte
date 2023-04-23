@@ -1,5 +1,6 @@
 // import adapter from '@sveltejs/adapter-auto';
 import { vitePreprocess } from '@sveltejs/kit/vite';
+import adapter from '@sveltejs/adapter-static';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -17,7 +18,14 @@ const config = {
 			$layouts: './src/layouts',
 			$models: './src/models',
 			$interfaces: './src/interfaces',
-		}
+		},
+		adapter: adapter({
+			pages: 'build',
+			assets: 'build',
+			fallback: null,
+			precompress: false,
+			strict: true
+		})
 	},
 	preprocess: vitePreprocess(),
 };

@@ -1,37 +1,31 @@
 <script lang="ts">
 	import InputSearch from '$components/global/+InputSearch.svelte';
-    import { currentPage } from '$stores/GlobalStore';
     import { Headphones, Menu } from 'lucide-svelte';
-    import { GlobalPage } from '$interfaces/GlobalPage';
 
     let _currentPage_: GlobalPage;
 
     const navbar_ = [
         {
             name: "Home",
-            view: GlobalPage.home,
+            href: '/',
         },
         {
             name: "Directory",
-            view: GlobalPage.directory,
+            href: `/directory`,
         },
         {
             name: "Album",
-            view: GlobalPage.album,
+            href: '/',
         },
         {
             name: "Artist",
-            view: GlobalPage.artist,
+            href: '/',
         },
         {
             name: "Settings",
-            view: GlobalPage.settings,
+            href: '/settings',
         },
     ];
-
-    function changePage(toPage: GlobalPage) {
-        currentPage.update(() => toPage)
-    }
 
 const desktopIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block";
 const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden";
@@ -46,11 +40,11 @@ const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hove
         </span>
     </a>
 
-    {#each navbar_ as { name, view }}
+    {#each navbar_ as { name, href }}
         <nav class="pt-6 flex flex-row space-x-6">
-            <div on:click={()=>{changePage(view)}} on:keypress={()=>{changePage(view)}} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block cursor-pointer">
+            <a href={href} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block cursor-pointer">
                 {name}
-            </div>
+            </a>
         </nav>
     {/each}
 
@@ -64,11 +58,11 @@ const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hove
 </header>
 
 <header class="nav-menu hidden bg-white dark:bg-zinc-900">
-    {#each navbar_ as { name, view }}
+    {#each navbar_ as { name, href }}
         <nav class="m-6 flex flex-col space-y-3">
-            <div on:click={()=>{changePage(view)}} on:keypress={()=>{changePage(view)}} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden cursor-pointer">
+            <a href={href} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden cursor-pointer">
                 {name}
-            </div>
+            </a>
         </nav>
     {/each}
 </header>

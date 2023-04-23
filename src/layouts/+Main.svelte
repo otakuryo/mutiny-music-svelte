@@ -3,6 +3,8 @@
     import HomePlaceHolder from "$components/test/+HomePlaceHolder.svelte";
     import { currentPage } from "$stores/GlobalStore.js";
     import { GlobalPage } from "$interfaces/GlobalPage";
+	import DirectoryIndex from "$components/app/directory/DirectoryIndex.svelte";
+	import MusicFolderIndex from "$components/app/musicFolder/MusicFolderIndex.svelte";
 
     let _currentPage_: GlobalPage;
 
@@ -12,14 +14,16 @@
 
 </script>
 
-<div>
+<!-- <div>
     {#if _currentPage_ == GlobalPage.directory}
-        <p>Estás en la página de directorio</p>
+        <DirectoryIndex />
     {:else if _currentPage_ == GlobalPage.album}
-        <p>Estás en la página de álbum</p>
+        <MusicFolderIndex />
     {:else if _currentPage_ == GlobalPage.home}
         <HomePlaceHolder />
     {:else if _currentPage_ == GlobalPage.settings}
         <FormRegister />
+    {:else if _currentPage_ == GlobalPage.folder}
+        <MusicFolderIndex />
     {/if}
-</div>
+</div> -->

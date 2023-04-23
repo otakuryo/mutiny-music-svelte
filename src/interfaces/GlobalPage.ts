@@ -4,4 +4,5 @@ export enum GlobalPage {
     album = 'album',
     artist = 'artist',
     settings = 'settings',
+    folder = 'folder',
 }
