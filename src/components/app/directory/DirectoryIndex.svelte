@@ -80,7 +80,7 @@
 	}
 
     // Temporal reproductor
-    let src = "#";
+    let src = "";
     let paused = true;
 
     async function getDownloadLink(songId: string) {
@@ -118,6 +118,10 @@
     //    })
 
 </script>
+
+{#if src}
+    <audio {src} bind:paused={paused} controls class="audio"></audio>
+{/if}
 
 <div class="divide-y">
     {#await dataFromServer}
