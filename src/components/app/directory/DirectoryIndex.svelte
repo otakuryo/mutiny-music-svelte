@@ -79,37 +79,39 @@
         dataFromServer = getDataFromServer();
 	}
 
-    // Temporal reproductor
-    let src = "";
-    let paused = true;
-
     async function getDownloadLink(songId: string) {
-
-        // Paramos la canción actual
-        paused = true;
-        
         try {
             api = await initSubsonicApi();
 
             let song = await api.downloadWoFetch({id: songId});
 
-            // Añadimos la url de la canción al reproductor
-            src = song;
-
-            // Esperamos 100ms para que el reproductor se actualice
-            await new Promise(r => setTimeout(r, 100));
-            paused = false;
-
             return song;
-
         } catch (error) {
             console.log(error);
-            return [];
+            return "";
         }
     }
 
+    // Temporal reproductor
+    let src = "";
+    let paused = true;
+
+    async function setAndPlay(song:string) {
+        if (!song) {
+            return;
+        }
+        paused = true;
+        // Añadimos la url de la canción al reproductor
+        src = song;
+        // Esperamos 100ms para que el reproductor se actualice
+        await new Promise(r => setTimeout(r, 100));
+        paused = false;
+    }
+
     function showDownloadLink(songId: string) {
-        getDownloadLink(songId)
+        getDownloadLink(songId).then((res) => {
+            setAndPlay(res);
+        })
     }
 
     //// Debug data
