@@ -607,6 +607,10 @@ export class SubsonicAPI {
 		return this.#request('download', args);
 	}
 
+	async downloadWoFetch(args: { id: string }) {
+		return this.#requestWoFetch('download', args);
+	}
+
 	async hls(args: { id: string; bitRate?: number; audioTrack?: number }) {
 		return this.#request('hls', args);
 	}

@@ -1,14 +1,19 @@
 <script lang="ts">
     import { type MusicFolders, SubsonicAPI, type SubsonicBaseResponse } from '$models/servers/subsonic';
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
-	import DirectoryLine from '$components/app/directory/partials/DirectoryLine.svelte';
-	import MusicFolderLine from '../musicFolder/partials/MusicFolderLine.svelte';
 	import MusicFolderLineBack from '../musicFolder/partials/MusicFolderLineBack.svelte';
+	import { onMount } from 'svelte';
+	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
+	import DirectoryLineMusic from './partials/DirectoryLineMusic.svelte';
 
     let api: SubsonicAPI;
     export let directoryId: string|undefined = undefined;
 
-    let dataFromServer = getDataFromServer();
+    let dataFromServer : Promise<SubsonicBaseResponse[]> = Promise.resolve([]);
+
+    onMount(async () => {
+        dataFromServer = getDataFromServer();
+    });
 
     async function initSubsonicApi() {
 
@@ -32,7 +37,13 @@
     }
 
     async function getDataFromServer() {
-        api = await initSubsonicApi();
+
+        try {
+            api = await initSubsonicApi();
+        } catch (error) {
+            console.log(error);
+            return [];            
+        }
 
         const resPing: SubsonicBaseResponse = await api.ping()
 
@@ -68,10 +79,43 @@
         dataFromServer = getDataFromServer();
 	}
 
-    // Debug data
-    $: dataFromServer.then((res) => {
-            console.log(res);
-        })
+    // Temporal reproductor
+    let src = "#";
+    let paused = true;
+
+    async function getDownloadLink(songId: string) {
+
+        // Paramos la canción actual
+        paused = true;
+        
+        try {
+            api = await initSubsonicApi();
+
+            let song = await api.downloadWoFetch({id: songId});
+
+            // Añadimos la url de la canción al reproductor
+            src = song;
+
+            // Esperamos 100ms para que el reproductor se actualice
+            await new Promise(r => setTimeout(r, 100));
+            paused = false;
+
+            return song;
+
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
+    function showDownloadLink(songId: string) {
+        getDownloadLink(songId)
+    }
+
+    //// Debug data
+    //$: dataFromServer.then((res) => {
+    //        console.log(res);
+    //    })
 
 </script>
 
@@ -88,7 +132,11 @@
                 {/if}
 
                 {#each library.directory.child as child}
-                    <DirectoryLine directory={child} api={api} refreshViewOnClick={refreshViewOnClick} />
+                    {#if child.isDir}
+                        <DirectoryLineDirectory directory={child} api={api} refreshViewOnClick={refreshViewOnClick} />
+                    {:else}
+                        <DirectoryLineMusic song={child} api={api} onClickExternal={showDownloadLink} />
+                    {/if}
                 {/each}
             {/if}
         {/each}
