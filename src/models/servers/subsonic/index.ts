@@ -218,6 +218,52 @@ export class SubsonicAPI {
 		return url.toString();
 	}
 
+	#requestWoFetchSync(method: string, params?: Params) {
+		if (!this.authenticated) throw new Error('not authenticated');
+		if (!this.#user) throw new Error('not authenticated');
+		if (!this.#fetch) throw new Error('not authenticated');
+
+		let base = this.#config.url;
+		if (!base.startsWith('http')) base = 'https://' + base;
+		if (!base.endsWith('/')) base += '/';
+		if (!base.endsWith('rest/')) base += 'rest/';
+
+		base += method + '.view';
+
+		const url = new URL(base);
+		url.searchParams.set('v', this.#user.version);
+		url.searchParams.set('c', this.#user.serverName);
+		url.searchParams.set('f', 'json');
+		url.searchParams.set('u', this.#user.username);
+
+		if (params) {
+			for (const [key, value] of Object.entries(params)) {
+				if (!value) continue;
+				if (Array.isArray(value)) {
+					for (const v of value) {
+						url.searchParams.append(key, v.toString());
+					}
+				} else {
+					url.searchParams.set(key, value.toString());
+				}
+			}
+		}
+
+		// v. 1.9.0
+		var legacy = true;
+
+		if (legacy) {
+			url.searchParams.set('u', this.#user.username);
+			url.searchParams.set('p', this.#user.password);
+		} else {
+			const { token, salt } = this.#generateToken(this.#user.password);
+			url.searchParams.set('t', token);
+			url.searchParams.set('s', salt);
+		}
+
+		return url.toString();
+	}
+
 	// ----------
 	// SYSTEM API
 	// ----------
@@ -611,6 +657,10 @@ export class SubsonicAPI {
 		return this.#requestWoFetch('download', args);
 	}
 
+	downloadWoFetchSync(args: { id: string }) {
+		return this.#requestWoFetchSync('download', args);
+	}
+
 	async hls(args: { id: string; bitRate?: number; audioTrack?: number }) {
 		return this.#request('hls', args);
 	}
@@ -625,6 +675,10 @@ export class SubsonicAPI {
 
 	async getCoverArtWoFetch(args: { id: string; size?: number }) {
 		return this.#requestWoFetch('getCoverArt', args);
+	}
+
+	getCoverArtWoFetchSync(args: { id: string; size?: number }) {
+		return this.#requestWoFetchSync('getCoverArt', args);
 	}
 
 	async getLyrics(args: { artist?: string; title?: string }) {

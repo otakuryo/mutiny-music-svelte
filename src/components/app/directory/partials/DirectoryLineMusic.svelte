@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Child } from "$models/servers/subsonic/types";
-	import { Play, Pause } from "lucide-svelte";
-    import { isPlaying, currentSong } from "$stores/PlayerStore";
+	import { Play, Pause, ListEnd } from "lucide-svelte";
+    import { isPlaying } from "$stores/PlayerStore";
 	import PlayerStore from "$stores/PlayerStore";
+	import PlaylistStore from '$stores/PlaylistStore';
+    import {currentSong} from "$stores/CurrentPlaySong";
 
     export let song: Child;
     export let api: SubsonicAPI;
@@ -12,15 +14,29 @@
     let imageUrl = "https://placehold.it/210x310";
     let fallback = imageUrl;
 
-    async function getCoverArt() {
-        let image = await api.getCoverArtWoFetch({id: song.id});
+    function getCoverArt() {
+        let image = api.getCoverArtWoFetchSync({id: song.id});
         imageUrl = image
     }
 
     getCoverArt()
     const handleError = (ev: { target: { src: string; } } | any) => ev.target.src = fallback;
 
-    console.log(song);
+    function buildSongUrl() {
+        return api.downloadWoFetchSync({id: song.id});
+    }
+
+    function addSongToPlaylist() {
+        song.downloadSongUrl = buildSongUrl();
+        song.songId = song.id;
+        let index = PlaylistStore.addSong(song);
+        return index;
+    }
+
+    function addSongToPlaylistAndPlay() {
+        let index = addSongToPlaylist();
+        PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
+    }
 
 </script>
 
@@ -39,16 +55,26 @@
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>
             </div>
 
-            {#if $isPlaying && $currentSong.songId === song.id}
-                <div class="ml-auto" on:click={() => {PlayerStore.toggle()}}>
-                    <Pause class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
-                </div>
-            {:else}
-                <div class="ml-auto" on:click={() => {onClickExternal(song.id)}}>
-                    <Play class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
-                </div>
-            {/if}
+            <div class="ml-auto flex flex-row">
 
+                <!-- Añadir a la playlist -->
+                <div on:click={addSongToPlaylist}>
+                    <ListEnd class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
+                </div>
+
+                {#if $isPlaying && $currentSong.id === song.id}
+                    <!-- Pausar -->
+                    <div on:click={() => {PlayerStore.toggle()}}>
+                        <Pause class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
+                    </div>
+                {:else}
+                    <!-- Reproducir -->
+                    <div on:click={addSongToPlaylistAndPlay}>
+                        <Play class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
+                    </div>
+                {/if}
+
+            </div>
         </div>
     </div>
 </div>

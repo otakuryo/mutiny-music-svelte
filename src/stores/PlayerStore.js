@@ -1,15 +1,25 @@
-import { writable } from "svelte/store";
+import { writable, get } from "svelte/store";
 import { Howl, Howler } from "howler";
+import PlaylistStore from "./PlaylistStore";
+import {currentIndex, currentSong} from "./CurrentPlaySong";
 
 const isPlaying = writable(false);
 const isStopped = writable(true);
 const isMuted = writable(false);
 const isLooping = writable(false);
 const isShuffling = writable(false);
-const currentSong = writable({id: -1, songId: '-1'});
 
 const player = () => {
     console.log('*: playerStore -> store()');
+
+    const onEndedCallback = () => {
+        console.log("Ended");
+        let index = get(currentIndex)
+        let nextSong = PlaylistStore.getNextSongByIndex(index);
+        if (nextSong) {
+            methods.setSongAndPlay(nextSong.downloadSongUrl, nextSong, index + 1);
+        }
+    };
 
     const playlist = [''];
     const configHowl = {
@@ -20,31 +30,36 @@ const player = () => {
         },
         onload: () => {
             console.log("Loaded");
-        }
+        },
+        onend: onEndedCallback
     };
     const playerHowl = new Howl(configHowl);
 
     const { subscribe, set, update } = writable(playerHowl);
 
     const methods = {
-        setSong: (song, songObj = {}) => {
+        setSong: (song, songObj = {}, index = 0) => {
             console.log('*: playerStore -> setSong()');
             playerHowl.stop();
             playerHowl.unload();
             playlist[0] = song;
             playerHowl.load();
+
+            currentSong.set(songObj);
+            currentIndex.set(index);
         },
-        setSongAndPlay: (song, songObj = {}) => {
+        setSongAndPlay: (song, songObj = {}, index = 0) => {
             console.log('*: playerStore -> setSongAndPlay()');
             console.log(song);
             methods.stop();
             playerHowl.unload();
             playlist[0] = song;
             playerHowl.load();
-            methods.play();
-
+            
             currentSong.set(songObj);
-
+            currentIndex.set(index);
+            
+            methods.play();
         },
         play: () => {
             console.log('*: playerStore -> play()');
