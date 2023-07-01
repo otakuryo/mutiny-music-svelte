@@ -7,6 +7,9 @@ dependencies:
   crypto-js:
     specifier: ^4.1.1
     version: 4.1.1
+  howler:
+    specifier: ^2.2.3
+    version: 2.2.3
   lucide-svelte:
     specifier: ^0.132.0
     version: 0.132.0(svelte@3.58.0)
@@ -1359,6 +1362,10 @@ packages:
     dependencies:
       function-bind: 1.1.1
     dev: true
+
+  /howler@2.2.3:
+    resolution: {integrity: sha512-QM0FFkw0LRX1PR8pNzJVAY25JhIWvbKMBFM4gqk+QdV+kPXOhleWGCB6AiAF/goGjIHK2e/nIElplvjQwhr0jg==}
+    dev: false
 
   /ignore@5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}

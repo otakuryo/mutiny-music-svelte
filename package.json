@@ -38,6 +38,7 @@
 	"dependencies": {
 		"@nanostores/persistent": "^0.7.0",
 		"crypto-js": "^4.1.1",
+		"howler": "^2.2.3",
 		"lucide-svelte": "^0.132.0",
 		"nanostores": "^0.7.4",
 		"svelte-spa-router": "^3.3.0"

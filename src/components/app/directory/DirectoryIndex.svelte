@@ -6,6 +6,8 @@
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from './partials/DirectoryLineMusic.svelte';
 
+    import playerStore from '$stores/PlayerStore';
+
     let api: SubsonicAPI;
     export let directoryId: string|undefined = undefined;
 
@@ -108,9 +110,13 @@
         paused = false;
     }
 
+    function playSonngWithHowler(songUrl:string, songId: string) {
+        playerStore.setSongAndPlay(songUrl, {id:0, songId: songId});
+    }
+
     function showDownloadLink(songId: string) {
         getDownloadLink(songId).then((res) => {
-            setAndPlay(res);
+            playSonngWithHowler(res, songId);
         })
     }
 

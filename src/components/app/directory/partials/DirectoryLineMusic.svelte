@@ -1,7 +1,9 @@
 <script lang="ts">
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Child } from "$models/servers/subsonic/types";
-	import { Play } from "lucide-svelte";
+	import { Play, Pause } from "lucide-svelte";
+    import { isPlaying, currentSong } from "$stores/PlayerStore";
+	import PlayerStore from "$stores/PlayerStore";
 
     export let song: Child;
     export let api: SubsonicAPI;
@@ -18,6 +20,8 @@
     getCoverArt()
     const handleError = (ev: { target: { src: string; } } | any) => ev.target.src = fallback;
 
+    console.log(song);
+
 </script>
 
 <div 
@@ -26,7 +30,7 @@
     data-is-dir={song.isDir}
     data-parent={song.parent}
     data-title={song.title}>
-    <a href="#" on:click={() => {onClickExternal(song.id)}}>
+    <div class="cursor-pointer">
         <div class="p-2 flex items-center z-50">
             
             <img loading="lazy" src={imageUrl} on:error={handleError} data-amplitude-song-info="cover_art_url" class="w-12 h-12 rounded-sm mr-6 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={song.title}/>
@@ -34,8 +38,18 @@
             <div class="flex flex-col">
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>
             </div>
-            <Play class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"/>
+
+            {#if $isPlaying && $currentSong.songId === song.id}
+                <div class="ml-auto" on:click={() => {PlayerStore.toggle()}}>
+                    <Pause class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
+                </div>
+            {:else}
+                <div class="ml-auto" on:click={() => {onClickExternal(song.id)}}>
+                    <Play class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
+                </div>
+            {/if}
+
         </div>
-    </a>
+    </div>
 </div>
 
