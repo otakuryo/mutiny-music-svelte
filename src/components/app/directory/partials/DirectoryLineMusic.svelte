@@ -1,15 +1,17 @@
 <script lang="ts">
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Child } from "$models/servers/subsonic/types";
-	import { Play, Pause, ListEnd } from "lucide-svelte";
+	import { Play, Pause, ListEnd, PlusCircle, CheckCircle } from "lucide-svelte";
     import { isPlaying } from "$stores/PlayerStore";
 	import PlayerStore from "$stores/PlayerStore";
 	import PlaylistStore from '$stores/PlaylistStore';
     import {currentSong} from "$stores/CurrentPlaySong";
+	import BtnChecked from "./BtnChecked.svelte";
+	import TemporalListStore from "$stores/TemporalListStore";
 
     export let song: Child;
     export let api: SubsonicAPI;
-    export let onClickExternal: (songId: string) => void;
+    let songPlaylistIndex = -1;
 
     let imageUrl = "https://placehold.it/210x310";
     let fallback = imageUrl;
@@ -38,6 +40,21 @@
         PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
     }
 
+    function addSongToTemporalList() {
+        song.downloadSongUrl = buildSongUrl();
+        song.songId = song.id;
+        let index = TemporalListStore.addSong(song);
+        return index;
+    }
+
+    function toggleChecked() {
+        song.checked = !song.checked;
+        if (song.checked) {
+            songPlaylistIndex = addSongToTemporalList();
+        } else {
+            TemporalListStore.removeSongByIndex(songPlaylistIndex);
+        }
+    }
 </script>
 
 <div 
@@ -47,18 +64,21 @@
     data-parent={song.parent}
     data-title={song.title}>
     <div class="cursor-pointer">
-        <div class="p-2 flex items-center z-50">
+        <div class="py-2 flex items-center z-50">
+
+            <BtnChecked bind:checked={song.checked} toggleChecked={toggleChecked} />
             
             <img loading="lazy" src={imageUrl} on:error={handleError} data-amplitude-song-info="cover_art_url" class="w-12 h-12 rounded-sm mr-6 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={song.title}/>
 
             <div class="flex flex-col">
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>
+                <!-- <span data-amplitude-song-info="time" class="font-sans text-sm font-medium text-gray-500 dark:text-gray-400">{song.duration}</span> -->
             </div>
 
             <div class="ml-auto flex flex-row">
 
                 <!-- Añadir a la playlist -->
-                <div on:click={addSongToPlaylist}>
+                <div on:click={addSongToPlaylist} on:keypress={addSongToPlaylist}>
                     <ListEnd class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
                 </div>
 
@@ -69,7 +89,7 @@
                     </div>
                 {:else}
                     <!-- Reproducir -->
-                    <div on:click={addSongToPlaylistAndPlay}>
+                    <div on:click={addSongToPlaylistAndPlay} on:keypress={addSongToPlaylistAndPlay}>
                         <Play class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
                     </div>
                 {/if}

@@ -146,8 +146,10 @@ export interface Child {
 	type?: MediaType;
 	userRating?: number;
 	year?: number;
+
 	downloadSongUrl?: string;
 	songId?: string;
+	checked?: boolean;
 }
 
 export interface Directory {

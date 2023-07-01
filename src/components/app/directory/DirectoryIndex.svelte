@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { type MusicFolders, SubsonicAPI, type SubsonicBaseResponse } from '$models/servers/subsonic';
+    import { type MusicFolders, SubsonicAPI, type SubsonicBaseResponse, type Child } from '$models/servers/subsonic';
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
 	import MusicFolderLineBack from '../musicFolder/partials/MusicFolderLineBack.svelte';
 	import { onMount } from 'svelte';
@@ -7,6 +7,7 @@
 	import DirectoryLineMusic from './partials/DirectoryLineMusic.svelte';
 
     import playerStore from '$stores/PlayerStore';
+	import ControlsPlaylist from './partials/ControlsPlaylist.svelte';
 
     let api: SubsonicAPI;
     export let directoryId: string|undefined = undefined;
@@ -120,10 +121,27 @@
         })
     }
 
-    //// Debug data
-    //$: dataFromServer.then((res) => {
-    //        console.log(res);
-    //    })
+    function toggleDataFromServer(indexes: number[], state: boolean){
+        dataFromServer.then((libraries) => {
+            libraries.forEach((library) => {
+                if (library.directory) {
+                    indexes.forEach((index) => {
+                        library.directory.child[index].checked = state;
+                    })
+                }
+            })
+        })
+
+        dataFromServer = dataFromServer;
+    }
+
+    function callbackCheckSonByIndex(indexes: number[] ){
+        toggleDataFromServer(indexes, true);
+    }
+
+    function callbackUncheckSonByIndex(indexes: number[] ){
+        toggleDataFromServer(indexes, false);
+    }
 
 </script>
 
@@ -143,11 +161,21 @@
                     <MusicFolderLineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
                 {/if}
 
+                <ControlsPlaylist
+                    api={api}
+                    bind:list={library.directory.child}
+                    callbackCheckSonByIndex={callbackCheckSonByIndex}
+                    callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+
                 {#each library.directory.child as child}
                     {#if child.isDir}
-                        <DirectoryLineDirectory directory={child} api={api} refreshViewOnClick={refreshViewOnClick} />
+                        <DirectoryLineDirectory
+                            directory={child}
+                            api={api}
+                            refreshViewOnClick={refreshViewOnClick} />
+
                     {:else}
-                        <DirectoryLineMusic song={child} api={api} onClickExternal={showDownloadLink} />
+                        <DirectoryLineMusic bind:song={child} api={api} />
                     {/if}
                 {/each}
             {/if}
