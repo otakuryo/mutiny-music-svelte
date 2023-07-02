@@ -2,21 +2,11 @@
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Child } from "$models/servers/subsonic/types";
 	import { ArrowRight } from "lucide-svelte";
+	import ImgCover from "./ImgCover.svelte";
 
     export let directory: Child;
     export let api: SubsonicAPI;
     export let refreshViewOnClick: (event: MouseEvent) => void;
-
-    let imageUrl = "https://placehold.it/210x310";
-    let fallback = imageUrl;
-
-    async function getCoverArt() {
-        let image = await api.getCoverArtWoFetch({id: directory.id});
-        imageUrl = image
-    }
-
-    getCoverArt()
-    const handleError = (ev: { target: { src: string; } } | any) => ev.target.src = fallback;
 
 </script>
 
@@ -29,7 +19,7 @@
     <a href="/directory/{directory.id}" on:click={refreshViewOnClick}>
         <div class="p-2 flex items-center z-50">
             
-            <img loading="lazy" src={imageUrl} on:error={handleError} data-amplitude-song-info="cover_art_url" class="w-12 h-12 rounded-sm mr-6 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={directory.title}/>
+            <ImgCover api={api} title={directory.title} songId={directory.id} />
 
             <div class="flex flex-col">
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{directory.title}</span>

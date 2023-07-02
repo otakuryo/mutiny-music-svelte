@@ -2,7 +2,7 @@
     import FormRegister from "$components/app/settings/FormRegister.svelte";
     import HomePlaceHolder from "$components/test/+HomePlaceHolder.svelte";
     import { currentPage } from "$stores/GlobalStore.js";
-    import { GlobalPage } from "$interfaces/GlobalPage";
+    import type { GlobalPage } from "$interfaces/GlobalPage";
 	import DirectoryIndex from "$components/app/directory/DirectoryIndex.svelte";
 	import MusicFolderIndex from "$components/app/musicFolder/MusicFolderIndex.svelte";
 

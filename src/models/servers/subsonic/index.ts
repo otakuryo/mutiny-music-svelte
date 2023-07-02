@@ -92,6 +92,15 @@ export class SubsonicAPI {
 		}
 	}
 
+	loginSync({ username, password, serverName, version }: { username: string; password: string, serverName: string, version: string }) {
+		this.#crypto = globalThis.crypto;
+
+		this.#fetch = fetch;
+
+		this.#user = { username, password, serverName, version };
+		this.authenticated = true;
+	}
+
 	#generateSalt() {
 		if (!this.#crypto) throw new Error('crypto not available');
 

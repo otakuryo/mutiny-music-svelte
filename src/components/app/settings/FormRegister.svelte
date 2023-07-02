@@ -44,7 +44,7 @@
                 type: server.serverType, // or "generic" or "navidrome"
             });
 
-            await api.login({
+            api.loginSync({
                 username: server.username,
                 password: server.password,
                 serverName: server.serverName,

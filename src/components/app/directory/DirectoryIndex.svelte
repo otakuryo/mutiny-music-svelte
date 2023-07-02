@@ -29,7 +29,7 @@
             type: server.serverType, // or "generic" or "navidrome"
         });
 
-        await api.login({
+        api.loginSync({
             username: server.username,
             password: server.password,
             serverName: server.serverName,
@@ -48,12 +48,14 @@
             return [];            
         }
 
-        const resPing: SubsonicBaseResponse = await api.ping()
+        // const resPing: SubsonicBaseResponse = await api.ping()
 
-        // Si no hay una respuesta por parte del servidor, se para y no se hace nada
-        if (resPing.status !== "ok") {
-            return [];
-        }
+        // // Si no hay una respuesta por parte del servidor, se para y no se hace nada
+        // if (resPing.status !== "ok") {
+        //     return [];
+        // }
+
+        await new Promise(r => setTimeout(r, 50));
 
         let resMusicDirectory: SubsonicBaseResponse[] = [];
 
@@ -78,48 +80,80 @@
 
     }
 
+    async function getDataFromServerV2() {
+
+        let iniDate = new Date().getTime();
+        console.log("getDataFromServerV2 Ini", iniDate);
+        
+        try {
+            api = await initSubsonicApi();
+        } catch (error) {
+            console.log(error);
+            return [];            
+        }
+
+        let resMusicDirectory: SubsonicBaseResponse[] = [];
+        let resMusicDirectoryPromises = [];
+
+        if (directoryId) {
+            resMusicDirectoryPromises.push(api.getMusicDirectory({id: directoryId}));
+
+            resMusicDirectory = await Promise.all(resMusicDirectoryPromises.map(async (p) => {
+                return await p
+            }))
+            console.log("getDataFromServerV2 End", new Date().getTime() - iniDate);
+
+            return resMusicDirectory;
+        }
+
+        const resMusicFolders: SubsonicBaseResponse & { musicFolders: MusicFolders }  = await api.getMusicFolders()
+        if (!resMusicFolders || !resMusicFolders.musicFolders || !resMusicFolders.musicFolders.musicFolder) {
+            return [];
+        }
+
+
+        if (resMusicFolders.musicFolders.musicFolder.length > 0) {
+            for(const folder of resMusicFolders.musicFolders.musicFolder) {
+                resMusicDirectoryPromises.push(api.getMusicDirectory({id: folder.id}))
+            }
+        }
+
+        // wait multiple promises simultaneously
+        resMusicDirectory = await Promise.all(resMusicDirectoryPromises.map(async (p) => {
+            return await p
+        }))
+        console.log("getDataFromServerV2 End", new Date());
+
+        return resMusicDirectory;
+
+    }
+
     function refreshViewOnClick() {
         dataFromServer = getDataFromServer();
 	}
 
-    async function getDownloadLink(songId: string) {
-        try {
-            api = await initSubsonicApi();
+    // async function getDownloadLink(songId: string) {
+    //     try {
+    //         api = await initSubsonicApi();
 
-            let song = await api.downloadWoFetch({id: songId});
+    //         let song = await api.downloadWoFetch({id: songId});
 
-            return song;
-        } catch (error) {
-            console.log(error);
-            return "";
-        }
-    }
+    //         return song;
+    //     } catch (error) {
+    //         console.log(error);
+    //         return "";
+    //     }
+    // }
 
-    // Temporal reproductor
-    let src = "";
-    let paused = true;
+    // function playSonngWithHowler(songUrl:string, songId: string) {
+    //     playerStore.setSongAndPlay(songUrl, {id:0, songId: songId});
+    // }
 
-    async function setAndPlay(song:string) {
-        if (!song) {
-            return;
-        }
-        paused = true;
-        // Añadimos la url de la canción al reproductor
-        src = song;
-        // Esperamos 100ms para que el reproductor se actualice
-        await new Promise(r => setTimeout(r, 100));
-        paused = false;
-    }
-
-    function playSonngWithHowler(songUrl:string, songId: string) {
-        playerStore.setSongAndPlay(songUrl, {id:0, songId: songId});
-    }
-
-    function showDownloadLink(songId: string) {
-        getDownloadLink(songId).then((res) => {
-            playSonngWithHowler(res, songId);
-        })
-    }
+    // function showDownloadLink(songId: string) {
+    //     getDownloadLink(songId).then((res) => {
+    //         playSonngWithHowler(res, songId);
+    //     })
+    // }
 
     function toggleDataFromServer(indexes: number[], state: boolean){
         dataFromServer.then((libraries) => {
@@ -144,10 +178,6 @@
     }
 
 </script>
-
-{#if src}
-    <audio {src} bind:paused={paused} controls class="audio"></audio>
-{/if}
 
 <div class="divide-y">
     {#await dataFromServer}
