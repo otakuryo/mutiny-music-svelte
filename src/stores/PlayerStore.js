@@ -1,5 +1,5 @@
-import { writable, get } from "svelte/store";
-import { Howl, Howler } from "howler";
+import {writable, get} from "svelte/store";
+import {Howl, Howler} from "howler";
 import PlaylistStore from "./PlaylistStore";
 import {currentIndex, currentSong} from "./CurrentPlaySong";
 
@@ -21,28 +21,58 @@ const player = () => {
         }
     };
 
+    // https://stackoverflow.com/questions/37769535/is-there-a-way-to-indicate-audio-download-progress-buffer-when-using-howler-js
+    const handleLoad = () => {
+        const node = playerHowl._sounds[0]._node;
+        // const node:HTMLAudioElement = (audio as any)._sounds[0]._node; // For Typescript
+        node.addEventListener('progress', () => {
+            const duration = playerHowl.duration();
+            // console.log("buffer 1", node);
+
+            // https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/buffering_seeking_time_ranges#Creating_our_own_Buffering_Feedback
+            if (duration > 0) {
+                for (let i = 0; i < node.buffered.length; i++) {
+                        // console.log("buffer 2", node.buffered);
+                        if (node.buffered.start(node.buffered.length - 1 - i) < node.currentTime) {
+                        const bufferProgress = (node.buffered.end(node.buffered.length - 1 - i) / duration) * 100;
+                        console.log("buffer 3", bufferProgress);
+                        // do what you will with it. I.E - store.set({ bufferProgress });
+                        break;
+                    }
+                }
+            }
+        });
+    };
+
     const playlist = [''];
     const configHowl = {
         src: playlist,
         html5: true,
+        preload: true,
         onplay: () => {
             console.log("Playing");
         },
-        onload: () => {
-            console.log("Loaded");
+        onload: handleLoad,
+        onpause: () => {
+            console.log("Paused");
         },
-        onend: onEndedCallback
+        onstop: () => {
+            console.log("Stopped");
+        },
+        onend: onEndedCallback,
     };
-    const playerHowl = new Howl(configHowl);
+    let  playerHowl = new Howl(configHowl);
 
-    const { subscribe, set, update } = writable(playerHowl);
+    const {subscribe, set, update} = writable(playerHowl);
 
     const methods = {
         setSong: (song, songObj = {}, index = 0) => {
             console.log('*: playerStore -> setSong()');
+            console.log(song);
             playerHowl.stop();
             playerHowl.unload();
             playlist[0] = song;
+            playerHowl = new Howl(configHowl);
             playerHowl.load();
 
             currentSong.set(songObj);
@@ -50,40 +80,38 @@ const player = () => {
         },
         setSongAndPlay: (song, songObj = {}, index = 0) => {
             console.log('*: playerStore -> setSongAndPlay()');
-            console.log(song);
-            methods.stop();
-            playerHowl.unload();
-            playlist[0] = song;
-            playerHowl.load();
-            
-            currentSong.set(songObj);
-            currentIndex.set(index);
-            
+
+            methods.setSong(song, songObj, index);
+
             methods.play();
         },
         play: () => {
             console.log('*: playerStore -> play()');
+            playerHowl.play();
             isPlaying.set(true);
             isStopped.set(false);
-            playerHowl.play();
         },
         pause: () => {
             console.log('*: playerStore -> pause()');
-            isPlaying.set(false);
             playerHowl.pause();
+            isPlaying.set(false);
+            isStopped.set(false);
         },
         toggle: () => {
             console.log('*: playerStore -> toggle()');
             if (isPlaying) {
                 methods.pause();
+                isPlaying.set(false);
             } else {
                 methods.play();
-            }
+                isPlaying.set(true);
+            } isStopped.set(false);
         },
         stop: () => {
+            console.log('*: playerStore -> stop()');
+            playerHowl.stop();
             isStopped.set(true);
             isPlaying.set(false);
-            playerHowl.stop();
         },
         seek: (time) => {
             playerHowl.seek(time);
@@ -105,14 +133,27 @@ const player = () => {
         },
         rate: (rate) => {
             playerHowl.rate(rate);
+        },
+        currentTime: () => {
+            return playerHowl.seek() || 0;
+        },
+        duration: () => {
+            return playerHowl.duration();
         }
     };
 
     return {
         subscribe,
-        ...methods
+        ... methods
     };
 }
 
 export default player();
-export { isPlaying, isStopped, isMuted, isLooping, isShuffling, currentSong };
+export {
+    isPlaying,
+    isStopped,
+    isMuted,
+    isLooping,
+    isShuffling,
+    currentSong
+};
