@@ -91,7 +91,7 @@
 
 </script>
 
-<div class="py-12">
+<div class="py-12 w-6/12 mx-auto">
     <h2 class="text-2xl font-bold">Configuration Server</h2>
     <form on:submit|preventDefault={checkServer}>
         <div class="mt-8 max-w">

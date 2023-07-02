@@ -51,7 +51,7 @@
 
 </script>
 
-<div class="divide-y">
+<div class="divide-y w-6/12">
     {#await getDataFromServer()}
         <div>loading...</div>
     {:then musicFolders}

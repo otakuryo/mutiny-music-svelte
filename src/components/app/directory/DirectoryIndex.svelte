@@ -106,9 +106,9 @@
 
 </script>
 
-<div class="divide-y">
+<div class="divide-y w-6/12">
     {#await dataFromServer}
-        <div>loading...</div>
+        <div class="w-full">loading...</div>
     {:then libraries}
 
         {#each libraries as library}
