@@ -5,12 +5,10 @@
 	import { onMount } from 'svelte';
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from './partials/DirectoryLineMusic.svelte';
-
-    import playerStore from '$stores/PlayerStore';
 	import ControlsPlaylist from './partials/ControlsPlaylist.svelte';
 
-    let api: SubsonicAPI;
     export let directoryId: string|undefined = undefined;
+    let api: SubsonicAPI;
 
     let dataFromServer : Promise<SubsonicBaseResponse[]> = Promise.resolve([]);
 
@@ -80,80 +78,9 @@
 
     }
 
-    async function getDataFromServerV2() {
-
-        let iniDate = new Date().getTime();
-        console.log("getDataFromServerV2 Ini", iniDate);
-        
-        try {
-            api = await initSubsonicApi();
-        } catch (error) {
-            console.log(error);
-            return [];            
-        }
-
-        let resMusicDirectory: SubsonicBaseResponse[] = [];
-        let resMusicDirectoryPromises = [];
-
-        if (directoryId) {
-            resMusicDirectoryPromises.push(api.getMusicDirectory({id: directoryId}));
-
-            resMusicDirectory = await Promise.all(resMusicDirectoryPromises.map(async (p) => {
-                return await p
-            }))
-            console.log("getDataFromServerV2 End", new Date().getTime() - iniDate);
-
-            return resMusicDirectory;
-        }
-
-        const resMusicFolders: SubsonicBaseResponse & { musicFolders: MusicFolders }  = await api.getMusicFolders()
-        if (!resMusicFolders || !resMusicFolders.musicFolders || !resMusicFolders.musicFolders.musicFolder) {
-            return [];
-        }
-
-
-        if (resMusicFolders.musicFolders.musicFolder.length > 0) {
-            for(const folder of resMusicFolders.musicFolders.musicFolder) {
-                resMusicDirectoryPromises.push(api.getMusicDirectory({id: folder.id}))
-            }
-        }
-
-        // wait multiple promises simultaneously
-        resMusicDirectory = await Promise.all(resMusicDirectoryPromises.map(async (p) => {
-            return await p
-        }))
-        console.log("getDataFromServerV2 End", new Date());
-
-        return resMusicDirectory;
-
-    }
-
     function refreshViewOnClick() {
         dataFromServer = getDataFromServer();
 	}
-
-    // async function getDownloadLink(songId: string) {
-    //     try {
-    //         api = await initSubsonicApi();
-
-    //         let song = await api.downloadWoFetch({id: songId});
-
-    //         return song;
-    //     } catch (error) {
-    //         console.log(error);
-    //         return "";
-    //     }
-    // }
-
-    // function playSonngWithHowler(songUrl:string, songId: string) {
-    //     playerStore.setSongAndPlay(songUrl, {id:0, songId: songId});
-    // }
-
-    // function showDownloadLink(songId: string) {
-    //     getDownloadLink(songId).then((res) => {
-    //         playSonngWithHowler(res, songId);
-    //     })
-    // }
 
     function toggleDataFromServer(indexes: number[], state: boolean){
         dataFromServer.then((libraries) => {
