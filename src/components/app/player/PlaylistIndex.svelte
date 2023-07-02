@@ -1,9 +1,7 @@
 <script lang="ts">
 	import type { Child } from "$models/servers/subsonic";
-
-
     import PlaylistStore from "$stores/PlaylistStore";
-	import DirectoryLineMusic from "./partials/DirectoryLineMusic.svelte";
+	import PlayerLineMusic from "./partials/PlayerLineMusic.svelte";
 
     let localPlaylist: Child[] = [];
 
@@ -16,7 +14,7 @@
 <div class="px-3 mx-3 w-4/12 divide-y">
     {#each localPlaylist as song, index}
         {#if !song.isDir}
-            <DirectoryLineMusic bind:song={song} index={index} />
+            <PlayerLineMusic bind:song={song} index={index} />
         {/if}
     {/each}
 </div>
