@@ -6,7 +6,7 @@ export const handler = init({
 	assets: new Set(["favicon.ico","favicon.png","favicon.svg","sitemap-index.xml"]),
 	mimeTypes: {".ico":"image/vnd.microsoft.icon",".png":"image/png",".svg":"image/svg+xml",".xml":"application/xml"},
 	_: {
-		entry: {"file":"_app/immutable/start-6d94d727.js","imports":["_app/immutable/start-6d94d727.js","_app/immutable/chunks/index-6a905201.js","_app/immutable/chunks/singletons-4a06a8de.js"],"stylesheets":[],"fonts":[]},
+		entry: {"file":"_app/immutable/start-55a78f0a.js","imports":["_app/immutable/start-55a78f0a.js","_app/immutable/chunks/index-6a905201.js","_app/immutable/chunks/singletons-4a06a8de.js"],"stylesheets":[],"fonts":[]},
 		nodes: [
 			() => import('../server/nodes/0.js'),
 			() => import('../server/nodes/1.js'),
