@@ -2,7 +2,8 @@
 	import type { Child } from "$models/servers/subsonic";
 	import { currentSong } from "$stores/CurrentPlaySong";
 	import PlayerStore, { isPlaying } from "$stores/PlayerStore";
-	import { ListEnd, Pause, Play } from "lucide-svelte";
+	import PlaylistStore from "$stores/PlaylistStore";
+	import { ListEnd, Pause, Play, Trash2, Minus } from "lucide-svelte";
 
     export let song: Child;
     export let index: number = -1;
@@ -15,6 +16,12 @@
 
     function playSong() {
         PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
+    }
+
+    function deleteSong() {
+        console.log("deleteSong");
+        if (index === -1) return;
+        PlaylistStore.removeSongByIndex(index);
     }
 
     function getDurationHuman() {
@@ -31,8 +38,9 @@
         return `${mmStr}:${ssStr}`;
     }
 
-    durationHuman = getDurationHuman();
-
+    $: if (song) {
+        durationHuman = getDurationHuman();
+    }
 </script>
 <div 
     class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border dark:backdrop-blur-xl"
@@ -46,6 +54,17 @@
             <!-- <BtnChecked bind:checked={song.checked} toggleChecked={toggleChecked} /> -->
             
             <!-- <ImgCover api={api} title={song.title} songId={song.id} /> -->
+
+            <!-- delete -->
+            {#if $isPlaying && $currentSong.id === song.id}
+                <div>
+                    <Trash2 class="stroke-current text-red-500 dark:text-red-700 opacity-50 h-6 w-12 cursor-not-allowed"/>
+                </div>
+            {:else}
+                <div on:click={deleteSong} on:keypress={deleteSong}>
+                    <Trash2 class="stroke-current text-red-500 dark:text-red-700 h-6 w-12"/>
+                </div>
+            {/if}
 
             <div class="flex flex-col">
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>

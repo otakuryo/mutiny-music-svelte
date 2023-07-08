@@ -114,6 +114,24 @@
         getCurrentPosition();
     }
 
+    /**
+     * Crea los callbacks para los botones de los auriculares o el reproductor de música
+     */
+    function createMediaCallback() {
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.setActionHandler("play", togglePlaying);
+            navigator.mediaSession.setActionHandler("pause", togglePlaying);
+            navigator.mediaSession.setActionHandler("previoustrack", skipBack);
+            navigator.mediaSession.setActionHandler("nexttrack", skipForward);
+            navigator.mediaSession.setActionHandler("seekto", (details) => {
+                console.log("seekto", details);
+                PlayerStore.seek(details.seekTime);
+            });
+        }
+    }
+
+    createMediaCallback();
+    
     $: durationHumanTotal = getDurationHuman(duration);
     $: durationHuman = getDurationHuman(currentPosition);
     $: if (currentPosition > 0) {

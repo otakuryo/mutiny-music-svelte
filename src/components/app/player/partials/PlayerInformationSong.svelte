@@ -74,6 +74,7 @@
     $: if (songId && songId !== "-1") {
         countHandleError = 0;
         imageUrl = api.getCoverArtWoFetchSync({id: songId});
+        updateMediaMetadata();
         if (song !== undefined) {
             imageUrlParent = api.getCoverArtWoFetchSync({id: song.parent!});
         }
@@ -94,6 +95,23 @@
         let mmStr = minutes.toString().padStart(2, "0");
         let ssStr = seconds.toString().padStart(2, "0");
         return `${mmStr}:${ssStr}`;
+    }
+
+    function updateMediaMetadata() {
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: song?.title ?? "--",
+                artist: song?.artist ?? "--",
+                album: song?.album ?? "--",
+                artwork: [
+                    {
+                        src: imageUrl,
+                        sizes: "512x512",
+                        type: "image/png",
+                    },
+                ],
+            });
+        };          
     }
 
 </script>

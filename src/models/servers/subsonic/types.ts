@@ -150,6 +150,7 @@ export interface Child {
 	downloadSongUrl?: string;
 	songId?: string;
 	checked?: boolean;
+	durationFormatted?: string;
 }
 
 export interface Directory {
