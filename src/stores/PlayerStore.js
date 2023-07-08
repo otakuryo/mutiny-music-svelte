@@ -89,12 +89,15 @@ const player = () => {
             playerHowl.play();
             isPlaying.set(true);
             isStopped.set(false);
+            navigator.mediaSession.playbackState = "playing";
         },
         pause: () => {
             console.log('*: playerStore -> pause()');
             playerHowl.pause();
             isPlaying.set(false);
             isStopped.set(false);
+
+            navigator.mediaSession.playbackState = "paused";
         },
         toggle: () => {
             console.log('*: playerStore -> toggle()');

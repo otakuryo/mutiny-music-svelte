@@ -29,6 +29,7 @@ const TemporalList = () => {
         // },
         removeSongByIndex: (index) => {
             console.log('*: TemporalListStore -> removeSong()');
+            console.log({index});
             list.splice(index, 1);
             set(list);
         },
@@ -40,6 +41,11 @@ const TemporalList = () => {
         getSongByIndex: (index) => {
             console.log('*: TemporalListStore -> getSongByIndex()');
             return list[index];
+        },
+        getSongIndexById: (id) => {
+            console.log('*: TemporalListStore -> getSongIndexById()');
+            const index = list.findIndex((song) => song.id === id);
+            return index;
         },
         // getSongBySong: (song) => {
         //     console.log('*: TemporalListStore -> getSongBySong()');

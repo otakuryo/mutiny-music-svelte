@@ -5,7 +5,6 @@
 
 	import DirectoryIndex from "$components/app/directory/DirectoryIndex.svelte";
     import { page } from '$app/stores';
-    // import { writable } from 'svelte/store';
     
     let haveID = false;
     let id = '';
@@ -13,7 +12,6 @@
     $: page.subscribe(value => {
         haveID = value.url.searchParams.has('id');
         id = value.url.searchParams.get('id') || '';
-        console.log(haveID, id);
     });
 
 </script>
