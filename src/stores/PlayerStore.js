@@ -1,5 +1,5 @@
 import {writable, get} from "svelte/store";
-import {Howl, Howler} from "howler";
+import {Howl} from "howler";
 import PlaylistStore from "./PlaylistStore";
 import {currentIndex, currentSong} from "./CurrentPlaySong";
 
@@ -10,7 +10,6 @@ const isLooping = writable(false);
 const isShuffling = writable(false);
 
 const player = () => {
-    console.log('*: playerStore -> store()');
 
     const onEndedCallback = () => {
         console.log("Ended");

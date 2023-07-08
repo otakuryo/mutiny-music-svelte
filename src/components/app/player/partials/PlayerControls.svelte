@@ -126,15 +126,6 @@
     .current-duration-container {
         @apply mx-2 mt-2 mb-0 text-center;
     }
-    .player-button-base {
-        @apply p-2 mx-2 mt-0 mb-2 rounded-full;
-    }
-    .player-button-base .icon-base {
-        @apply stroke-current text-slate-900 h-6 w-6;
-    }
-    .player-button-base .icon-base:dark {
-        @apply text-white;
-    }
 
     button:disabled {
         @apply opacity-50 cursor-not-allowed;

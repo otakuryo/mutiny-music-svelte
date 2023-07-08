@@ -1,6 +1,4 @@
 <script lang="ts">
-	import BtnChecked from "$components/app/directory/partials/BtnChecked.svelte";
-	import ImgCover from "$components/app/directory/partials/ImgCover.svelte";
 	import type { Child } from "$models/servers/subsonic";
 	import { currentSong } from "$stores/CurrentPlaySong";
 	import PlayerStore, { isPlaying } from "$stores/PlayerStore";
