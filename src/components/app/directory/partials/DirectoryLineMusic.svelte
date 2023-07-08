@@ -58,6 +58,10 @@
         if (song.checked) {
             songPlaylistIndex = addSongToTemporalList();
         } else {
+            if (songPlaylistIndex === -1) {
+                songPlaylistIndex = TemporalListStore.getSongIndexById(song.id);
+                if (songPlaylistIndex === -1) return;
+            };
             TemporalListStore.removeSongByIndex(songPlaylistIndex);
         }
     }
