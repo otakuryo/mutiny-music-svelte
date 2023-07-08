@@ -182,6 +182,47 @@ const Skip_forward = create_ssr_component(($$result, $$props, $$bindings, slots)
   })}`;
 });
 const SkipForward = Skip_forward;
+const Trash_2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+  const iconNode = [
+    ["path", { "d": "M3 6h18" }],
+    [
+      "path",
+      {
+        "d": "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+      }
+    ],
+    [
+      "path",
+      {
+        "d": "M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+      }
+    ],
+    [
+      "line",
+      {
+        "x1": "10",
+        "y1": "11",
+        "x2": "10",
+        "y2": "17"
+      }
+    ],
+    [
+      "line",
+      {
+        "x1": "14",
+        "y1": "11",
+        "x2": "14",
+        "y2": "17"
+      }
+    ]
+  ];
+  return `${validate_component(Icon, "Icon").$$render($$result, Object.assign({}, { name: "trash-2" }, $$props, { iconNode }), {}, {
+    default: () => {
+      return `${slots.default ? slots.default({}) : ``}`;
+    }
+  })}`;
+});
+const Trash2 = Trash_2;
 const MusicFolderLineBack = create_ssr_component(($$result, $$props, $$bindings, slots) => {
   let { id } = $$props;
   let { name } = $$props;
@@ -406,12 +447,14 @@ const player = () => {
       playerHowl.play();
       isPlaying.set(true);
       isStopped.set(false);
+      navigator.mediaSession.playbackState = "playing";
     },
     pause: () => {
       console.log("*: playerStore -> pause()");
       playerHowl.pause();
       isPlaying.set(false);
       isStopped.set(false);
+      navigator.mediaSession.playbackState = "paused";
     },
     toggle: () => {
       console.log("*: playerStore -> toggle()");
@@ -513,6 +556,7 @@ const TemporalList = () => {
     // },
     removeSongByIndex: (index) => {
       console.log("*: TemporalListStore -> removeSong()");
+      console.log({ index });
       list.splice(index, 1);
       set(list);
     },
@@ -524,6 +568,11 @@ const TemporalList = () => {
     getSongByIndex: (index) => {
       console.log("*: TemporalListStore -> getSongByIndex()");
       return list[index];
+    },
+    getSongIndexById: (id) => {
+      console.log("*: TemporalListStore -> getSongIndexById()");
+      const index = list.findIndex((song) => song.id === id);
+      return index;
     },
     // getSongBySong: (song) => {
     //     console.log('*: TemporalListStore -> getSongBySong()');
@@ -599,6 +648,11 @@ const DirectoryLineMusic = create_ssr_component(($$result, $$props, $$bindings, 
     if (song.checked) {
       songPlaylistIndex = addSongToTemporalList();
     } else {
+      if (songPlaylistIndex === -1) {
+        songPlaylistIndex = TemporalListStore.getSongIndexById(song.id);
+        if (songPlaylistIndex === -1)
+          return;
+      }
       TemporalListStore.removeSongByIndex(songPlaylistIndex);
     }
   }
@@ -900,6 +954,29 @@ const PlayerControls = create_ssr_component(($$result, $$props, $$bindings, slot
   let disablePrev = false;
   let disableNext = false;
   let disablePlay = false;
+  function togglePlaying() {
+    if (get_store_value(isPlaying)) {
+      PlayerStore.pause();
+    } else {
+      PlayerStore.play();
+    }
+  }
+  function skipBack() {
+    console.log("skipBack");
+    let index = get_store_value(currentIndex);
+    let nextSong = PlaylistStore.getPrevSongByIndex(index);
+    if (nextSong) {
+      PlayerStore.setSongAndPlay(nextSong.downloadSongUrl, nextSong, index - 1);
+    }
+  }
+  function skipForward() {
+    console.log("skipForward");
+    let index = get_store_value(currentIndex);
+    let prevSong = PlaylistStore.getNextSongByIndex(index);
+    if (prevSong) {
+      PlayerStore.setSongAndPlay(prevSong.downloadSongUrl, prevSong, index + 1);
+    }
+  }
   let currentPosition = 0;
   let duration = 0;
   let percentage = "0";
@@ -940,6 +1017,19 @@ const PlayerControls = create_ssr_component(($$result, $$props, $$bindings, slot
       disablePlay = true;
     }
   });
+  function createMediaCallback() {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("play", togglePlaying);
+      navigator.mediaSession.setActionHandler("pause", togglePlaying);
+      navigator.mediaSession.setActionHandler("previoustrack", skipBack);
+      navigator.mediaSession.setActionHandler("nexttrack", skipForward);
+      navigator.mediaSession.setActionHandler("seekto", (details) => {
+        console.log("seekto", details);
+        PlayerStore.seek(details.seekTime);
+      });
+    }
+  }
+  createMediaCallback();
   $$result.css.add(css);
   durationHumanTotal = getDurationHuman$1(duration);
   durationHuman = getDurationHuman$1(currentPosition);
@@ -995,11 +1085,28 @@ const PlayerInformationSong = create_ssr_component(($$result, $$props, $$binding
       song = currentSong2;
     }
   });
+  function updateMediaMetadata() {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: song?.title ?? "--",
+        artist: song?.artist ?? "--",
+        album: song?.album ?? "--",
+        artwork: [
+          {
+            src: imageUrl,
+            sizes: "512x512",
+            type: "image/png"
+          }
+        ]
+      });
+    }
+  }
   if ($$props.songId === void 0 && $$bindings.songId && songId !== void 0)
     $$bindings.songId(songId);
   {
     if (songId && songId !== "-1") {
       imageUrl = api.getCoverArtWoFetchSync({ id: songId });
+      updateMediaMetadata();
       if (song !== void 0) {
         api.getCoverArtWoFetchSync({ id: song.parent });
       }
@@ -1028,16 +1135,37 @@ const PlayerLineMusic = create_ssr_component(($$result, $$props, $$bindings, slo
     let ssStr = seconds.toString().padStart(2, "0");
     return `${mmStr}:${ssStr}`;
   }
-  durationHuman = getDurationHuman2();
   if ($$props.song === void 0 && $$bindings.song && song !== void 0)
     $$bindings.song(song);
   if ($$props.index === void 0 && $$bindings.index && index !== void 0)
     $$bindings.index(index);
+  {
+    if (song) {
+      durationHuman = getDurationHuman2();
+    }
+  }
   $$unsubscribe_isPlaying();
   $$unsubscribe_currentSong();
   return `<div class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border dark:backdrop-blur-xl"${add_attribute("data-id", song.id, 0)}${add_attribute("data-is-dir", song.isDir, 0)}${add_attribute("data-parent", song.parent, 0)}${add_attribute("data-title", song.title, 0)}><div class="cursor-pointer"><div class="py-2 flex items-center z-50">
             
             
+
+            
+            ${$isPlaying && $currentSong.id === song.id ? `<div>${validate_component(Trash2, "Trash2").$$render(
+    $$result,
+    {
+      class: "stroke-current text-red-500 dark:text-red-700 opacity-50 h-6 w-12 cursor-not-allowed"
+    },
+    {},
+    {}
+  )}</div>` : `<div>${validate_component(Trash2, "Trash2").$$render(
+    $$result,
+    {
+      class: "stroke-current text-red-500 dark:text-red-700 h-6 w-12"
+    },
+    {},
+    {}
+  )}</div>`}
 
             <div class="flex flex-col"><span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">${escape(song.title)}</span>
                 <span data-amplitude-song-info="time" class="font-sans text-sm font-medium text-gray-500 dark:text-gray-400">${escape(durationHuman)}</span></div>
@@ -1094,7 +1222,6 @@ const Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
     page.subscribe((value) => {
       haveID = value.url.searchParams.has("id");
       id = value.url.searchParams.get("id") || "";
-      console.log(haveID, id);
     });
   }
   return `${validate_component(Layout, "Layout").$$render($$result, {}, {}, {
