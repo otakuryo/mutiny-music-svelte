@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Child } from "$models/servers/subsonic/types";
-	import { Play, Pause, ListEnd } from "lucide-svelte";
+	import { Play, Pause, ListEnd, Star } from "lucide-svelte";
     import { isPlaying } from "$stores/PlayerStore";
 	import PlayerStore from "$stores/PlayerStore";
 	import PlaylistStore from '$stores/PlaylistStore';
@@ -55,6 +55,16 @@
         }
     }
 
+    async function toggleStar() {
+        if (song.starred === undefined) {
+            await api.star({id: song.id});
+            song.starred = new Date();
+        } else {
+            await api.unstar({id: song.id});
+            song.starred = undefined;
+        }
+    }
+
     function getDurationHuman() {
 
         // Si no hay duración, se devuelve 00:00
@@ -98,6 +108,15 @@
             <div class="ml-auto flex flex-row">
 
                 <slot name="main-options" />
+
+                <!-- Añadir a favoritos -->
+                <div on:click={toggleStar} on:keydown={toggleStar}>
+                    {#if song.starred !== undefined }
+                        <Star class="stroke-current text-slate-900 dark:text-yellow-200 h-6 w-12" fill="yellow"/>
+                    {:else}
+                        <Star class="stroke-current text-slate-900 dark:text-yellow-200 h-6 w-12" />
+                    {/if}
+                </div>
 
                 <!-- Añadir a la playlist -->
                 <div on:click={addSongToPlaylist} on:keypress={addSongToPlaylist}>
