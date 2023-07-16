@@ -2,8 +2,6 @@
 	import InputSearch from '$components/global/+InputSearch.svelte';
     import { Headphones, Menu } from 'lucide-svelte';
 
-    let _currentPage_: GlobalPage;
-
     const navbar_ = [
         {
             name: "Home",
@@ -22,13 +20,23 @@
             href: '/',
         },
         {
+            name: "Playlist",
+            href: '/playlists',
+        },
+        {
             name: "Settings",
             href: '/settings',
         },
     ];
 
-const desktopIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block";
-const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden";
+    function toggleMenu() {
+        const menu = document.querySelector('.nav-menu');
+        if (!menu) return;
+        menu.classList.toggle('hidden');
+    }
+
+    const desktopIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block";
+    const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden";
 </script>
 
 <header class="bg-white dark:bg-zinc-900 text-lg dark:text-zinc-300 mx-auto max-w-6xl flex flex-row justify-between">
@@ -52,7 +60,7 @@ const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hove
         <InputSearch />
     </div>
 
-    <button class="nav-toggle mx-8 my-5 sm:invisible display-none sm:hidden" aria-label="menu button">
+    <button class="nav-toggle mx-8 my-5 sm:invisible display-none sm:hidden" aria-label="menu button" on:keypress={toggleMenu} on:click={toggleMenu}>
         <Menu class="w-8 h-8" />
     </button>
 </header>

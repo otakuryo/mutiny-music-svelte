@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Child } from "$models/servers/subsonic/types";
-	import { Play, Pause, ListEnd, PlusCircle, CheckCircle } from "lucide-svelte";
+	import { Play, Pause, ListEnd } from "lucide-svelte";
     import { isPlaying } from "$stores/PlayerStore";
 	import PlayerStore from "$stores/PlayerStore";
 	import PlaylistStore from '$stores/PlaylistStore';
@@ -14,17 +14,6 @@
     export let api: SubsonicAPI;
     let songPlaylistIndex = -1;
     let durationHuman = '00:00';
-
-    // let imageUrl = "https://placehold.it/210x310";
-    // let fallback = imageUrl;
-
-    // function getCoverArt() {
-    //     let image = api.getCoverArtWoFetchSync({id: song.id});
-    //     imageUrl = image
-    // }
-
-    // getCoverArt()
-    // const handleError = (ev: { target: { src: string; } } | any) => ev.target.src = fallback;
 
     function buildSongUrl() {
         return api.downloadWoFetchSync({id: song.id});
@@ -97,11 +86,18 @@
             <ImgCover api={api} title={song.title} songId={song.id} />
 
             <div class="flex flex-col">
-                <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>
-                <span data-amplitude-song-info="time" class="font-sans text-sm font-medium text-gray-500 dark:text-gray-400">{durationHuman}</span>
+                <slot name="title-line" >
+                    <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>
+                </slot>
+                <div>
+                    <span data-amplitude-song-info="time" class="font-sans text-sm font-medium text-gray-500 dark:text-gray-400">{durationHuman}</span>
+                    <slot name="subtitle-line" />
+                </div>
             </div>
 
             <div class="ml-auto flex flex-row">
+
+                <slot name="main-options" />
 
                 <!-- Añadir a la playlist -->
                 <div on:click={addSongToPlaylist} on:keypress={addSongToPlaylist}>
@@ -124,4 +120,3 @@
         </div>
     </div>
 </div>
-

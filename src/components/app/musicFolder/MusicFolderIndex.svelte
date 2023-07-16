@@ -2,7 +2,7 @@
 <script lang="ts">
     import { type MusicFolders, SubsonicAPI, type SubsonicBaseResponse } from '$models/servers/subsonic';
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
-	import DirectoryIndex from '../directory/DirectoryIndex.svelte';
+	// import DirectoryIndex from '../directory/DirectoryIndex.svelte';
 	import MusicFolderLine from './partials/MusicFolderLine.svelte';
 
     let _data_ = [];

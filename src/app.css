@@ -10,3 +10,6 @@
     @apply mx-1 my-2 px-3 py-1 text-xs font-medium text-center text-gray-900 bg-white rounded-lg border border-gray-600;
     @apply dark:bg-zinc-900 dark:text-white dark:border-zinc-700;
 }
+.btn-small-control-list:disabled{
+    @apply opacity-40 cursor-not-allowed;
+}
