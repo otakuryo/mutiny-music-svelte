@@ -13,10 +13,9 @@ const player = () => {
 
     const onEndedCallback = () => {
         console.log("Ended");
-        let index = get(currentIndex)
-        let nextSong = PlaylistStore.getNextSongByIndex(index);
-        if (nextSong) {
-            methods.setSongAndPlay(nextSong.downloadSongUrl, nextSong, index + 1);
+        let {index ,song} = PlaylistStore.getNextSong();
+        if (song) {
+            methods.setSongAndPlay(song.downloadSongUrl, song, index);
         }
     };
 

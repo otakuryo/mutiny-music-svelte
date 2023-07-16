@@ -19,20 +19,17 @@
 
     function skipBack() {
         console.log("skipBack");
-        let index = get(currentIndex)
-        let nextSong = PlaylistStore.getPrevSongByIndex(index);
-        if (nextSong) {
-            PlayerStore.setSongAndPlay(nextSong.downloadSongUrl, nextSong, index - 1);
+        let {index, song} = PlaylistStore.getPrevSong();
+        if (song) {
+            PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
         }
     }
 
     function skipForward() {
         console.log("skipForward");
-
-        let index = get(currentIndex)
-        let prevSong = PlaylistStore.getNextSongByIndex(index);
-        if (prevSong) {
-            PlayerStore.setSongAndPlay(prevSong.downloadSongUrl, prevSong, index + 1);
+        let {index ,song} = PlaylistStore.getNextSong();
+        if (song) {
+            PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
         }
     }
 

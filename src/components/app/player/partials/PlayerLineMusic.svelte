@@ -38,6 +38,7 @@
         return `${mmStr}:${ssStr}`;
     }
 
+    // Detectamos cuando cambia la canción actual, para actualizar la duración
     $: if (song) {
         durationHuman = getDurationHuman();
     }
