@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { SubsonicAPI } from "$models/servers/subsonic";
-	import type { Child } from "$models/servers/subsonic/types";
-	import { ArrowRight } from "lucide-svelte";
-	import ImgCover from "$components/app/directory/partials/ImgCover.svelte";
+	import type { Playlist } from "$models/servers/subsonic/types";
+	import { Album, ArrowRight } from "lucide-svelte";
 
-    export let playlist: Child;
+    export let playlist: Playlist;
     export let api: SubsonicAPI;
     export let refreshViewOnClick: (event: MouseEvent) => void;
 
@@ -17,7 +16,7 @@
     <a href="/playlists?id={playlist.id}" on:click={refreshViewOnClick}>
         <div class="p-2 flex items-center z-50">
             
-            <ImgCover api={api} title={playlist.name} songId={playlist.id} />
+            <Album strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
 
             <div class="flex flex-col">
                 <span data-amplitude-playlist-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{playlist.name}</span>
