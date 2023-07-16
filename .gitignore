@@ -123,3 +123,6 @@ dist
 
 # TernJS port file
 .tern-port
+
+# netlify build output
+.netlify/
