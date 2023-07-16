@@ -703,7 +703,7 @@ export class SubsonicAPI {
 	}
 
 	async unstar(args: { id?: string; albumId?: string; artistId?: string }) {
-		return this.#requestJSON<SubsonicBaseResponse>('star', args);
+		return this.#requestJSON<SubsonicBaseResponse>('unstar', args);
 	}
 
 	async setRating(args: { id: string; rating: number }) {
