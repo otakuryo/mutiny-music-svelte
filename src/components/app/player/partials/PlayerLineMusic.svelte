@@ -3,8 +3,8 @@
 	import { currentSong } from "$stores/CurrentPlaySong";
 	import PlayerStore, { isPlaying } from "$stores/PlayerStore";
 	import PlaylistStore from "$stores/PlaylistStore";
-	import { Pause, Play, Trash2 } from "lucide-svelte";
-    import { getDurationHuman } from "$lib/js/Helpers.js";
+	import { Pause, Play, Star, Trash2 } from "lucide-svelte";
+    import { getDurationHuman, MainServerSubsonicAPI } from "$lib/js/Helpers.js";
 
     export let song: Child;
     export let index: number = -1;
@@ -23,6 +23,22 @@
         console.log("deleteSong");
         if (index === -1) return;
         PlaylistStore.removeSongByIndex(index);
+    }
+
+    /**
+     * Toggle star
+     * 
+     * If star is true, then the song is starred, so we want to remove it from starred songs
+     */
+     async function toggleStar() {
+        let api = MainServerSubsonicAPI();
+        if (song.starred === undefined) {
+            await api.star({id: song.id});
+            song.starred = new Date();
+        } else {
+            await api.unstar({id: song.id});
+            song.starred = undefined;
+        }
     }
 
     // Detectamos cuando cambia la canción actual, para actualizar la duración
@@ -60,6 +76,15 @@
             </div>
 
             <div class="ml-auto flex flex-row">
+
+                <!-- Añadir a favoritos -->
+                <div on:click={toggleStar} on:keydown={toggleStar}>
+                    {#if song.starred !== undefined }
+                        <Star class="stroke-current text-slate-900 dark:text-yellow-200 h-6 w-12" fill="yellow"/>
+                    {:else}
+                        <Star class="stroke-current text-slate-900 dark:text-yellow-200 h-6 w-12" />
+                    {/if}
+                </div>
 
                 {#if $isPlaying && $currentSong.id === song.id}
                     <!-- Pausar -->
