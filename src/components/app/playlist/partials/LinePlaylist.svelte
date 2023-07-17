@@ -1,16 +1,14 @@
 <script lang="ts">
-	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Playlist } from "$models/servers/subsonic/types";
 	import { Album, ArrowRight } from "lucide-svelte";
 
     export let playlist: Playlist;
-    export let api: SubsonicAPI;
     export let refreshViewOnClick: (event: MouseEvent) => void;
 
 </script>
 
 <div 
-    class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border dark:backdrop-blur-xl"
+    class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border "
     data-id={playlist.id}
     data-title={playlist.name}>
     <a href="/playlists?id={playlist.id}" on:click={refreshViewOnClick}>
