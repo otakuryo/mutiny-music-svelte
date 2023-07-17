@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	import InputSearch from '$components/global/+InputSearch.svelte';
     import { currentPage } from '$stores/GlobalStore';
     import { Headphones, Menu } from 'lucide-svelte';
@@ -71,4 +71,4 @@ const mobileIcons = "dark:text-zinc-300 text-black hover:text-zinc-500 dark:hove
             </div>
         </nav>
     {/each}
-</header>
+</header> -->

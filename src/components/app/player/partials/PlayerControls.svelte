@@ -2,8 +2,9 @@
 	import { Pause, Play, SkipBack, SkipForward, Timer } from "lucide-svelte";
     import PlayerStore, { isPlaying } from "$stores/PlayerStore";
     import PlaylistStore from "$stores/PlaylistStore";
-    import { currentIndex, currentSong } from "$stores/CurrentPlaySong";
+    import { currentSong } from "$stores/CurrentPlaySong";
     import { get } from "svelte/store";
+    import { getDurationHuman } from "$lib/js/Helpers.js";
 
     let disablePrev = false;
     let disableNext = false;
@@ -63,25 +64,6 @@
             getCurrentPosition();
         }
     });
-
-     /**
-	 * Devuelve la duración en formato mm:ss
-     * 
-	 * @param {number | undefined} duration
-	 */
-     function getDurationHuman(duration) {
-
-        // Si no hay duración, se devuelve 00:00
-        if (duration === undefined) return "00:00";
-
-        // Si hay duración, se devuelve en formato mm:ss
-        let minutes = Math.floor(duration / 60);
-        let seconds = Math.round(duration - minutes * 60);
-
-        let mmStr = minutes.toString().padStart(2, "0");
-        let ssStr = seconds.toString().padStart(2, "0");
-        return `${mmStr}:${ssStr}`;
-    }
 
     function getPercentageDuration() {
         if (currentPosition === 0) return '0';        

@@ -9,6 +9,7 @@
 	import TemporalListStore from "$stores/TemporalListStore";
     import BtnChecked from "$components/app/directory/partials/BtnChecked.svelte";
     import ImgCover from "$components/app/directory/partials/ImgCover.svelte";
+    import { getDurationHuman } from "$lib/js/Helpers.js";
 
     export let song: Child;
     export let api: SubsonicAPI;
@@ -81,21 +82,7 @@
         }
     }
 
-    function getDurationHuman() {
-
-        // Si no hay duración, se devuelve 00:00
-        if (song.duration === undefined) return "00:00";
-
-        // Si hay duración, se devuelve en formato mm:ss
-        let minutes = Math.floor(song.duration / 60);
-        let seconds = song.duration - minutes * 60;
-
-        let mmStr = minutes.toString().padStart(2, "0");
-        let ssStr = seconds.toString().padStart(2, "0");
-        return `${mmStr}:${ssStr}`;
-    }
-
-    durationHuman = getDurationHuman();
+    durationHuman = getDurationHuman(song.duration);
 </script>
 
 <div 

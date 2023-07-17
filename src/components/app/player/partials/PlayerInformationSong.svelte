@@ -2,6 +2,7 @@
 	import { SubsonicAPI, type Child } from "$models/servers/subsonic";
 	import { ServerConfigPersistent } from "$stores/ServerConfigStore";
     import { currentSong } from "$stores/CurrentPlaySong";
+    import { getDurationHuman } from "$lib/js/Helpers.js";
     
     export let songId = "-1";
 
@@ -78,23 +79,6 @@
         if (song !== undefined) {
             imageUrlParent = api.getCoverArtWoFetchSync({id: song.parent!});
         }
-    }
-
-    /**
-     * Devuelve la duración en formato mm:ss
-     */
-    function getDurationHuman(duration: number|undefined) {
-
-        // Si no hay duración, se devuelve 00:00
-        if (duration === undefined) return "00:00";
-
-        // Si hay duración, se devuelve en formato mm:ss
-        let minutes = Math.floor(duration / 60);
-        let seconds = duration - minutes * 60;
-
-        let mmStr = minutes.toString().padStart(2, "0");
-        let ssStr = seconds.toString().padStart(2, "0");
-        return `${mmStr}:${ssStr}`;
     }
 
     function updateMediaMetadata() {

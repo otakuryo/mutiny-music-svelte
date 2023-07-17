@@ -3,7 +3,8 @@
 	import { currentSong } from "$stores/CurrentPlaySong";
 	import PlayerStore, { isPlaying } from "$stores/PlayerStore";
 	import PlaylistStore from "$stores/PlaylistStore";
-	import { ListEnd, Pause, Play, Trash2, Minus } from "lucide-svelte";
+	import { Pause, Play, Trash2 } from "lucide-svelte";
+    import { getDurationHuman } from "$lib/js/Helpers.js";
 
     export let song: Child;
     export let index: number = -1;
@@ -24,23 +25,9 @@
         PlaylistStore.removeSongByIndex(index);
     }
 
-    function getDurationHuman() {
-
-        // Si no hay duración, se devuelve 00:00
-        if (song.duration === undefined) return "00:00";
-
-        // Si hay duración, se devuelve en formato mm:ss
-        let minutes = Math.floor(song.duration / 60);
-        let seconds = song.duration - minutes * 60;
-
-        let mmStr = minutes.toString().padStart(2, "0");
-        let ssStr = seconds.toString().padStart(2, "0");
-        return `${mmStr}:${ssStr}`;
-    }
-
     // Detectamos cuando cambia la canción actual, para actualizar la duración
     $: if (song) {
-        durationHuman = getDurationHuman();
+        durationHuman = getDurationHuman(song.duration);
     }
 </script>
 <div 

@@ -20,7 +20,7 @@
             href: '/',
         },
         {
-            name: "Playlist",
+            name: "Playlists",
             href: '/playlists',
         },
         {
