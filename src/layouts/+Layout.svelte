@@ -6,7 +6,7 @@
 
 <Header />
 <MenuRoute />
-<main class="m-auto p-6 md:p-8 min-h-screen flex flex-row">
+<main class="m-auto p-3 min-h-screen flex flex-row">
   <slot />
   <ThemeToggle />
 </main>

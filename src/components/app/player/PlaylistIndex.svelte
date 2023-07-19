@@ -14,7 +14,7 @@
     
 </script>
 
-<div class="px-3 mx-3 w-4/12 divide-y">
+<div class="pl-3 w-6/12 divide-y">
     <PlayerInformationSong />
     <PlayerControls />
     <PlayerPlaylistInformation />
