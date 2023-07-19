@@ -11,7 +11,7 @@
     data-id={folder.id}
     data-name={folder.name}>
     <a href="/directory?id={folder.id}">
-        <div class="p-2 flex items-center z-50">
+        <div class="p-2 flex items-center ">
             
             <img loading="lazy" src="https://placehold.it/210x310" data-amplitude-song-info="cover_art_url" class="w-12 h-12 rounded-sm mr-6 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={folder.name}/>
 

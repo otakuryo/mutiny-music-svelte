@@ -17,7 +17,7 @@
     data-parent={directory.parent}
     data-title={directory.title}>
     <a href="/directory?id={directory.id}" on:click={refreshViewOnClick}>
-        <div class="p-2 flex items-center z-50">
+        <div class="p-2 flex items-center ">
             
             <ImgCover api={api} title={directory.title} songId={directory.id} />
 

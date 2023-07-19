@@ -12,7 +12,7 @@
     data-id={playlist.id}
     data-title={playlist.name}>
     <a href="/playlists?id={playlist.id}" on:click={refreshViewOnClick}>
-        <div class="p-2 flex items-center z-50">
+        <div class="p-2 flex items-center ">
             
             <Album strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
 

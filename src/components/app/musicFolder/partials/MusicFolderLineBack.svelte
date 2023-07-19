@@ -13,7 +13,7 @@
     data-id={id}
     data-name={name}>
     <a href="/directory?id={id}" on:click={refreshViewOnClick}>
-        <div class="p-2 flex items-center z-50">
+        <div class="p-2 flex items-center ">
             
             <ArrowLeft class="stroke-current text-slate-900 dark:text-white h-6 w-12 mr-6"/>
 

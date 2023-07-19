@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+/* html {
+    font-size: 12px;
+} */
+
+/**
+ * Color de fondo general
+ */
+.main-color {
+    @apply dark:text-zinc-300 dark:bg-zinc-900;
+    @apply bg-white;
+}
+
 /**
 * fichero principal: ControlsPlaylist.svelte
 * Estilo para el botón de control de lista
@@ -13,3 +25,4 @@
 .btn-small-control-list:disabled{
     @apply opacity-40 cursor-not-allowed;
 }
+

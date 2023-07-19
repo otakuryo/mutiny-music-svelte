@@ -10,7 +10,7 @@
 
 <div class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border ">
     <a href={url} on:click={refreshViewOnClick}>
-        <div class="p-2 flex items-center z-50">
+        <div class="p-2 flex items-center ">
 
             <slot name="icon">
                 <Star strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
