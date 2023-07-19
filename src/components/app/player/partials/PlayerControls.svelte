@@ -225,7 +225,7 @@
 
 </style>
 
-<div class="w-full my-3">
+<div class="main-color w-full py-3">
 
     <div class="flex flex-row justify-center">
         <button class="player-button-base" on:click={skipBack} on:keypress={skipBack} disabled={disablePrev}>

@@ -100,7 +100,7 @@
 
 </script>
 
-<div class="divider-y w-full my-3">
+<div class="divider-y w-full py-3">
     <div class="flex flex-row">
         <img loading="lazy" src={imageUrl} on:error={handleError} data-amplitude-song-info="cover_art_url" class="w-24 h-24 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={song?.title}/>
         <div class="flex flex-col">

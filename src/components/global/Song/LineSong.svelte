@@ -76,7 +76,7 @@
     data-parent={song.parent}
     data-title={song.title}>
     <div class="cursor-pointer">
-        <div class="py-2 flex items-center z-50">
+        <div class="py-2 flex items-center">
 
             <BtnChecked bind:checked={song.checked} toggleChecked={toggleChecked} />
             
