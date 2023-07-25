@@ -5,6 +5,7 @@
     import { page } from '$app/stores';
 	import AlbumsIndex from "$components/app/albums/AlbumsIndex.svelte";
 	import DirectoryIndex from "$components/app/directory/DirectoryIndex.svelte";
+	import AlbumIndex from "$components/app/albums/AlbumIndex.svelte";
     
     let haveID = false;
     let id = '';
@@ -19,7 +20,7 @@
 <Layout>
 
     {#if haveID}
-        <DirectoryIndex directoryId={id} />
+        <AlbumIndex albumId={id} />
     {:else}
         <AlbumsIndex />
     {/if}

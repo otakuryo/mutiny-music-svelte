@@ -17,7 +17,7 @@
 <div 
     class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border "
     data-id={album.id}>
-    <a href="/directory?id={album.id}" on:click={refreshViewOnClick}>
+    <a href="/albums?id={album.id}" on:click={refreshViewOnClick}>
         <div class="p-2 flex items-center ">
             
             <ImgCover api={api} title={album.title} songId={album.coverArt} />
