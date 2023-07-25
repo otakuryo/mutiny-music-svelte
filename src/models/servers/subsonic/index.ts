@@ -13,6 +13,7 @@ import type {
 	Directory,
 	Genres,
 	Indexes,
+	IndexesID3,
 	InternetRadioStations,
 	License,
 	MusicFolders,
@@ -311,6 +312,17 @@ export class SubsonicAPI {
 		return this.#requestJSON<
 			SubsonicBaseResponse & {
 				indexes: Indexes;
+			}
+		>('getIndexes', args);
+	}
+
+	async getIndexesID3(args?: {
+		musicFolderId?: string;
+		ifModifiedSince?: number;
+	}) {
+		return this.#requestJSON<
+			SubsonicBaseResponse & {
+				indexes: IndexesID3;
 			}
 		>('getIndexes', args);
 	}

@@ -3,8 +3,8 @@
 	import PlaylistIndex from "$components/app/player/PlaylistIndex.svelte";
     import Layout from "$layouts/+Layout.svelte";
 
-	import DirectoryIndex from "$components/app/directory/DirectoryIndex.svelte";
     import { page } from '$app/stores';
+	import IndexesIndex from "$components/app/indexes/IndexesIndex.svelte";
     
     let haveID = false;
     let id = '';
@@ -14,14 +14,12 @@
         id = value.url.searchParams.get('id') || '';
     });
 
-    // id !== "-1" ==> Es por gonic
-
 </script>
 
 <Layout>
 
-    {#if haveID && id !== "-1"}
-        <DirectoryIndex directoryId={id} />
+    {#if haveID}
+        <IndexesIndex musicFolderId={id} />
     {:else}
         <MusicFolderIndex />
     {/if}
