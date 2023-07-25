@@ -187,6 +187,15 @@ export interface IndexID3 {
 	name: string;
 	artist?: ArtistID3[];
 }
+
+export interface IndexesID3 {
+	ignoredArticles: string;
+	lastModified: number;
+	child?: Child[];
+	index?: IndexID3[];
+	shortcut?: Artist[];
+}
+
 export interface Indexes {
 	ignoredArticles: string;
 	lastModified: number;

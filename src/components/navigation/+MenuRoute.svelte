@@ -13,7 +13,7 @@
         },
         {
             name: "Album",
-            href: '/',
+            href: '/albums',
         },
         {
             name: "Artist",
