@@ -1,12 +1,11 @@
 <script lang="ts">
-    import { type MusicFolders, SubsonicAPI, type SubsonicBaseResponse, type Child, type AlbumID3, type AlbumWithSongsID3 } from '$models/servers/subsonic';
+    import { SubsonicAPI, type SubsonicBaseResponse, type AlbumWithSongsID3 } from '$models/servers/subsonic';
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
-	import MusicFolderLineBack from '$components/app/musicFolder/partials/MusicFolderLineBack.svelte';
 	import { onMount } from 'svelte';
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
-	import ControlsPlaylist from '$components/app/directory/partials/ControlsPlaylist.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
+	import LineBack from '$components/global/Navigation/LineBack.svelte';
 
     type AlbumLocal = (SubsonicBaseResponse & { album: AlbumWithSongsID3 });
 
@@ -131,6 +130,8 @@
             <!-- {#if library.directory && library.directory.parent}
                 <MusicFolderLineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
             {/if} -->
+
+            <LineBack url="/albums" name="Albums" refreshViewOnClick={refreshViewOnClick} />
 
             <ControlsNavigationPlaylist
                 api={api}
