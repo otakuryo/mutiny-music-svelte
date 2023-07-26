@@ -17,7 +17,7 @@
         },
         {
             name: "Artist",
-            href: '/',
+            href: '/artists',
         },
         {
             name: "Playlists",

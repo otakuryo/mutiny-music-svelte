@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { SubsonicAPI, type SubsonicBaseResponse, type AlbumList, type Child } from '$models/servers/subsonic';
+	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
+    import { SubsonicAPI, type SubsonicBaseResponse, type AlbumList, type Child, type AlbumList2 } from '$models/servers/subsonic';
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
 	import { onMount } from 'svelte';
-	import LineAlbum from '$components/app/albums/partials/LineAlbum.svelte';
 
-    type IndexesTypeLocal = (SubsonicBaseResponse & { albumList: AlbumList });
+    type IndexesTypeLocal = (SubsonicBaseResponse & { albumList2: AlbumList2 });
     type SubsonicSortType = 'alphabeticalByName'
 			| 'alphabeticalByArtist'
 			| 'byYear'
@@ -54,7 +54,7 @@
         try {
             api = await initSubsonicApi();
 
-            let resMusic: IndexesTypeLocal = await api.getAlbumList({type: orderBy, size: size, offset: currentOffset});
+            let resMusic: IndexesTypeLocal = await api.getAlbumList2({type: orderBy, size: size, offset: currentOffset});
             currentOffset += size;
             return resMusic;
 
@@ -75,8 +75,8 @@
         let newData = await getDataFromServer();
         dataFromServer = Promise.resolve(dataFromServer).then((data) => {
 
-            if (data.albumList.album && newData.albumList.album) {
-                data.albumList.album = data.albumList.album.concat(newData.albumList.album);
+            if (data.albumList2.album && newData.albumList2.album) {
+                data.albumList2.album = data.albumList2.album.concat(newData.albumList2.album);
             }
             
             loading = false;
@@ -91,10 +91,10 @@
         <div class="w-full">loading...</div>
     {:then libraries}
 
-        {#if libraries.albumList.album && libraries.albumList.album.length > 0}
-            {#each libraries.albumList.album as album}
+        {#if libraries.albumList2.album && libraries.albumList2.album.length > 0}
+            {#each libraries.albumList2.album as album}
 
-                <LineAlbum album={album} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                <LineAlbumId3 album={album} api={api} refreshViewOnClick={refreshViewOnClick}/>
                     
             {/each}
         {/if}
