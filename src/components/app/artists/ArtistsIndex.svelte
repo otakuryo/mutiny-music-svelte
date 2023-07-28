@@ -54,23 +54,26 @@
 
 </script>
 
-<div class="divide-y w-6/12">
+<div class="divide-y w-6/12 fixed h-screen-wo-menu bottom-0 left-0 overflow-y-scroll">
     {#await dataFromServer}
         <div class="w-full">loading...</div>
     {:then serverResponse}
 
         {#if serverResponse.artists.index && serverResponse.artists.index.length > 0}
-        
-            {#each serverResponse.artists.index as artistIndex}
-                <div class="w-full pl-2"> {artistIndex.name} </div>
+            <div class="divide-y">
 
-                {#if artistIndex.artist && artistIndex.artist.length > 0}
-                    {#each artistIndex.artist as artist}
-                        <LineArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                    {/each}
-                {/if}
-                    
-            {/each}
+                {#each serverResponse.artists.index as artistIndex}
+                    <div class="main-color sticky w-full pl-2 top-0 z-10"> {artistIndex.name} </div>
+
+                    {#if artistIndex.artist && artistIndex.artist.length > 0}
+                        {#each artistIndex.artist as artist}
+                            <LineArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                        {/each}
+                    {/if}
+                        
+                {/each}
+
+            </div>
 
         {/if}
 
