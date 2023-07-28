@@ -86,7 +86,7 @@
     }
 </script>
 
-<div class="divide-y w-6/12">
+<div class="main-left-panel">
     {#await dataFromServer}
         <div class="w-full">loading...</div>
     {:then libraries}

@@ -54,7 +54,7 @@
 
 </script>
 
-<div class="divide-y w-6/12 fixed h-screen-wo-menu bottom-0 left-0 overflow-y-scroll">
+<div class="main-left-panel">
     {#await dataFromServer}
         <div class="w-full">loading...</div>
     {:then serverResponse}
