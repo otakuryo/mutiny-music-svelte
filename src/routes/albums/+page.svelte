@@ -4,7 +4,6 @@
 
     import { page } from '$app/stores';
 	import AlbumsIndex from "$components/app/albums/AlbumsIndex.svelte";
-	import DirectoryIndex from "$components/app/directory/DirectoryIndex.svelte";
 	import AlbumIndex from "$components/app/albums/AlbumIndex.svelte";
     
     let haveID = false;

@@ -3,8 +3,8 @@
 	import PlaylistIndex from "$components/app/player/PlaylistIndex.svelte";
     import Layout from "$layouts/+Layout.svelte";
 
-	import DirectoryIndex from "$components/app/directory/DirectoryIndex.svelte";
     import { page } from '$app/stores';
+	import DirectoryIndexV2 from "$components/app/directory/DirectoryIndexV2.svelte";
     
     let haveID = false;
     let id = '';
@@ -21,7 +21,7 @@
 <Layout>
 
     {#if haveID && id !== "-1"}
-        <DirectoryIndex directoryId={id} />
+        <DirectoryIndexV2 directoryId={id} />
     {:else}
         <MusicFolderIndex />
     {/if}
