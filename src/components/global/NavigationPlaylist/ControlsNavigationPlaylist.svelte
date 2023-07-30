@@ -7,8 +7,8 @@
     export let api: SubsonicAPI;
     export let list: Child[] = [];
 
-    export let callbackCheckSonByIndex: (indexes: number[]) => void;
-    export let callbackUncheckSonByIndex: (indexes: number[]) => void;
+    export let callbackCheckSonByIndex: () => void;
+    export let callbackUncheckSonByIndex: () => void;
 
     function addAllSongToTemporalList() {
         let localIndexes: number[] = [];
@@ -25,7 +25,7 @@
             }
         });
 
-        callbackCheckSonByIndex(localIndexes);
+        callbackCheckSonByIndex();
 
     }
 
@@ -39,7 +39,7 @@
                 localIndexes.push(index);
             }
         });
-        callbackUncheckSonByIndex(localIndexes);
+        callbackUncheckSonByIndex();
     }
 
     function addAllSongToMainPlaylistStore(){

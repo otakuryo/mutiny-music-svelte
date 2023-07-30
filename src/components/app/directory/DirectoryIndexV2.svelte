@@ -37,11 +37,11 @@
         dataFromServer = getDataFromServerV2();
 	}
 
-    function toggleDataFromServer(indexes: number[], state: boolean){
+    function toggleDataFromServer(state: boolean){
         dataFromServer.then((libraries) => {
 
             libraries.directory.child.forEach((element: Child) => {
-                if (element.isDir) {
+                if (!element.isDir) {
                     element.checked = state;
                 }
             });
@@ -50,12 +50,12 @@
         dataFromServer = dataFromServer;
     }
 
-    function callbackCheckSonByIndex(indexes: number[] ){
-        toggleDataFromServer(indexes, true);
+    function callbackCheckSonByIndex(){
+        toggleDataFromServer(true);
     }
 
-    function callbackUncheckSonByIndex(indexes: number[] ){
-        toggleDataFromServer(indexes, false);
+    function callbackUncheckSonByIndex(){
+        toggleDataFromServer(false);
     }
 
 </script>
@@ -84,7 +84,7 @@
                     refreshViewOnClick={refreshViewOnClick} />
 
             {:else}
-                <DirectoryLineMusic song={song} api={api} />
+                <DirectoryLineMusic bind:song={song} api={api} />
             {/if}
         {/each}
 
