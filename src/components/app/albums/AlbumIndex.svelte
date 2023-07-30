@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { SubsonicAPI, type SubsonicBaseResponse, type AlbumWithSongsID3 } from '$models/servers/subsonic';
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore';
+    import type { SubsonicAPI, AlbumWithSongsID3 } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
+	import { initSubsonicApi } from '$lib/js/Helpers';
 
     type AlbumLocal = (SubsonicBaseResponse & { album: AlbumWithSongsID3 });
 
@@ -17,28 +17,6 @@
     onMount(async () => {
         dataFromServer = getDataFromServer();
     });
-
-    async function initSubsonicApi() {
-
-        // Obtenemos los datos del servidor desde la memoria persistente
-        let server = ServerConfigPersistent.get();
-        console.log(server);
-        
-        const api = new SubsonicAPI({
-            url: server.serverUrl,
-            type: server.serverType, // or "generic" or "navidrome"
-        });
-
-        api.loginSync({
-            username: server.username,
-            password: server.password,
-            serverName: server.serverName,
-            version: server.serverVersion,
-        });
-
-        return api;
-    }
-
 
     async function getDataFromServer(): Promise<AlbumLocal> {
 
