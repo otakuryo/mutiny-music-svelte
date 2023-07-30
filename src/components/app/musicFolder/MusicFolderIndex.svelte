@@ -1,18 +1,25 @@
 
 <script lang="ts">
-	import { initSubsonicApi } from '$lib/js/Helpers';
-    import type { MusicFolders, SubsonicAPI, SubsonicBaseResponse } from '$models/servers/subsonic';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+    import type { MusicFolders, SubsonicAPI, SubsonicBaseResponse, Error } from '$models/servers/subsonic';
 	import MusicFolderLine from './partials/MusicFolderLine.svelte';
 
     type MusicFoldersType = (SubsonicBaseResponse & { musicFolders: MusicFolders });
     let api: SubsonicAPI;
 
     async function getDataFromServer(): Promise<MusicFoldersType> {
-        api = await initSubsonicApi();
 
-        const resMusicFolders: MusicFoldersType  = await api.getMusicFolders()
-        
-        return resMusicFolders;
+        try {
+            api = MainServerSubsonicAPI();
+    
+            const resMusicFolders: MusicFoldersType  = await api.getMusicFolders()
+            
+            return resMusicFolders;
+            
+        } catch (error) {
+            let e: Error = error as Error;
+            throw new Error(e.message);
+        }
 
     }
 
@@ -27,5 +34,7 @@
                 <MusicFolderLine folder={musicFolder} />
             {/each}
         {/if}
+    {:catch error}
+        <div class="text-red-500">Error: {error.message}</div>
     {/await}
 </div>

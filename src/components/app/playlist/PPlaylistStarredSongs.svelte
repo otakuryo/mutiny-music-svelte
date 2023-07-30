@@ -4,7 +4,7 @@
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import LineBack from '$components/app/playlist/partials/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
-	import { initSubsonicApi } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -19,31 +19,10 @@
         dataFromServerStarred = getDataStarredFromServer();
     });
 
-    // async function initSubsonicApi() {
-
-    //     // Obtenemos los datos del servidor desde la memoria persistente
-    //     let server = ServerConfigPersistent.get();
-    //     console.log(server);
-        
-    //     const api = new SubsonicAPI({
-    //         url: server.serverUrl,
-    //         type: server.serverType, // or "generic" or "navidrome"
-    //     });
-
-    //     api.loginSync({
-    //         username: server.username,
-    //         password: server.password,
-    //         serverName: server.serverName,
-    //         version: server.serverVersion,
-    //     });
-
-    //     return api;
-    // }
-
     async function getDataStarredFromServer(): Promise<PlaylistStarredServerType> {
 
         try {
-            api = await initSubsonicApi();
+            api = MainServerSubsonicAPI();
             let resMusicPlaylist: PlaylistStarredServerType = await api.getStarred();
             return resMusicPlaylist;
         } catch (error) {

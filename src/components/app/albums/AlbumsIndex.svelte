@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
-	import { initSubsonicApi } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
     import type { SubsonicAPI, AlbumList2, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 
@@ -31,7 +31,7 @@
     async function getDataFromServer(): Promise<IndexesTypeLocal> {
 
         try {
-            api = await initSubsonicApi();
+            api = MainServerSubsonicAPI();
 
             let resMusic: IndexesTypeLocal = await api.getAlbumList2({type: orderBy, size: size, offset: currentOffset});
             currentOffset += size;

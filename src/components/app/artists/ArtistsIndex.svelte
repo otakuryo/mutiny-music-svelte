@@ -2,7 +2,7 @@
     import type { SubsonicAPI, SubsonicBaseResponse, ArtistsID3 } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import LineArtist from '$components/app/artists/partials/LineArtist.svelte';
-	import { initSubsonicApi } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { artists: ArtistsID3 });
 
@@ -16,7 +16,7 @@
     async function getDataFromServer(): Promise<IndexesTypeLocal> {
 
         try {
-            api = await initSubsonicApi();
+            api = MainServerSubsonicAPI();
 
             let resMusic: IndexesTypeLocal = await api.getArtists();
             return resMusic;

@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type { SubsonicAPI, AlbumWithSongsID3 } from '$models/servers/subsonic';
+    import type { SubsonicAPI, AlbumWithSongsID3, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
-	import { initSubsonicApi } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 
     type AlbumLocal = (SubsonicBaseResponse & { album: AlbumWithSongsID3 });
 
@@ -21,7 +21,7 @@
     async function getDataFromServer(): Promise<AlbumLocal> {
 
         try {
-            api = await initSubsonicApi();
+            api = await MainServerSubsonicAPI();
 
             let resMusic: AlbumLocal = await api.getAlbum({id: albumId});
             return resMusic;
