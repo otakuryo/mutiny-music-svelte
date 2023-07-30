@@ -3,25 +3,23 @@
     import Layout from "$layouts/+Layout.svelte";
 
     import { page } from '$app/stores';
-	import AlbumsIndex from "$components/app/albums/AlbumsIndex.svelte";
-	import AlbumIndex from "$components/app/albums/AlbumIndex.svelte";
+	import SearchIndex from "$components/app/search/SearchIndex.svelte";
     
     let haveID = false;
-    let id = '';
+    let query = '';
     
     $: page.subscribe(value => {
-        haveID = value.url.searchParams.has('id');
-        id = value.url.searchParams.get('id') || '';
+        haveID = value.url.searchParams.has('query');
+        query = value.url.searchParams.get('query') || '';
     });
 
 </script>
 
 <Layout>
-
     {#if haveID}
-        <AlbumIndex albumId={id} />
+        <SearchIndex query={query} />
     {:else}
-        <AlbumsIndex />
+        <SearchIndex />
     {/if}
     <!-- <MusicFolderIndex /> -->
     <PlaylistIndex />

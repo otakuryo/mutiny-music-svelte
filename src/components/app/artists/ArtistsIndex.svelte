@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { SubsonicAPI, type SubsonicBaseResponse, type ArtistsID3 } from '$models/servers/subsonic';
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore';
+    import type { SubsonicAPI, SubsonicBaseResponse, ArtistsID3 } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import LineArtist from '$components/app/artists/partials/LineArtist.svelte';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { artists: ArtistsID3 });
 
@@ -13,31 +13,10 @@
         dataFromServer = getDataFromServer();
     });
 
-    async function initSubsonicApi() {
-
-        // Obtenemos los datos del servidor desde la memoria persistente
-        let server = ServerConfigPersistent.get();
-        console.log(server);
-        
-        const api = new SubsonicAPI({
-            url: server.serverUrl,
-            type: server.serverType, // or "generic" or "navidrome"
-        });
-
-        api.loginSync({
-            username: server.username,
-            password: server.password,
-            serverName: server.serverName,
-            version: server.serverVersion,
-        });
-
-        return api;
-    }
-
     async function getDataFromServer(): Promise<IndexesTypeLocal> {
 
         try {
-            api = await initSubsonicApi();
+            api = MainServerSubsonicAPI();
 
             let resMusic: IndexesTypeLocal = await api.getArtists();
             return resMusic;
@@ -54,23 +33,26 @@
 
 </script>
 
-<div class="divide-y w-6/12">
+<div class="main-left-panel">
     {#await dataFromServer}
         <div class="w-full">loading...</div>
     {:then serverResponse}
 
         {#if serverResponse.artists.index && serverResponse.artists.index.length > 0}
-        
-            {#each serverResponse.artists.index as artistIndex}
-                <div class="w-full pl-2"> {artistIndex.name} </div>
+            <div class="divide-y">
 
-                {#if artistIndex.artist && artistIndex.artist.length > 0}
-                    {#each artistIndex.artist as artist}
-                        <LineArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                    {/each}
-                {/if}
-                    
-            {/each}
+                {#each serverResponse.artists.index as artistIndex}
+                    <div class="main-color sticky w-full pl-2 top-0 z-10"> {artistIndex.name} </div>
+
+                    {#if artistIndex.artist && artistIndex.artist.length > 0}
+                        {#each artistIndex.artist as artist}
+                            <LineArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                        {/each}
+                    {/if}
+                        
+                {/each}
+
+            </div>
 
         {/if}
 

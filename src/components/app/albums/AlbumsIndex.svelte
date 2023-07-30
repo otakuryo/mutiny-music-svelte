@@ -1,7 +1,7 @@
 <script lang="ts">
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
-    import { SubsonicAPI, type SubsonicBaseResponse, type AlbumList, type Child, type AlbumList2 } from '$models/servers/subsonic';
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+    import type { SubsonicAPI, AlbumList2, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { albumList2: AlbumList2 });
@@ -28,31 +28,10 @@
         dataFromServer = getDataFromServer();
     });
 
-    async function initSubsonicApi() {
-
-        // Obtenemos los datos del servidor desde la memoria persistente
-        let server = ServerConfigPersistent.get();
-        console.log(server);
-        
-        const api = new SubsonicAPI({
-            url: server.serverUrl,
-            type: server.serverType, // or "generic" or "navidrome"
-        });
-
-        api.loginSync({
-            username: server.username,
-            password: server.password,
-            serverName: server.serverName,
-            version: server.serverVersion,
-        });
-
-        return api;
-    }
-
     async function getDataFromServer(): Promise<IndexesTypeLocal> {
 
         try {
-            api = await initSubsonicApi();
+            api = MainServerSubsonicAPI();
 
             let resMusic: IndexesTypeLocal = await api.getAlbumList2({type: orderBy, size: size, offset: currentOffset});
             currentOffset += size;
@@ -86,7 +65,7 @@
     }
 </script>
 
-<div class="divide-y w-6/12">
+<div class="main-left-panel">
     {#await dataFromServer}
         <div class="w-full">loading...</div>
     {:then libraries}

@@ -1,5 +1,5 @@
 <script>
-	import DirectoryIndex from "$components/app/directory/DirectoryIndex.svelte";
+	import DirectoryIndexV2 from "$components/app/directory/DirectoryIndexV2.svelte";
 	import PlaylistIndex from "$components/app/player/PlaylistIndex.svelte";
     import Layout from "$layouts/+Layout.svelte";
 
@@ -8,6 +8,6 @@
 </script>
 
 <Layout>
-    <DirectoryIndex directoryId={data.id} />
+    <DirectoryIndexV2 directoryId={data.id} />
     <PlaylistIndex />
 </Layout>

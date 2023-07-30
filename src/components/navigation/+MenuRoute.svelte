@@ -8,6 +8,10 @@
             href: '/',
         },
         {
+            name: "Search",
+            href: `/search`,
+        },
+        {
             name: "Directory",
             href: `/directory`,
         },

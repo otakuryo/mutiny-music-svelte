@@ -26,3 +26,18 @@
     @apply opacity-40 cursor-not-allowed;
 }
 
+.outline-red {
+    outline: 1px solid theme('colors.red.500');
+}
+
+.h-screen-wo-menu {
+    height: calc(100vh - theme('height.24'));
+}
+
+.main-left-panel {
+    @apply divide-y w-6/12 fixed h-screen-wo-menu bottom-0 left-0 overflow-y-scroll;
+}
+
+.main-right-panel {
+    @apply divide-y w-6/12 fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
+}
