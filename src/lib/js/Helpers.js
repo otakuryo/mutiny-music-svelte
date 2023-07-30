@@ -40,7 +40,31 @@ let MainServerSubsonicAPI = () => {
     return api;
 }
 
+
+let initSubsonicApi = async () => {
+
+    console.log("initSubsonicApi from helpers.js");
+
+    // Obtenemos los datos del servidor desde la memoria persistente
+    let server = ServerConfigPersistent.get();
+    
+    const api = new SubsonicAPI({
+        url: server.serverUrl,
+        type: server.serverType, // or "generic" or "navidrome"
+    });
+
+    api.loginSync({
+        username: server.username,
+        password: server.password,
+        serverName: server.serverName,
+        version: server.serverVersion,
+    });
+
+    return api;
+}
+
 export { 
     getDurationHuman,
     MainServerSubsonicAPI,
+    initSubsonicApi,
 };

@@ -1,8 +1,8 @@
 <script lang="ts">
-    import { SubsonicAPI, type SubsonicBaseResponse, type ArtistsID3 } from '$models/servers/subsonic';
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore';
+    import type { SubsonicAPI, SubsonicBaseResponse, ArtistsID3 } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import LineArtist from '$components/app/artists/partials/LineArtist.svelte';
+	import { initSubsonicApi } from '$lib/js/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { artists: ArtistsID3 });
 
@@ -12,27 +12,6 @@
     onMount(async () => {
         dataFromServer = getDataFromServer();
     });
-
-    async function initSubsonicApi() {
-
-        // Obtenemos los datos del servidor desde la memoria persistente
-        let server = ServerConfigPersistent.get();
-        console.log(server);
-        
-        const api = new SubsonicAPI({
-            url: server.serverUrl,
-            type: server.serverType, // or "generic" or "navidrome"
-        });
-
-        api.loginSync({
-            username: server.username,
-            password: server.password,
-            serverName: server.serverName,
-            version: server.serverVersion,
-        });
-
-        return api;
-    }
 
     async function getDataFromServer(): Promise<IndexesTypeLocal> {
 
