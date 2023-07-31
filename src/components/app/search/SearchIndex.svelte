@@ -6,6 +6,7 @@
 	import BoxAlbum from './partials/BoxAlbum.svelte';
 	import BoxArtist from './partials/BoxArtist.svelte';
 	import BoxSong from './partials/BoxSong.svelte';
+	import InputText from './partials/InputText.svelte';
 
     type SearchResult = (SubsonicBaseResponse & { searchResult3: SearchResult3 });
 
@@ -16,7 +17,7 @@
 
     let loading = false;
 
-    export let query: string = 'a';
+    export let query: string = '';
     let artistCount = 10;
     let artistOffset = 0;
     let albumCount = 10;
@@ -24,6 +25,13 @@
     let songCount = 10;
     let songOffset = 0;
     let musicFolderId: string|undefined = undefined;
+
+    let timeout: NodeJS.Timeout|undefined = undefined;
+
+    let stateSearch = 0; // 0 = no search, 1 = typing, 2 = searching, 3 = search done
+
+    type typeStateSearch = 'waiting' | 'typing' | 'searching' | 'search-done';
+    let stateSearchText: typeStateSearch = 'waiting';
     
     onMount(async () => {
         dataFromServer = getDataFromServer();
@@ -32,6 +40,11 @@
     async function getDataFromServer(): Promise<SearchResult> {
 
         try {
+
+            if (query === '') {
+                throw new Error("Write something to search");
+            }
+
             api = MainServerSubsonicAPI();
 
             console.log(query);
@@ -46,6 +59,10 @@
                 songOffset,
                 musicFolderId,
             });
+
+            if (resMusic.error) {
+                throw new Error(resMusic.error.message);
+            }
 
             console.log(resMusic);
             
@@ -77,56 +94,123 @@
             return data;
         });
     }
+
+    $: if (query !== '') {
+        stateSearchText = "waiting";
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            refreshViewOnClick();
+            stateSearchText = "search-done";
+        }, 1500);
+        stateSearchText = "searching";
+    }else{
+        stateSearchText = "waiting";
+    }
+
+    /**
+     * Type of results of searchResult3
+     */
+    type typeLocalSearch = 'album' | 'artist' | 'song' | 'all';
+
+    /**
+     * Check if searchResult3 a type is empty all or a type of search
+     * 
+     * @param searchResult3 
+     * @param localSearch 
+     * @returns 
+     */
+    function checkResults(searchResult3: SearchResult3, localSearch: typeLocalSearch = 'all') {
+        // If searchResult3 is undefined, return false
+        if (searchResult3 === undefined) return false;
+
+        // If 'all' and searchResult3 not is empty, return true
+        if (localSearch === 'all') {
+            let local_album = (searchResult3.album === undefined);
+            let local_artist = (searchResult3.artist === undefined);
+            let local_song = (searchResult3.song === undefined);
+            return local_album && local_artist && local_song;
+        };
+
+        // If 'album' and searchResult3.album not is empty, return true
+        if (localSearch == 'album' && searchResult3.album !== undefined && searchResult3.album.length > 0) return true;
+
+        // If 'artist' and searchResult3.artist not is empty, return true
+        if (localSearch == 'artist' && searchResult3.artist !== undefined && searchResult3.artist.length > 0) return true;
+
+        // If 'song' and searchResult3.song not is empty, return true
+        if (localSearch == 'song' && searchResult3.song !== undefined && searchResult3.song.length > 0) return true;
+
+        // If not is 'all', 'album', 'artist' or 'song', return false
+        return false;
+    }
 </script>
 
 <div class="main-left-panel">
+
+    <div class="p-2">
+        <InputText bind:searchText={query} bind:stateSearchText={stateSearchText} />
+    </div>
+
     {#await dataFromServer}
         <div class="w-full">loading...</div>
     {:then subsonicResponse}
 
-        {#if subsonicResponse.searchResult3.album !== undefined && subsonicResponse.searchResult3.album.length > 0}
-            <div class="main-color w-full pl-2 z-10"> Albums </div>
+        {#if !query || query === ''}
+            
+            <div class="w-full px-2">Long tip, for search... no use complex text</div>
 
-            <div class="flex flex-row overflow-scroll">
+        {:else}
 
-                {#each subsonicResponse.searchResult3.album as album}
-    
-                    <BoxAlbum album={album} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                        
-                {/each}
+            {#if checkResults(subsonicResponse.searchResult3)}
+                <div class="w-full">No results</div>
+            {/if}
 
-            </div>
+            {#if checkResults(subsonicResponse.searchResult3, 'album') && subsonicResponse.searchResult3.album}
+                <div class="main-color w-full pl-2 z-10"> Albums </div>
+
+                <div class="flex flex-row overflow-scroll">
+
+                    {#each subsonicResponse.searchResult3.album as album}
+        
+                        <BoxAlbum album={album} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                            
+                    {/each}
+
+                </div>
+            {/if}
+
+
+            {#if checkResults(subsonicResponse.searchResult3, 'artist') && subsonicResponse.searchResult3.artist}
+                <div class="main-color w-full pl-2 z-10"> Artists </div>
+
+                <div class="flex flex-row overflow-scroll">
+
+                    {#each subsonicResponse.searchResult3.artist as artist}
+        
+                        <BoxArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                            
+                    {/each}
+
+                </div>
+            {/if}
+
+
+            {#if checkResults(subsonicResponse.searchResult3, 'song') && subsonicResponse.searchResult3.song}
+                <div class="main-color w-full pl-2 z-10"> Songs </div>
+
+                <div class="flex flex-row overflow-scroll">
+
+                    {#each subsonicResponse.searchResult3.song as song}
+        
+                        <BoxSong song={song} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                            
+                    {/each}
+
+                </div>
+            {/if}
+
         {/if}
-
-
-        {#if subsonicResponse.searchResult3.artist !== undefined && subsonicResponse.searchResult3.artist.length > 0}
-            <div class="main-color w-full pl-2 z-10"> Artists </div>
-
-            <div class="flex flex-row overflow-scroll">
-
-                {#each subsonicResponse.searchResult3.artist as artist}
     
-                    <BoxArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                        
-                {/each}
-
-            </div>
-        {/if}
-
-
-        {#if subsonicResponse.searchResult3.song !== undefined && subsonicResponse.searchResult3.song.length > 0}
-            <div class="main-color w-full pl-2 z-10"> Songs </div>
-
-            <div class="flex flex-row overflow-scroll">
-
-                {#each subsonicResponse.searchResult3.song as song}
-    
-                    <BoxSong song={song} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                        
-                {/each}
-
-            </div>
-        {/if}
 
         <!-- {#if libraries.albumList2.album && libraries.albumList2.album.length > 0}
             {#each libraries.albumList2.album as album}
@@ -140,5 +224,7 @@
             <button class="w-full dark:text-white text-zinc-700 font-bold my-1 py-2 px-4 rounded border disabled:opacity-20" on:click={loadMoreOnClick} disabled={loading}>Load more</button>
         </div> -->
 
+    {:catch error}
+        <div class="w-full">{error.message}</div>
     {/await}
 </div>
