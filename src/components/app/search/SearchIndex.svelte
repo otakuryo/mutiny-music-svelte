@@ -7,6 +7,9 @@
 	import BoxArtist from './partials/BoxArtist.svelte';
 	import BoxSong from './partials/BoxSong.svelte';
 	import InputText from './partials/InputText.svelte';
+	import LineSong from '$components/global/Song/LineSong.svelte';
+	import { PlusCircle } from 'lucide-svelte';
+	import BoxMore from './partials/BoxMore.svelte';
 
     type SearchResult = (SubsonicBaseResponse & { searchResult3: SearchResult3 });
 
@@ -28,13 +31,11 @@
 
     let timeout: NodeJS.Timeout|undefined = undefined;
 
-    let stateSearch = 0; // 0 = no search, 1 = typing, 2 = searching, 3 = search done
-
     type typeStateSearch = 'waiting' | 'typing' | 'searching' | 'search-done';
     let stateSearchText: typeStateSearch = 'waiting';
     
     onMount(async () => {
-        dataFromServer = getDataFromServer();
+        // dataFromServer = getDataFromServer();
     });
 
     async function getDataFromServer(): Promise<SearchResult> {
@@ -66,6 +67,10 @@
 
             console.log(resMusic);
             
+            artistOffset += artistCount;
+            albumOffset += albumCount;
+            songOffset += songCount;
+
             return resMusic;
 
         } catch (error) {
@@ -79,15 +84,33 @@
 	}
 
     async function loadMoreOnClick() {
+
+        if (loading) {
+            return;
+        }
         
         loading = true;
 
         let newData = await getDataFromServer();
         dataFromServer = Promise.resolve(dataFromServer).then((data) => {
 
-            // if (data.albumList2.album && newData.albumList2.album) {
-            //     data.albumList2.album = data.albumList2.album.concat(newData.albumList2.album);
-            // }
+            if (data.searchResult3.album && data.searchResult3.album.length > 0 && newData.searchResult3.album && newData.searchResult3.album.length > 0) {
+                data.searchResult3.album = data.searchResult3.album.concat(newData.searchResult3.album);
+            } else {
+                data.searchResult3.album = data.searchResult3.album || [];
+            }
+
+            if (data.searchResult3.artist && data.searchResult3.artist.length > 0 && newData.searchResult3.artist && newData.searchResult3.artist.length > 0) {
+                data.searchResult3.artist = data.searchResult3.artist.concat(newData.searchResult3.artist);
+            } else {
+                data.searchResult3.artist = data.searchResult3.artist || [];
+            }
+
+            if (data.searchResult3.song && data.searchResult3.song.length > 0 && newData.searchResult3.song && newData.searchResult3.song.length > 0) {
+                data.searchResult3.song = data.searchResult3.song.concat(newData.searchResult3.song);
+            } else {
+                data.searchResult3.song = data.searchResult3.song || [];
+            }
             
             loading = false;
 
@@ -99,6 +122,11 @@
         stateSearchText = "waiting";
         clearTimeout(timeout);
         timeout = setTimeout(() => {
+
+            artistOffset = 0;
+            albumOffset = 0;
+            songOffset = 0;
+
             refreshViewOnClick();
             stateSearchText = "search-done";
         }, 1500);
@@ -176,6 +204,8 @@
                             
                     {/each}
 
+                    <BoxMore loadMoreOnClick={loadMoreOnClick} loading={loading} />
+
                 </div>
             {/if}
 
@@ -191,6 +221,8 @@
                             
                     {/each}
 
+                    <BoxMore loadMoreOnClick={loadMoreOnClick} loading={loading} />
+
                 </div>
             {/if}
 
@@ -198,7 +230,7 @@
             {#if checkResults(subsonicResponse.searchResult3, 'song') && subsonicResponse.searchResult3.song}
                 <div class="main-color w-full pl-2 z-10"> Songs </div>
 
-                <div class="flex flex-row overflow-scroll">
+                <!-- <div class="flex flex-row overflow-scroll">
 
                     {#each subsonicResponse.searchResult3.song as song}
         
@@ -206,7 +238,16 @@
                             
                     {/each}
 
+                </div> -->
+
+                {#each subsonicResponse.searchResult3.song as song}
+                    <LineSong song={song} api={api}/>
+                {/each}
+
+                <div class="w-full flex justify-center">
+                    <button class="w-full dark:text-white text-zinc-700 font-bold my-1 py-2 px-4 rounded border disabled:opacity-20" on:click={loadMoreOnClick} disabled={loading}>Load more</button>
                 </div>
+                
             {/if}
 
         {/if}

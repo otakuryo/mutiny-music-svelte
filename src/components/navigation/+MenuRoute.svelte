@@ -61,9 +61,9 @@
             </nav>
         {/each}
     
-        <div class="flex items-center justify-center">
+        <!-- <div class="flex items-center justify-center">
             <InputSearch />
-        </div>
+        </div> -->
     
         <button class="nav-toggle mx-8 my-5 sm:invisible display-none sm:hidden" aria-label="menu button" on:keypress={toggleMenu} on:click={toggleMenu}>
             <Menu class="w-8 h-8" />
