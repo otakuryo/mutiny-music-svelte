@@ -77,7 +77,7 @@
         dataFromServer = getDataFromServer();
 	}
 
-    function toggleDataFromServer(indexes: number[], state: boolean){
+    function toggleDataFromServer(state: boolean){
         dataFromServer.then((albumResponse) => {
             if (albumResponse.album.song && albumResponse.album.song.length > 0) {
                 albumResponse.album.song.forEach((song) => {
@@ -89,12 +89,12 @@
         dataFromServer = dataFromServer;
     }
 
-    function callbackCheckSonByIndex(indexes: number[] ){
-        toggleDataFromServer(indexes, true);
+    function callbackCheckSonByIndex(){
+        toggleDataFromServer(true);
     }
 
-    function callbackUncheckSonByIndex(indexes: number[] ){
-        toggleDataFromServer(indexes, false);
+    function callbackUncheckSonByIndex(){
+        toggleDataFromServer(false);
     }
 
 </script>
