@@ -1,8 +1,10 @@
 <script lang="ts">
-    import type { Child } from "$models/servers/subsonic/types";
+    import type { Child, Playlist} from "$models/servers/subsonic/types";
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import TemporalListStore from "$stores/TemporalListStore";
 	import PlaylistStore from "$stores/PlaylistStore";
+	import PlayerMenuPlaylist from "./partials/PlayerMenuPlaylist.svelte";
+	import { onMount } from "svelte";
 
     export let api: SubsonicAPI;
     export let list: Child[] = [];
@@ -56,6 +58,7 @@
         PlaylistStore.getSongList();
         TemporalListStore.getSongList();
     }
+
 </script>
 
 <div class="flex w-100 flex-row">
@@ -63,5 +66,8 @@
     <button type="button" class="btn-small-control-list" on:click={clearAllSongToTemporalList} on:keypress={clearAllSongToTemporalList}>Deseleccionar todos</button>
     <button type="button" class="btn-small-control-list" on:click={addAllSongToMainPlaylistStore} on:keypress={addAllSongToMainPlaylistStore}>Añadir al final</button>
     <button type="button" class="btn-small-control-list cursor-help" on:click={shoGetSongList} on:keypress={shoGetSongList}>Show list</button>
+
+    <PlayerMenuPlaylist title="Add to playlist" />
+    
     <slot name="extra-options"></slot>
 </div>

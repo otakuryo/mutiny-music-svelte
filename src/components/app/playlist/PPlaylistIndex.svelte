@@ -102,7 +102,7 @@
      * @param indexes 
      * @param state 
      */
-    function toggleDataFromServer(indexes: number[], state: boolean){
+    function toggleDataFromServer(state: boolean){
         dataFromServer.then((response) => {
             let list = response.playlist.entry;
             if (!list) return;
@@ -120,8 +120,8 @@
      * 
      * @param indexes 
      */
-    function callbackCheckSongByIndex(indexes: number[] ){
-        toggleDataFromServer(indexes, true);
+    function callbackCheckSongByIndex(){
+        toggleDataFromServer(true);
     }
 
     /**
@@ -130,8 +130,8 @@
      * 
      * @param indexes 
      */
-    function callbackUncheckSongByIndex(indexes: number[] ){
-        toggleDataFromServer(indexes, false);
+    function callbackUncheckSongByIndex(){
+        toggleDataFromServer(false);
     }
 
     // $: console.log(dataFromServer, dataFromServer.then((playlists) => {
