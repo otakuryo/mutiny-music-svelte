@@ -14,6 +14,14 @@
     @apply bg-white;
 }
 
+.text-success {
+    @apply text-green-600 dark:text-green-500;
+}
+
+.text-danger {
+    @apply text-red-500 dark:text-red-700;
+}
+
 /**
 * fichero principal: ControlsPlaylist.svelte
 * Estilo para el botón de control de lista

@@ -6,6 +6,8 @@
 	import LineTitle from '$components/app/playlist/partials/LineTitle.svelte';
 	import LineInternalUrl from '$components/app/playlist/partials/LineInternalUrl.svelte';
 	import { Disc, Users } from 'lucide-svelte';
+	import LineInputCreatePlaylist from './partials/LineInputCreatePlaylist.svelte';
+	import InputTextCreatePlaylist from './partials/InputTextCreatePlaylist.svelte';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -62,6 +64,11 @@
 </script>
 
 <div class="main-left-panel">
+
+    <div class="p-2">
+        <InputTextCreatePlaylist refreshCallback={refreshViewOnClick}/>
+    </div>
+
     {#await dataFromServer}
         <div class="w-full">loading...</div>
     {:then playlists}
