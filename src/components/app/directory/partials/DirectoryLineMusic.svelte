@@ -98,9 +98,9 @@
             
             <ImgCover api={api} title={song.title} songId={song.id} />
 
-            <div class="flex flex-col">
-                <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>
-                <span data-amplitude-song-info="time" class="font-sans text-sm font-medium text-gray-500 dark:text-gray-400">{durationHuman}</span>
+            <div class="flex flex-col w-full" on:click={addSongToPlaylistAndPlay} on:keypress={addSongToPlaylistAndPlay}>
+                <span data-amplitude-song-info="name" class="w-full font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>
+                <span data-amplitude-song-info="time" class="w-full font-sans text-sm font-medium text-gray-500 dark:text-gray-400">{durationHuman}</span>
             </div>
 
             <div class="ml-auto flex flex-row">
