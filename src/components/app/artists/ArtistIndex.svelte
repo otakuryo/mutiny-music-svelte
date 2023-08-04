@@ -64,8 +64,10 @@
 
         {#if serverResponse.artist.album && serverResponse.artist.album.length > 0}
         
-            <LineBack url="/artists" name="Volver" refreshViewOnClick={refreshViewOnClick} />
-
+            <div class="navigation-sticky">
+                <LineBack url="/artists" name="Volver" refreshViewOnClick={refreshViewOnClick} />
+            </div>
+            
             {#each serverResponse.artist.album as album}
 
                 <LineAlbumId3 album={album} api={api} refreshViewOnClick={refreshViewOnClick} />

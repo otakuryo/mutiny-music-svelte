@@ -65,15 +65,17 @@
         <div class="w-full">loading...</div>
     {:then libraries}
     
-        {#if libraries.directory && libraries.directory.parent}
-            <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
-        {/if}
-        
-        <ControlsNavigationPlaylist
-            api={api}
-            list={libraries.directory.child}
-            callbackCheckSonByIndex={callbackCheckSonByIndex}
-            callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+        <div class="navigation-sticky">
+            {#if libraries.directory && libraries.directory.parent}
+                <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
+            {/if}
+            
+            <ControlsNavigationPlaylist
+                api={api}
+                list={libraries.directory.child}
+                callbackCheckSonByIndex={callbackCheckSonByIndex}
+                callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+        </div>
 
         {#each libraries.directory.child as song}
 

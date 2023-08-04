@@ -109,13 +109,16 @@
                 <MusicFolderLineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
             {/if} -->
 
-            <LineBack url="/albums" name="Albums" refreshViewOnClick={refreshViewOnClick} />
+            <div class="navigation-sticky">
 
-            <ControlsNavigationPlaylist
-                api={api}
-                list={albumResponse.album.song}
-                callbackCheckSonByIndex={callbackCheckSonByIndex}
-                callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+                <LineBack url="/albums" name="Albums" refreshViewOnClick={refreshViewOnClick} />
+
+                <ControlsNavigationPlaylist
+                    api={api}
+                    list={albumResponse.album.song}
+                    callbackCheckSonByIndex={callbackCheckSonByIndex}
+                    callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+            </div>
 
             {#each albumResponse.album.song as song}
 
