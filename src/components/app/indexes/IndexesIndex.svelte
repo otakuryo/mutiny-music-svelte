@@ -4,6 +4,7 @@
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
 	import { onMount } from 'svelte';
 	import LineArtist from './partials/LineArtist.svelte';
+	import viewport from '$lib/js/useViewPortAction';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { indexes: IndexesID3 });
 
@@ -11,6 +12,9 @@
 
     let dataFromServer : Promise<IndexesTypeLocal> = Promise.resolve({} as (IndexesTypeLocal));
     let api: SubsonicAPI;
+
+    type LetterLocal = {name: string, active: boolean, index: number};
+    let letters: Array<LetterLocal> = [];
 
     onMount(async () => {
         dataFromServer = getDataFromServer();
@@ -46,6 +50,11 @@
             if (musicFolderId === undefined) return {} as IndexesTypeLocal;
             
             let resMusicPlaylist: IndexesTypeLocal = await api.getIndexesID3({musicFolderId: musicFolderId});
+
+            letters = getFirstLetterFromIndexes(resMusicPlaylist.indexes);
+            console.log(letters);
+            
+
             return resMusicPlaylist;
 
         } catch (error) {
@@ -57,6 +66,28 @@
     function refreshViewOnClick() {
         dataFromServer = getDataFromServer();
 	}
+
+    function getFirstLetterFromIndexes(indexes: IndexesID3): Array<LetterLocal> {
+        if (!indexes.index) {
+            return [];
+        }
+
+        let letters = indexes.index.map((element, index) => {
+            return { name: element.name, active: false, index: index};
+        });
+
+        return letters;
+    }
+
+    let lastActiveIndex = 0;
+    function onShowLetter(index: number) {
+        if (lastActiveIndex !== index) {
+            letters[lastActiveIndex].active = false;
+        }
+        letters[index].active = true;
+        lastActiveIndex = index;
+    }
+
 </script>
 
 <div class="main-left-panel">
@@ -64,17 +95,32 @@
         <div class="w-full">loading...</div>
     {:then libraries}
 
-        {#if libraries.indexes.index && libraries.indexes.index.length > 0}
-            {#each libraries.indexes.index as line}
-                <div class="w-full pl-2"> {line.name} </div>
-                {#if line.artist && line.artist.length > 0}
+        <div class="navigation-sticky">
+            <div class="flex flex-row justify-around w-full uppercase border-b-[1px]">
+                {#each letters as letter}
+                    <div><a href="#letter-{letter.name}" class="opacity-50" class:opacity-100={letter.active}>{letter.name}</a></div>
+                {/each}
+            </div>
+        </div>
 
-                    {#each line.artist as artist}
-                        <LineArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                    {/each}
-                    
+        {#if libraries.indexes.index && libraries.indexes.index.length > 0}
+
+            {#each libraries.indexes.index as line, index}
+
+                <div class="border-b-0">
+                    <div class="w-full pl-2 h-8 uppercase" id="letter-{line.name}"> {line.name} </div>
+                </div>
+
+                {#if line.artist && line.artist.length > 0}
+                    <div class="divide-y" use:viewport on:enterViewport={() => {onShowLetter(index)} }>
+                        {#each line.artist as artist}
+                            <LineArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                        {/each}
+                    </div>
                 {/if}
+
             {/each}
+
         {/if}
 
     {/await}

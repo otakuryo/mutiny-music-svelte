@@ -5,6 +5,7 @@
 	import PlaylistStore from "$stores/PlaylistStore";
 	import PlayerMenuPlaylist from "./partials/PlayerMenuPlaylist.svelte";
 	import { onMount } from "svelte";
+	import PlayerStore from "$stores/PlayerStore";
 
     export let api: SubsonicAPI;
     export let list: Child[] = [];
@@ -54,6 +55,24 @@
         }, 100);
     }
 
+    function addAllSongToMainPlaylistStoreAndPlay(){
+        let list = TemporalListStore.getSongList();
+        let index = PlaylistStore.getSongList().length;
+
+        list.forEach(song => {
+            PlaylistStore.addSong(song);
+        });
+        
+        if (list.length > 0) {
+            let song = list[0];
+            PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
+        }
+
+        setTimeout(() => {
+            clearAllSongToTemporalList();
+        }, 100);
+    }
+
     function shoGetSongList(){
         PlaylistStore.getSongList();
         TemporalListStore.getSongList();
@@ -61,10 +80,11 @@
 
 </script>
 
-<div class="flex w-100 flex-row">
+<div class="flex w-100 flex-row ">
     <button type="button" class="btn-small-control-list" on:click={addAllSongToTemporalList} on:keypress={addAllSongToTemporalList}>Seleccionar todos</button>
     <button type="button" class="btn-small-control-list" on:click={clearAllSongToTemporalList} on:keypress={clearAllSongToTemporalList}>Deseleccionar todos</button>
     <button type="button" class="btn-small-control-list" on:click={addAllSongToMainPlaylistStore} on:keypress={addAllSongToMainPlaylistStore}>Añadir al final</button>
+    <button type="button" class="btn-small-control-list" on:click={addAllSongToMainPlaylistStoreAndPlay} on:keypress={addAllSongToMainPlaylistStoreAndPlay}>Añadir al final y Reproducir</button>
     <button type="button" class="btn-small-control-list cursor-help" on:click={shoGetSongList} on:keypress={shoGetSongList}>Show list</button>
 
     <PlayerMenuPlaylist title="Add to playlist" />

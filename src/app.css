@@ -49,3 +49,7 @@
 .main-right-panel {
     @apply divide-y w-6/12 fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
 }
+
+.navigation-sticky {
+    @apply sticky top-0 w-full main-color z-40 divide-y border-b-[1px];
+}
