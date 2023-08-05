@@ -53,3 +53,14 @@
 .navigation-sticky {
     @apply sticky top-0 w-full main-color z-40 divide-y border-b-[1px];
 }
+
+/**
+* fichero principal: src/layouts/+ThemeToggle.svelte
+* Estilo para el botón de cambio de tema
+*/
+.theme-toggle {
+    @apply text-lg not-italic font-normal leading-7 z-50 text-gray-900 box-border m-0 max-w-full p-0 align-baseline;
+    @apply w-12 h-12 fixed cursor-pointer flex justify-center items-center;
+    @apply rounded-full border-none border-separate border-spacing-0;
+    @apply hover:outline-zinc-400 hover:outline outline-1;
+  }
