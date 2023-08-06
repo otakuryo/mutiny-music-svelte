@@ -17,11 +17,41 @@
 
 /* File: src/components/app/player/partials/PlayerControls.svelte */
 .player-button-base {
-    @apply p-2 mx-2 mt-0 mb-2 rounded-full;
+    @apply mx-2 mt-0 rounded-full;
 }
 .player-button-base .icon-base {
     @apply stroke-current text-slate-900 h-6 w-6;
 }
 .player-button-base .icon-base {
     @apply dark:text-white;
+}
+
+/** 
+* File: src/components/app/player/partials/PlayerInformationSong.svelte
+*
+* Custom marquee, single line, with gap between elements
+*/
+.marquee {
+    --gap: 1rem;
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    gap: var(--gap);
+}
+
+.marquee__content {
+    flex-shrink: 0;
+    display: flex;
+    min-width: 100%;
+}
+.marquee__animation {
+    animation: scroll 30s linear infinite;
+}
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-100% - var(--gap)));
+    }
 }

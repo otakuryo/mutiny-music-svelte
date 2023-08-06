@@ -8,7 +8,7 @@
     import {currentSong} from "$stores/CurrentPlaySong";
 	import TemporalListStore from "$stores/TemporalListStore";
     import BtnChecked from "$components/app/directory/partials/BtnChecked.svelte";
-    import ImgCover from "$components/app/directory/partials/ImgCover.svelte";
+    import ImgCover from "$components/global/ImgCover.svelte";
     import { getDurationHuman } from "$lib/js/Helpers.js";
 
     export let song: Child;
@@ -88,6 +88,7 @@
 <div 
     class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border "
     data-id={song.id}
+    data-id-index={song.id}
     data-is-dir={song.isDir}
     data-parent={song.parent}
     data-title={song.title}>

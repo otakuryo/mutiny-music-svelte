@@ -8,7 +8,7 @@
     import {currentSong} from "$stores/CurrentPlaySong";
 	import TemporalListStore from "$stores/TemporalListStore";
     import BtnChecked from "$components/app/directory/partials/BtnChecked.svelte";
-    import ImgCover from "$components/app/directory/partials/ImgCover.svelte";
+    import ImgCover from "$components/global/ImgCover.svelte";
     import { getDurationHuman } from "$lib/js/Helpers.js";
 
     export let song: Child;

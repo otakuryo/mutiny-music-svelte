@@ -32,12 +32,14 @@
             
             <Album strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
 
-            <div class="flex flex-col">
-                <span data-amplitude-playlist-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{playlist.name}</span>
-                <div>
-                    <span data-amplitude-playlist-info="count" class="font-sans text-base font-medium leading-6 text-gray-500 dark:text-gray-400">{playlist.songCount}</span>
+            <a href="/playlists?id={playlist.id}" on:click={refreshViewOnClick} class="w-full">
+                <div class="flex flex-col">
+                    <span data-amplitude-playlist-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{playlist.name}</span>
+                    <div>
+                        <span data-amplitude-playlist-info="count" class="font-sans text-base font-medium leading-6 text-gray-500 dark:text-gray-400">{playlist.songCount}</span>
+                    </div>
                 </div>
-            </div>
+            </a>
 
             <div class="ml-auto flex flex-row">
                 {#if modeDeletion}

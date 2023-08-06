@@ -16,7 +16,7 @@
                 <Star strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
             </slot>
 
-            <div class="flex flex-col">
+            <div class="flex flex-col w-full">
                 <span class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{title}</span>
             </div>
             <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"/>

@@ -5,6 +5,8 @@
 	import { onMount } from 'svelte';
 	import LineArtist from './partials/LineArtist.svelte';
 	import viewport from '$lib/js/useViewPortAction';
+    import type { LetterLocal } from '$lib/types/global.d';
+	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { indexes: IndexesID3 });
 
@@ -13,7 +15,6 @@
     let dataFromServer : Promise<IndexesTypeLocal> = Promise.resolve({} as (IndexesTypeLocal));
     let api: SubsonicAPI;
 
-    type LetterLocal = {name: string, active: boolean, index: number};
     let letters: Array<LetterLocal> = [];
 
     onMount(async () => {
@@ -73,7 +74,7 @@
         }
 
         let letters = indexes.index.map((element, index) => {
-            return { name: element.name, active: false, index: index};
+            return { name: element.name, active: false, id: `letter-${element.name}`};
         });
 
         return letters;
@@ -95,20 +96,14 @@
         <div class="w-full">loading...</div>
     {:then libraries}
 
-        <div class="navigation-sticky">
-            <div class="flex flex-row justify-around w-full uppercase border-b-[1px]">
-                {#each letters as letter}
-                    <div><a href="#letter-{letter.name}" class="opacity-50" class:opacity-100={letter.active}>{letter.name}</a></div>
-                {/each}
-            </div>
-        </div>
+        <IndexLetters bind:letters={letters} />
 
         {#if libraries.indexes.index && libraries.indexes.index.length > 0}
 
             {#each libraries.indexes.index as line, index}
 
                 <div class="border-b-0">
-                    <div class="w-full pl-2 h-8 uppercase" id="letter-{line.name}"> {line.name} </div>
+                    <div class="w-full pl-2 h-8 uppercase" data-id-index="letter-{line.name}" id="letter-{line.name}"> {line.name} </div>
                 </div>
 
                 {#if line.artist && line.artist.length > 0}

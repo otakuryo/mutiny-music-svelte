@@ -3,6 +3,7 @@
 	import { ServerConfigPersistent } from "$stores/ServerConfigStore";
     import { currentSong } from "$stores/CurrentPlaySong";
     import { getDurationHuman } from "$lib/js/Helpers.js";
+	import ImgCover from "$components/global/ImgCover.svelte";
     
     export let songId = "-1";
 
@@ -102,12 +103,27 @@
 
 <div class="divider-y w-full py-3">
     <div class="flex flex-row">
-        <img loading="lazy" src={imageUrl} on:error={handleError} data-amplitude-song-info="cover_art_url" class="w-24 h-24 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={song?.title}/>
-        <div class="flex flex-col">
-            <div class="text-sm font-semibold text-bg-player-light-text dark:text-cover-dark-text">{song?.title ?? '--'}</div>
-            <div class="text-xs text-bg-player-light-text dark:text-cover-dark-text">{song?.artist ?? '--'}</div>
-            <div class="text-xs text-bg-player-light-text dark:text-cover-dark-text">{song?.album ?? '--'}</div>
-            <div class="text-xs text-bg-player-light-text dark:text-cover-dark-text">{getDurationHuman(song?.duration)}</div>
-        </div>
+        
+        <ImgCover songId={songId} api={api} size="40" title={song?.title} />
+        
+        {#if song }
+            <div class="flex flex-col justify-center">
+                <div class="marquee">
+                    <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }">{song.title}</div>
+                    <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }" aria-hidden="true">{song.title}</div>
+                </div>
+                <div class="text text-bg-player-light-text dark:text-cover-dark-text">{song.artist}</div>
+                <div class="text text-bg-player-light-text dark:text-cover-dark-text">{song.album}</div>
+                <div class="text text-bg-player-light-text dark:text-cover-dark-text">{getDurationHuman(song.duration)}</div>
+            </div>
+        {:else}
+            <div class="flex flex-col justify-center">
+                <div class="text text-bg-player-light-text dark:text-cover-dark-text">--</div>
+                <div class="text text-bg-player-light-text dark:text-cover-dark-text">--</div>
+                <div class="text text-bg-player-light-text dark:text-cover-dark-text">--</div>
+                <div class="text text-bg-player-light-text dark:text-cover-dark-text">00:00</div>
+            </div>
+        {/if}
+
     </div>
 </div>
