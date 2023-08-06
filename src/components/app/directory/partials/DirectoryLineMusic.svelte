@@ -88,6 +88,7 @@
 <div 
     class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border "
     data-id={song.id}
+    data-id-index={song.id}
     data-is-dir={song.isDir}
     data-parent={song.parent}
     data-title={song.title}>
