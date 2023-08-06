@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* html {
-    font-size: 12px;
-} */
+:root {
+    --font-size-base: 14px;
+}
+html {
+    font-size: var(--font-size-base);
+}
 
 /**
  * Color de fondo general
@@ -47,7 +50,7 @@
 }
 
 .main-right-panel {
-    @apply divide-y w-6/12 fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
+    @apply divide-y w-3/12 fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
 }
 
 .navigation-sticky {
