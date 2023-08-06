@@ -72,8 +72,8 @@
             
             <ImgCover api={api} title={song.title} songId={song.id} />
 
-            <div class="flex flex-col">
-                <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>
+            <div class="flex flex-col w-72">
+                <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white truncate">{song.title}</span>
                 <span data-amplitude-song-info="time" class="font-sans text-sm font-medium text-gray-500 dark:text-gray-400">{durationHuman}</span>
             </div>
 
