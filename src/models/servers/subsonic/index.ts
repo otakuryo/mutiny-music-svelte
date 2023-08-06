@@ -179,7 +179,12 @@ export class SubsonicAPI {
 
 		console.log(url.toString());
 
-		return this.#fetch(url.toString());
+		return this.#fetch(url.toString(), {
+			headers: {
+			  'Cache-Control': 'no-cache',
+			  'Pragma': 'no-cache'
+			}
+		  });
 	}
 
 	async #requestWoFetch(method: string, params?: Params) {
