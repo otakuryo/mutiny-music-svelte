@@ -3,6 +3,7 @@
 	import { ServerConfigPersistent } from "$stores/ServerConfigStore";
     import { currentSong } from "$stores/CurrentPlaySong";
     import { getDurationHuman } from "$lib/js/Helpers.js";
+	import ImgCover from "$components/global/ImgCover.svelte";
     
     export let songId = "-1";
 
@@ -102,7 +103,8 @@
 
 <div class="divider-y w-full py-3">
     <div class="flex flex-row">
-        <img loading="lazy" src={imageUrl} on:error={handleError} data-amplitude-song-info="cover_art_url" class="w-24 h-24 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={song?.title}/>
+        <ImgCover songId={songId} api={api} size="24" title={song?.title} />
+        <!-- <img loading="lazy" src={imageUrl} on:error={handleError} data-amplitude-song-info="cover_art_url" class="w-24 h-24 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={song?.title}/> -->
         <div class="flex flex-col">
             <div class="text-sm font-semibold text-bg-player-light-text dark:text-cover-dark-text">{song?.title ?? '--'}</div>
             <div class="text-xs text-bg-player-light-text dark:text-cover-dark-text">{song?.artist ?? '--'}</div>

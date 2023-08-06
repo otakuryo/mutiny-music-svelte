@@ -5,10 +5,12 @@
 	import PlaylistStore from "$stores/PlaylistStore";
 	import { Pause, Play, Star, Trash2 } from "lucide-svelte";
     import { getDurationHuman, MainServerSubsonicAPI } from "$lib/js/Helpers.js";
+    import ImgCover from "$components/global/ImgCover.svelte";
 
     export let song: Child;
     export let index: number = -1;
     let durationHuman = '00:00';
+    let api = MainServerSubsonicAPI();
 
 
     function pauseSong() {
@@ -31,7 +33,7 @@
      * If star is true, then the song is starred, so we want to remove it from starred songs
      */
      async function toggleStar() {
-        let api = MainServerSubsonicAPI();
+        api = MainServerSubsonicAPI();
         if (song.starred === undefined) {
             await api.star({id: song.id});
             song.starred = new Date();
@@ -57,8 +59,6 @@
 
             <!-- <BtnChecked bind:checked={song.checked} toggleChecked={toggleChecked} /> -->
             
-            <!-- <ImgCover api={api} title={song.title} songId={song.id} /> -->
-
             <!-- delete -->
             {#if $isPlaying && $currentSong.id === song.id}
                 <div>
@@ -69,6 +69,8 @@
                     <Trash2 class="stroke-current text-red-500 dark:text-red-700 h-6 w-12"/>
                 </div>
             {/if}
+            
+            <ImgCover api={api} title={song.title} songId={song.id} />
 
             <div class="flex flex-col">
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>

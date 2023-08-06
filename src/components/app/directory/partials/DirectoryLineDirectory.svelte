@@ -2,7 +2,7 @@
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Child } from "$models/servers/subsonic/types";
 	import { ArrowRight } from "lucide-svelte";
-	import ImgCover from "./ImgCover.svelte";
+    import ImgCover from "$components/global/ImgCover.svelte";
 
     export let directory: Child;
     export let api: SubsonicAPI;
@@ -16,12 +16,12 @@
     data-is-dir={directory.isDir}
     data-parent={directory.parent}
     data-title={directory.title}>
-    <a href="/directory?id={directory.id}" on:click={refreshViewOnClick}>
+    <a href="/directory?id={directory.id}">
         <div class="p-2 flex items-center ">
             
             <ImgCover api={api} title={directory.title} songId={directory.id} />
 
-            <div class="flex flex-col">
+            <div class="flex flex-col w-full"  on:click={refreshViewOnClick}>
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{directory.title}</span>
                 <div>
                     <!--              
@@ -34,7 +34,7 @@
                 </div>
             </div>
             {#if directory.isDir}
-                <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"/>
+                <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"  on:click={refreshViewOnClick}/>
             {/if}
         </div>
     </a>

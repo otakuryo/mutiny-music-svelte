@@ -44,5 +44,6 @@
         id="search"
         placeholder="Search..."
         autocomplete="off"
+        autofocus
     />
 </div>
