@@ -1,14 +1,11 @@
 <script lang="ts">
-	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
     import type { SearchResult3, SubsonicAPI, SubsonicBaseResponse } from '$models/servers/subsonic';
-	import { onMount } from 'svelte';
 	import BoxAlbum from './partials/BoxAlbum.svelte';
 	import BoxArtist from './partials/BoxArtist.svelte';
-	import BoxSong from './partials/BoxSong.svelte';
 	import InputText from './partials/InputText.svelte';
 	import LineSong from '$components/global/Song/LineSong.svelte';
-	import { PlusCircle } from 'lucide-svelte';
+	import { FolderSearch, Loader } from 'lucide-svelte';
 	import BoxMore from './partials/BoxMore.svelte';
 
     type SearchResult = (SubsonicBaseResponse & { searchResult3: SearchResult3 });
@@ -33,13 +30,13 @@
 
     type typeStateSearch = 'waiting' | 'typing' | 'searching' | 'search-done';
     let stateSearchText: typeStateSearch = 'waiting';
-    
-    onMount(async () => {
-        // dataFromServer = getDataFromServer();
-    });
+
+    let totalTimeLoading = 0;
 
     async function getDataFromServer(): Promise<SearchResult> {
 
+        totalTimeLoading = new Date().getTime();
+        
         try {
 
             if (query === '') {
@@ -70,6 +67,8 @@
             artistOffset += artistCount;
             albumOffset += albumCount;
             songOffset += songCount;
+
+            totalTimeLoading = totalTimeLoading - new Date().getTime();
 
             return resMusic;
 
@@ -129,7 +128,7 @@
 
             refreshViewOnClick();
             stateSearchText = "search-done";
-        }, 1500);
+        }, 1000);
         stateSearchText = "searching";
     }else{
         stateSearchText = "waiting";
@@ -148,6 +147,8 @@
      * @returns 
      */
     function checkResults(searchResult3: SearchResult3, localSearch: typeLocalSearch = 'all') {
+        console.log("checkResults");
+        
         // If searchResult3 is undefined, return false
         if (searchResult3 === undefined) return false;
 
@@ -173,6 +174,12 @@
     }
 </script>
 
+<style>
+    .h-100-custom {
+        height: calc(100% - theme('spacing.16'));
+    }
+</style>
+
 <div class="main-left-panel">
 
     <div class="p-2">
@@ -180,12 +187,18 @@
     </div>
 
     {#await dataFromServer}
-        <div class="w-full">loading...</div>
+
+        <div class="w-full h-100-custom grid justify-center items-center">
+            <Loader class="w-32 h-32 stroke-1" />
+        </div>
+
     {:then subsonicResponse}
 
         {#if !query || query === ''}
             
-            <div class="w-full px-2">Long tip, for search... no use complex text</div>
+            <div class="w-full h-100-custom grid justify-center items-center">
+                <FolderSearch class="w-32 h-32 stroke-1" />
+            </div>
 
         {:else}
 
@@ -230,16 +243,6 @@
             {#if checkResults(subsonicResponse.searchResult3, 'song') && subsonicResponse.searchResult3.song}
                 <div class="main-color w-full pl-2 z-10"> Songs </div>
 
-                <!-- <div class="flex flex-row overflow-scroll">
-
-                    {#each subsonicResponse.searchResult3.song as song}
-        
-                        <BoxSong song={song} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                            
-                    {/each}
-
-                </div> -->
-
                 {#each subsonicResponse.searchResult3.song as song}
                     <LineSong song={song} api={api}/>
                 {/each}
@@ -251,19 +254,6 @@
             {/if}
 
         {/if}
-    
-
-        <!-- {#if libraries.albumList2.album && libraries.albumList2.album.length > 0}
-            {#each libraries.albumList2.album as album}
-
-                <LineAlbumId3 album={album} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                    
-            {/each}
-        {/if} -->
-
-        <!-- <div class="w-full flex justify-center">
-            <button class="w-full dark:text-white text-zinc-700 font-bold my-1 py-2 px-4 rounded border disabled:opacity-20" on:click={loadMoreOnClick} disabled={loading}>Load more</button>
-        </div> -->
 
     {:catch error}
         <div class="w-full">{error.message}</div>
