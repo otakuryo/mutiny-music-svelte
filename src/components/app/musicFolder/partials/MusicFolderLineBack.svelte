@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { SubsonicAPI } from "$models/servers/subsonic";
     import { ArrowLeft } from "lucide-svelte";
 
     export let id: string;

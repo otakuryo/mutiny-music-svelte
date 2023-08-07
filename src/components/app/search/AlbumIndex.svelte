@@ -15,8 +15,12 @@
     let dataFromServer : Promise<AlbumLocal> = Promise.resolve({} as AlbumLocal);
 
     onMount(async () => {
-        dataFromServer = getDataFromServer();
+        refreshViewOnClick();
     });
+
+    $: if(albumId) {
+        refreshViewOnClick();
+    }
 
     async function getDataFromServer(): Promise<AlbumLocal> {
 
@@ -109,7 +113,7 @@
                 <MusicFolderLineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
             {/if} -->
 
-            <LineBack url="/albums" name="Albums" refreshViewOnClick={refreshViewOnClick} />
+            <LineBack url="/albums" name="Albums" />
 
             <ControlsNavigationPlaylist
                 api={api}
@@ -122,8 +126,7 @@
                     {#if song.isDir}
                         <DirectoryLineDirectory
                             directory={song}
-                            api={api}
-                            refreshViewOnClick={refreshViewOnClick} />
+                            api={api} />
 
                     {:else}
                         <DirectoryLineMusic bind:song={song} api={api} />
