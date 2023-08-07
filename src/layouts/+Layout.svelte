@@ -7,7 +7,7 @@
 
 <Header />
 <MenuRoute />
-<main class="m-auto p-3 min-h-screen flex flex-row">
+<main class="m-auto p-3 h-screen-wo-menu flex flex-row">
   <slot />
   <ThemeToggle />
   <ImgCoverModal />

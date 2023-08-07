@@ -42,7 +42,7 @@ html {
 }
 
 .h-screen-wo-menu {
-    height: calc(100vh - theme('height.24'));
+    height: calc(100vh - theme('height.12'));
 }
 
 .main-left-panel {
@@ -51,6 +51,10 @@ html {
 
 .main-right-panel {
     @apply divide-y w-3/12 fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
+}
+
+.main-center-panel-full {
+    @apply divide-y w-full fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
 }
 
 .navigation-sticky {
