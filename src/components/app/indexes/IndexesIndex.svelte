@@ -92,7 +92,7 @@
                 {#if line.artist && line.artist.length > 0}
                     <div class="divide-y" use:viewport on:enterViewport={() => {onShowLetter(index)} }>
                         {#each line.artist as artist}
-                            <LineArtist artist={artist} api={api} refreshViewOnClick={()=>{}}/>
+                            <LineArtist artist={artist} api={api} />
                         {/each}
                     </div>
                 {/if}

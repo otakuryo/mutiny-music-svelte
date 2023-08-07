@@ -115,7 +115,7 @@
 
             <div class="navigation-sticky">
 
-                <LineBack url="/albums" name="Albums" refreshViewOnClick={()=>{}} />
+                <LineBack url="/albums" name="Albums" />
 
                 <ControlsNavigationPlaylist
                     api={api}
@@ -129,8 +129,7 @@
                     {#if song.isDir}
                         <DirectoryLineDirectory
                             directory={song}
-                            api={api}
-                            refreshViewOnClick={()=>{}} />
+                            api={api} />
 
                     {:else}
                         <DirectoryLineMusic bind:song={song} api={api} />

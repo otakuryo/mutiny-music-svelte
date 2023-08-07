@@ -127,7 +127,7 @@
         <div class="w-full">loading...</div>
     {:then response}
 
-        <LineBack refreshViewOnClick={()=>{}}/>
+        <LineBack />
 
         <ControlsNavigationPlaylist
             list={response.playlist.entry}

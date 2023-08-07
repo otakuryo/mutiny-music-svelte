@@ -7,7 +7,7 @@
 
     export let album: AlbumID3;
     export let api: SubsonicAPI;
-    export let refreshViewOnClick: (event: MouseEvent) => void;
+    export let refreshViewOnClick: (event: MouseEvent) => void = () => {};
 
     let durationHuman = '00:00';
 
