@@ -5,6 +5,7 @@
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import LineBack from '$components/app/playlist/partials/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -16,34 +17,13 @@
     // let dataFromServerStarred2: Promise<PlaylistStarredServerType2> = Promise.resolve({} as (PlaylistStarredServerType2));
 
     onMount(async () => {
-        dataFromServerStarred = getDataStarredFromServer();
+        refreshViewOnClick();
     });
-
-    async function initSubsonicApi() {
-
-        // Obtenemos los datos del servidor desde la memoria persistente
-        let server = ServerConfigPersistent.get();
-        console.log(server);
-        
-        const api = new SubsonicAPI({
-            url: server.serverUrl,
-            type: server.serverType, // or "generic" or "navidrome"
-        });
-
-        api.loginSync({
-            username: server.username,
-            password: server.password,
-            serverName: server.serverName,
-            version: server.serverVersion,
-        });
-
-        return api;
-    }
 
     async function getDataStarredFromServer(): Promise<PlaylistStarredServerType> {
 
         try {
-            api = await initSubsonicApi();
+            api = MainServerSubsonicAPI();
             let resMusicPlaylist: PlaylistStarredServerType = await api.getStarred();
             return resMusicPlaylist;
         } catch (error) {
@@ -76,11 +56,11 @@
         dataFromServerStarred = dataFromServerStarred;
     }
 
-    function callbackCheckSonByIndex(index: number[]) {
+    function callbackCheckSonByIndex() {
         toggleDataFromServer(true);
     }
 
-    function callbackUncheckSonByIndex(index: number[]) {
+    function callbackUncheckSonByIndex() {
         toggleDataFromServer(false);
     }
 </script>
