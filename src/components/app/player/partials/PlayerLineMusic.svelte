@@ -6,6 +6,7 @@
 	import { Pause, Play, Star, Trash2 } from "lucide-svelte";
     import { getDurationHuman, MainServerSubsonicAPI } from "$lib/js/Helpers.js";
     import ImgCover from "$components/global/ImgCover.svelte";
+	import FavoriteIcon from "$components/global/Song/partials/FavoriteIcon.svelte";
 
     export let song: Child;
     export let index: number = -1;
@@ -79,14 +80,7 @@
 
             <div class="ml-auto flex flex-row">
 
-                <!-- Añadir a favoritos -->
-                <div on:click={toggleStar} on:keydown={toggleStar}>
-                    {#if song.starred !== undefined }
-                        <Star class="stroke-current text-slate-900 dark:text-yellow-200 h-6 w-12" fill="yellow"/>
-                    {:else}
-                        <Star class="stroke-current text-slate-900 dark:text-yellow-200 h-6 w-12" />
-                    {/if}
-                </div>
+                <FavoriteIcon song={song} api={api}/>
 
                 {#if $isPlaying && $currentSong.id === song.id}
                     <!-- Pausar -->

@@ -16,17 +16,6 @@
     let songPlaylistIndex = -1;
     let durationHuman = '00:00';
 
-    // let imageUrl = "https://placehold.it/210x310";
-    // let fallback = imageUrl;
-
-    // function getCoverArt() {
-    //     let image = api.getCoverArtWoFetchSync({id: song.id});
-    //     imageUrl = image
-    // }
-
-    // getCoverArt()
-    // const handleError = (ev: { target: { src: string; } } | any) => ev.target.src = fallback;
-
     function buildSongUrl() {
         return api.downloadWoFetchSync({id: song.id});
     }
