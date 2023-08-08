@@ -55,11 +55,11 @@
         dataFromServerStarred = dataFromServerStarred;
     }
 
-    function callbackCheckSonByIndex(index: number[]) {
+    function callbackCheckSonByIndex() {
         toggleDataFromServer(true);
     }
 
-    function callbackUncheckSonByIndex(index: number[]) {
+    function callbackUncheckSonByIndex() {
         toggleDataFromServer(false);
     }
 </script>

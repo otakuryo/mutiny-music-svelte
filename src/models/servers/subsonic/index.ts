@@ -8,6 +8,7 @@ import type {
 	ArtistInfo,
 	ArtistInfo2,
 	ArtistsID3,
+	ArtistWithAlbumsID3,
 	Bookmarks,
 	ChatMessages,
 	Directory,
@@ -355,6 +356,14 @@ export class SubsonicAPI {
 		return this.#requestJSON<
 			SubsonicBaseResponse & {
 				artist: ArtistsID3;
+			}
+		>('getArtist', args);
+	}
+
+	async getArtistWithAlbums(args: { id: string }) {
+		return this.#requestJSON<
+			SubsonicBaseResponse & {
+				artist: ArtistWithAlbumsID3;
 			}
 		>('getArtist', args);
 	}

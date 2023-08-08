@@ -1,13 +1,12 @@
 <script lang="ts">
-    import { SubsonicAPI, type SubsonicBaseResponse, type Playlists, type Starred, type Starred2 } from '$models/servers/subsonic';
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore';
+    import type { SubsonicAPI, SubsonicBaseResponse, Playlists } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import PlaylistLineSong from '$components/app/playlist/partials/LinePlaylist.svelte';
 	import LineTitle from '$components/app/playlist/partials/LineTitle.svelte';
 	import LineInternalUrl from '$components/app/playlist/partials/LineInternalUrl.svelte';
 	import { Disc, Users } from 'lucide-svelte';
-	import LineInputCreatePlaylist from './partials/LineInputCreatePlaylist.svelte';
 	import InputTextCreatePlaylist from './partials/InputTextCreatePlaylist.svelte';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -17,34 +16,13 @@
     let dataFromServer : Promise<PlaylistServerType> = Promise.resolve({} as (PlaylistServerType));
 
     onMount(async () => {
-        dataFromServer = getDataFromServer();
+        refreshViewOnClick();
     });
-
-    async function initSubsonicApi() {
-
-        // Obtenemos los datos del servidor desde la memoria persistente
-        let server = ServerConfigPersistent.get();
-        console.log(server);
-        
-        const api = new SubsonicAPI({
-            url: server.serverUrl,
-            type: server.serverType, // or "generic" or "navidrome"
-        });
-
-        api.loginSync({
-            username: server.username,
-            password: server.password,
-            serverName: server.serverName,
-            version: server.serverVersion,
-        });
-
-        return api;
-    }
 
     async function getDataFromServer(): Promise<PlaylistServerType> {
 
         try {
-            api = await initSubsonicApi();
+            api = MainServerSubsonicAPI();
             let resMusicPlaylist: PlaylistServerType = await api.getPlaylists();
             return resMusicPlaylist;
         } catch (error) {

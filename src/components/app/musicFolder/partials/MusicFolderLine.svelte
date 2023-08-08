@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { MusicFolder } from "$models/servers/subsonic/types";
+	import { Folder } from "lucide-svelte";
 
     export let folder: MusicFolder;
 
@@ -19,10 +19,10 @@
     data-name={folder.name}>
     <a href="{route}">
         <div class="p-2 flex items-center ">
-            
-            <img loading="lazy" src="https://placehold.it/210x310" data-amplitude-song-info="cover_art_url" class="w-12 h-12 rounded-sm mr-6 border-bg-player-light-background dark:border-cover-dark-border object-cover" alt={folder.name}/>
 
-            <div class="flex flex-col">
+            <Folder class="stroke-current text-slate-900 dark:text-white h-12 w-12 my-2"/>
+
+            <div class="flex flex-col ml-2">
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{folder.name}</span>
             </div>
         </div>

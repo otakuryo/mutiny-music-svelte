@@ -6,7 +6,7 @@
 
     export let artist: ArtistID3;
     export let api: SubsonicAPI;
-    export let refreshViewOnClick: (event: MouseEvent) => void;
+    export let refreshViewOnClick: (event: MouseEvent) => void = () => {};
 
 </script>
 

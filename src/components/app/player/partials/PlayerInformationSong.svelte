@@ -1,28 +1,22 @@
 <script lang="ts">
-	import { SubsonicAPI, type Child } from "$models/servers/subsonic";
-	import { ServerConfigPersistent } from "$stores/ServerConfigStore";
+	import type { SubsonicAPI, Child } from "$models/servers/subsonic";
     import { currentSong } from "$stores/CurrentPlaySong";
-    import { getDurationHuman } from "$lib/js/Helpers.js";
+    import { MainServerSubsonicAPI, getDurationHuman } from "$lib/js/Helpers.js";
 	import ImgCover from "$components/global/ImgCover.svelte";
+	import FavoriteIcon from "$components/global/Song/partials/FavoriteIcon.svelte";
+	import InformationIcon from "$components/global/Song/partials/InformationIcon.svelte";
+	import FolderIcon from "$components/global/Song/partials/FolderIcon.svelte";
+	import AlbumIcon from "$components/global/Song/partials/AlbumIcon.svelte";
+	import ArtistIcon from "$components/global/Song/partials/ArtistIcon.svelte";
     
     export let songId = "-1";
 
     // Si hay un error al cargar la imagen, se intenta cargar la imagen del padre
     // Si hay un error al cargar la imagen del padre, se carga una imagen por defecto
     let countHandleError = 0;
-    let imageUrl = "https://placehold.it/210x310";
-    let imageUrlParent = "https://placehold.it/210x310";
-    let fallback = "https://placehold.it/210x310";
-
-    const handleError = (ev: { target: { src: string; } } | any) => {
-        countHandleError++;
-        if (countHandleError > 1) {
-            ev.target.src = fallback;
-            return;
-        }
-        ev.target.src = imageUrlParent;
-        return;
-    };
+    let imageUrl = "https://placehold.it/310x310";
+    let imageUrlParent = "https://placehold.it/310x310";
+    let fallback = "https://placehold.it/310x310";
 
     /**
      * Canción actual
@@ -32,33 +26,7 @@
     /**
      * API de Subsonic
      */
-    let api: SubsonicAPI = initSubsonicApi();
-
-    /**
-     * Inicializa la API de Subsonic
-     * 
-     * @returns {SubsonicAPI}
-     */
-    function initSubsonicApi(): SubsonicAPI {
-
-        // Obtenemos los datos del servidor desde la memoria persistente
-        let server = ServerConfigPersistent.get();
-        console.log(server);
-
-        const api = new SubsonicAPI({
-            url: server.serverUrl,
-            type: server.serverType, // or "generic" or "navidrome"
-        });
-
-        api.loginSync({
-            username: server.username,
-            password: server.password,
-            serverName: server.serverName,
-            version: server.serverVersion,
-        });
-
-        return api;
-    }
+    let api: SubsonicAPI = MainServerSubsonicAPI();
 
     /**
      * Obtiene la información de la canción actual
@@ -125,5 +93,15 @@
             </div>
         {/if}
 
+        
+    </div>
+    <div class="flex gap-1 w-full mt-2">
+        {#if song && song.id !== "-1"}
+            <FavoriteIcon bind:song={song} api={api} />
+            <InformationIcon bind:song={song} api={api} />
+            <FolderIcon bind:song={song} api={api} />
+            <AlbumIcon bind:song={song} api={api} />
+            <ArtistIcon bind:song={song} api={api} />
+        {/if}
     </div>
 </div>

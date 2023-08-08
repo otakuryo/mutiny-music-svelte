@@ -18,6 +18,10 @@
         dataFromServer = getDataFromServer();
     });
 
+    $: if(albumId) {
+        refreshViewOnClick();
+    }
+
     async function getDataFromServer(): Promise<AlbumLocal> {
 
         try {
@@ -111,7 +115,7 @@
 
             <div class="navigation-sticky">
 
-                <LineBack url="/albums" name="Albums" refreshViewOnClick={refreshViewOnClick} />
+                <LineBack url="/albums" name="Albums" />
 
                 <ControlsNavigationPlaylist
                     api={api}
@@ -125,8 +129,7 @@
                     {#if song.isDir}
                         <DirectoryLineDirectory
                             directory={song}
-                            api={api}
-                            refreshViewOnClick={refreshViewOnClick} />
+                            api={api} />
 
                     {:else}
                         <DirectoryLineMusic bind:song={song} api={api} />

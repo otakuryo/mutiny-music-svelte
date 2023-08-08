@@ -9,6 +9,8 @@
 	export let title = 'Unknown title';
 	export let songId = '-1';
     export let size = '12';
+	export let marginRigth = '3';
+	export let disableModal = false;
 
 	let imageUrl = 'https://placehold.it/310x310';
 	let fallback = imageUrl;
@@ -21,6 +23,9 @@
 	getCoverArt();
 
 	function toggleModalImage() {
+		
+		if (disableModal) return;
+
 		ShowImageCoverStore.set(!get(ShowImageCoverStore));
 		ImageCoverStore.set(imageUrl);
 		TitleStore.set(title);
@@ -37,7 +42,8 @@
 	src={imageUrl}
 	on:error={handleError}
 	data-amplitude-song-info="cover_art_url"
-	class="w-{size} h-{size} rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover cursor-zoom-in"
+	class="w-{size} h-{size} rounded-sm mr-{marginRigth} border-bg-player-light-background dark:border-cover-dark-border object-cover"
+	class:cursor-zoom-in={!disableModal}
 	alt={title}
 	on:click={toggleModalImage}
 />

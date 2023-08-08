@@ -114,5 +114,13 @@
                 <ButtonSubmit />
             </div>
         </div>
+
+        <div class="my-4">
+
+            <div class="block rounded dark:text-zinc-600 text-black w-full mt-1 py-2 bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0 text-center">
+                <a href="/server-share">Share server configuration</a>
+            </div>
+
+        </div>
     </form>
 </div>

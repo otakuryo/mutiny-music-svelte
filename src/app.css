@@ -42,15 +42,19 @@ html {
 }
 
 .h-screen-wo-menu {
-    height: calc(100vh - theme('height.24'));
+    height: calc(100vh - theme('height.12'));
 }
 
 .main-left-panel {
-    @apply divide-y w-6/12 fixed h-screen-wo-menu bottom-0 left-0 overflow-y-scroll;
+    @apply divide-y w-9/12 fixed h-screen-wo-menu bottom-0 left-0 overflow-y-scroll;
 }
 
 .main-right-panel {
     @apply divide-y w-3/12 fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
+}
+
+.main-center-panel-full {
+    @apply divide-y w-full fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
 }
 
 .navigation-sticky {
@@ -66,4 +70,58 @@ html {
     @apply w-12 h-12 fixed cursor-pointer flex justify-center items-center;
     @apply rounded-full border-none border-separate border-spacing-0;
     @apply hover:outline-zinc-400 hover:outline outline-1;
-  }
+}
+
+/* File: src/components/global/+LabelIcon.svelte */
+[data-status] [data-type]{
+    display: none;
+    transition: 1s;
+}
+[data-status="pass"] [data-type="check"]{
+    display: block!important;
+}
+
+[data-status="error"] [data-type="exclamation"]{
+    display: block!important;
+}
+
+/* File: src/components/app/player/partials/PlayerControls.svelte */
+.player-button-base {
+    @apply mx-2 mt-0 rounded-full;
+}
+.player-button-base .icon-base {
+    @apply stroke-current text-slate-900 h-6 w-6;
+}
+.player-button-base .icon-base {
+    @apply dark:text-white;
+}
+
+/** 
+* File: src/components/app/player/partials/PlayerInformationSong.svelte
+*
+* Custom marquee, single line, with gap between elements
+*/
+.marquee {
+    --gap: 1rem;
+    display: flex;
+    overflow: hidden;
+    user-select: none;
+    gap: var(--gap);
+}
+
+.marquee__content {
+    flex-shrink: 0;
+    display: flex;
+    min-width: 100%;
+}
+.marquee__animation {
+    animation: scroll 30s linear infinite;
+}
+@keyframes scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(-100% - var(--gap)));
+    }
+}

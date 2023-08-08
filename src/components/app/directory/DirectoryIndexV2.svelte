@@ -22,6 +22,11 @@
         refreshViewOnClick();
     });
 
+    // Refresh view when click on a link
+    $: if (directoryId) {
+        refreshViewOnClick();
+    }
+
     async function getDataFromServerV2(): Promise<DirectoryType>  {
 
         try {
@@ -105,7 +110,7 @@
             <IndexLetters bind:letters={lettersArray} />
 
             {#if libraries.directory && libraries.directory.parent}
-                <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
+                <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent}  />
             {/if}
             
             <ControlsNavigationPlaylist
@@ -122,8 +127,7 @@
             {#if song.isDir}
                 <DirectoryLineDirectory
                     directory={song}
-                    api={api}
-                    refreshViewOnClick={refreshViewOnClick} />
+                    api={api} />
 
             {:else}
                 <DirectoryLineMusic bind:song={song} api={api} />

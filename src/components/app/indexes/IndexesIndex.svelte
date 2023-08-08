@@ -1,12 +1,12 @@
 <script lang="ts">
 
-    import { type MusicFolders, SubsonicAPI, type SubsonicBaseResponse, type Child, type IndexesID3 } from '$models/servers/subsonic';
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore';
+    import type {  SubsonicAPI, SubsonicBaseResponse, IndexesID3 } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import LineArtist from './partials/LineArtist.svelte';
 	import viewport from '$lib/js/useViewPortAction';
     import type { LetterLocal } from '$lib/types/global.d';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
+	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { indexes: IndexesID3 });
 
@@ -21,31 +21,14 @@
         dataFromServer = getDataFromServer();
     });
 
-    async function initSubsonicApi() {
-
-        // Obtenemos los datos del servidor desde la memoria persistente
-        let server = ServerConfigPersistent.get();
-        console.log(server);
-        
-        const api = new SubsonicAPI({
-            url: server.serverUrl,
-            type: server.serverType, // or "generic" or "navidrome"
-        });
-
-        api.loginSync({
-            username: server.username,
-            password: server.password,
-            serverName: server.serverName,
-            version: server.serverVersion,
-        });
-
-        return api;
+    $: if(musicFolderId) {
+        refreshViewOnClick();
     }
 
     async function getDataFromServer(): Promise<IndexesTypeLocal> {
 
         try {
-            api = await initSubsonicApi();
+            api = MainServerSubsonicAPI();
 
             // if not playlistId, return empty object
             if (musicFolderId === undefined) return {} as IndexesTypeLocal;
@@ -109,7 +92,7 @@
                 {#if line.artist && line.artist.length > 0}
                     <div class="divide-y" use:viewport on:enterViewport={() => {onShowLetter(index)} }>
                         {#each line.artist as artist}
-                            <LineArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                            <LineArtist artist={artist} api={api} />
                         {/each}
                     </div>
                 {/if}
