@@ -5,6 +5,7 @@
 	import LineBack from '$components/app/playlist/partials/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -68,7 +69,7 @@
     <div class="content-parent">
 
         {#await dataFromServerStarred}
-            <div class="w-full">loading...</div>
+            <LoadingLinePL />
         {:then response}
             <div class="divide-y px-2 border-theme mx-2 mt-2">
                 <LineBack />

@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { SubsonicAPI, type SubsonicBaseResponse, type Starred, type Starred2, type Child } from '$models/servers/subsonic';
+    import type { SubsonicAPI, SubsonicBaseResponse, Starred, Starred2, Child } from '$models/servers/subsonic';
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
 	import { onMount } from 'svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import LineBack from '$components/app/playlist/partials/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -70,7 +71,7 @@
     <div class="content-parent">
 
         {#await dataFromServerStarred}
-            <div class="w-full">loading...</div>
+            <LoadingLinePL />
         {:then response}
         
             <div class="divide-y px-2 border-theme mx-2 mt-2">

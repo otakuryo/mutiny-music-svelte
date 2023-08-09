@@ -7,6 +7,7 @@
 	import { Disc, Users } from 'lucide-svelte';
 	import InputTextCreatePlaylist from './partials/InputTextCreatePlaylist.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -50,7 +51,7 @@
         </div>
     
         {#await dataFromServer}
-            <div class="w-full">loading...</div>
+            <LoadingLinePL />
         {:then playlists}
         
             {#if playlists.playlists.playlist && playlists.playlists.playlist.length > 0}
