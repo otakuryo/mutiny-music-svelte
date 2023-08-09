@@ -14,8 +14,8 @@
     
 </script>
 
-<div class="pl-3 main-right-panel">
-    <div class="w-full flex flex-col max-h-screen-wo-menu">
+<div class="main-right-panel">
+    <div class="content-parent">
 
         <div class="main-color divide-y px-2 border-theme mx-2 mt-2">
             <PlayerInformationSong />
