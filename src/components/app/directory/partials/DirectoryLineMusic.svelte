@@ -7,9 +7,9 @@
 	import PlaylistStore from '$stores/PlaylistStore';
     import {currentSong} from "$stores/CurrentPlaySong";
 	import TemporalListStore from "$stores/TemporalListStore";
-    import BtnChecked from "$components/app/directory/partials/BtnChecked.svelte";
     import ImgCover from "$components/global/ImgCover.svelte";
     import { getDurationHuman } from "$lib/js/Helpers.js";
+	import BtnChecked from "$components/global/BtnChecked.svelte";
 
     export let song: Child;
     export let api: SubsonicAPI;
