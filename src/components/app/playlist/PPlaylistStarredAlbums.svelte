@@ -65,18 +65,29 @@
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServerStarred}
-        <div class="w-full">loading...</div>
-    {:then response}
-        <LineBack />
+    <div class="content-parent">
+
+        {#await dataFromServerStarred}
+            <div class="w-full">loading...</div>
+        {:then response}
         
-        {#if response.starred.album && response.starred.album.length > 0}
-            <ControlsNavigationPlaylist api={api} list={response.starred.album} callbackCheckSonByIndex={callbackCheckSonByIndex} callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
-
-            {#each response.starred.album as song}
-                <DirectoryLineMusic bind:song={song} api={api} />
-            {/each}
-        {/if}
-
-    {/await}
+            <div class="divide-y px-2 border-theme mx-2 mt-2">
+                <LineBack />
+            </div>
+            
+            {#if response.starred.album && response.starred.album.length > 0}
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                    <ControlsNavigationPlaylist api={api} list={response.starred.album} callbackCheckSonByIndex={callbackCheckSonByIndex} callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+                </div>
+    
+                <div class="divide-y border-theme m-2 overflow-y-auto">
+                    {#each response.starred.album as song}
+                        <DirectoryLineMusic bind:song={song} api={api} />
+                    {/each}
+                </div>
+            {/if}
+    
+        {/await}
+        
+    </div>
 </div>

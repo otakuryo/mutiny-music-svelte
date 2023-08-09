@@ -57,6 +57,11 @@ html {
     @apply divide-y w-3/12 fixed h-screen-wo-menu bottom-0 right-0;
 }
 
+.main-left-panel > .content-parent,
+.main-right-panel > .content-parent {
+    @apply w-full flex flex-col max-h-screen-wo-menu;
+}
+
 .main-center-panel-full {
     @apply divide-y w-full fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
 }
@@ -66,7 +71,7 @@ html {
 }
 
 .border-theme {
-    @apply border border-zinc-200 dark:border-white rounded;
+    @apply border border-zinc-300 dark:border-zinc-600 rounded;
 }
 
 /**
