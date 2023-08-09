@@ -45,12 +45,16 @@ html {
     height: calc(100vh - theme('height.12'));
 }
 
+.max-h-screen-wo-menu {
+    height: calc(100vh - theme('height.12'));
+}
+
 .main-left-panel {
     @apply divide-y w-9/12 fixed h-screen-wo-menu bottom-0 left-0 overflow-y-scroll;
 }
 
 .main-right-panel {
-    @apply divide-y w-3/12 fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
+    @apply divide-y w-3/12 fixed h-screen-wo-menu bottom-0 right-0;
 }
 
 .main-center-panel-full {
@@ -58,7 +62,11 @@ html {
 }
 
 .navigation-sticky {
-    @apply sticky top-0 w-full main-color z-40 divide-y border-b-[1px];
+    @apply sticky top-0 w-full main-color z-40 divide-y border-b;
+}
+
+.border-theme {
+    @apply border border-zinc-200 dark:border-white rounded;
 }
 
 /**
