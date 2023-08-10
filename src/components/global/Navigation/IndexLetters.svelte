@@ -13,10 +13,8 @@
     }
 </script>
 
-<div class="navigation-sticky">
-    <div class="flex flex-row justify-around w-full uppercase border-b-[1px]">
-        {#each letters as letter}
-            <div on:click={scrollToElement} data-id="{letter.id}" class="opacity-50 cursor-pointer hover:opacity-100" class:opacity-100={letter.active}>{letter.name}</div>
-        {/each}
-    </div>
+<div class="flex flex-row justify-around w-full uppercase">
+    {#each letters as letter}
+        <div on:click={scrollToElement} data-id="{letter.id}" class="opacity-50 cursor-pointer hover:opacity-100" class:opacity-100={letter.active}>{letter.name}</div>
+    {/each}
 </div>
