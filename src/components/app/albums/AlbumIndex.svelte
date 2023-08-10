@@ -6,6 +6,7 @@
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLineAl from './partials/LoadingLineAl.svelte';
 
     type AlbumLocal = (SubsonicBaseResponse & { album: AlbumWithSongsID3 });
 
@@ -104,38 +105,48 @@
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServer}
-        <div class="w-full">loading...</div>
-    {:then albumResponse}
+    <div class="content-parent">
 
-        {#if albumResponse.album.song && albumResponse.album.song.length > 0}
-            <!-- {#if library.directory && library.directory.parent}
-                <MusicFolderLineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
-            {/if} -->
+        {#await dataFromServer}
+            <LoadingLineAl />
+        {:then albumResponse}
+    
+            {#if albumResponse.album.song && albumResponse.album.song.length > 0}
+                <!-- {#if library.directory && library.directory.parent}
+                    <MusicFolderLineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
+                {/if} -->
 
-            <div class="navigation-sticky">
+                
+                <div class="divide-y border-theme mx-2 mt-2">
+                    <LineBack url="/albums" name="Albums" />
+                </div>
 
-                <LineBack url="/albums" name="Albums" />
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
 
-                <ControlsNavigationPlaylist
-                    api={api}
-                    list={albumResponse.album.song}
-                    callbackCheckSonByIndex={callbackCheckSonByIndex}
-                    callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
-            </div>
+                    <ControlsNavigationPlaylist
+                        api={api}
+                        list={albumResponse.album.song}
+                        callbackCheckSonByIndex={callbackCheckSonByIndex}
+                        callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+                </div>
+    
+                <div class="divide-y px-2 border-theme mx-2 mt-2 overflow-y-scroll">
+                    {#each albumResponse.album.song as song}
+        
+                            {#if song.isDir}
+                                <DirectoryLineDirectory
+                                    directory={song}
+                                    api={api} />
+        
+                            {:else}
+                                <DirectoryLineMusic bind:song={song} api={api} />
+                            {/if}
+        
+                    {/each}
+                </div>
+                
+            {/if}
 
-            {#each albumResponse.album.song as song}
-
-                    {#if song.isDir}
-                        <DirectoryLineDirectory
-                            directory={song}
-                            api={api} />
-
-                    {:else}
-                        <DirectoryLineMusic bind:song={song} api={api} />
-                    {/if}
-
-            {/each}
-        {/if}
-    {/await}
+        {/await}
+    </div>
 </div>
