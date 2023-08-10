@@ -5,6 +5,7 @@
 	import LineBack from '$components/app/playlist/partials/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -123,28 +124,41 @@
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServer}
-        <div class="w-full">loading...</div>
-    {:then response}
+    <div class="content-parent">
+            
+        {#await dataFromServer}
+            <LoadingLinePL />
+        {:then response}
 
-        <LineBack />
-
-        <ControlsNavigationPlaylist
-            list={response.playlist.entry}
-            bind:api={api}
-            callbackCheckSonByIndex={callbackCheckSongByIndex}
-            callbackUncheckSonByIndex={callbackUncheckSongByIndex} >
-
-            <div slot="extra-options">
-                <button disabled={disableDeleteBtn} type="button" class="btn-small-control-list" on:click={updatePlaylistAndRemove} on:keydown={updatePlaylistAndRemove}>Guardar</button>
+            <div class="divide-y px-2 border-theme mx-2 mt-2">
+                <LineBack />
             </div>
+    
+            <div class="divide-y px-2 border-theme mx-2 mt-2">
 
-        </ControlsNavigationPlaylist>
+                <ControlsNavigationPlaylist
+                    list={response.playlist.entry}
+                    bind:api={api}
+                    callbackCheckSonByIndex={callbackCheckSongByIndex}
+                    callbackUncheckSonByIndex={callbackUncheckSongByIndex} >
 
-        {#if response.playlist.entry && response.playlist.entry.length > 0}
-            {#each response.playlist.entry as song, index}
-                <LineMusic bind:song={song} api={api} index={index} callbackRemove={appendSongForRemove} />
-            {/each}
-        {/if}
-    {/await}
+                    <div slot="extra-options">
+                        <button disabled={disableDeleteBtn} type="button" class="btn-small-control-list" on:click={updatePlaylistAndRemove} on:keydown={updatePlaylistAndRemove}>Guardar</button>
+                    </div>
+        
+                </ControlsNavigationPlaylist>
+            </div>
+    
+    
+            {#if response.playlist.entry && response.playlist.entry.length > 0}
+
+                <div class="divide-y px-2 border-theme m-2 overflow-y-scroll">
+                    {#each response.playlist.entry as song, index}
+                        <LineMusic bind:song={song} api={api} index={index} callbackRemove={appendSongForRemove} />
+                    {/each}
+                </div>
+            {/if}
+        {/await}
+
+    </div>
 </div>

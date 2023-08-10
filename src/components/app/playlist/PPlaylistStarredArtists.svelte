@@ -1,11 +1,12 @@
 <script lang="ts">
-    import { SubsonicAPI, type SubsonicBaseResponse, type Starred, type Starred2, type Child } from '$models/servers/subsonic';
+    import type { SubsonicAPI, SubsonicBaseResponse, Starred, Starred2, Child } from '$models/servers/subsonic';
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
 	import { onMount } from 'svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import LineBack from '$components/app/playlist/partials/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -66,18 +67,30 @@
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServerStarred}
-        <div class="w-full">loading...</div>
-    {:then response}
-        <LineBack />
+    
+    <div class="content-parent">
+
+        {#await dataFromServerStarred}
+            <LoadingLinePL />
+        {:then response}
         
-        {#if response.starred.song && response.starred.song.length > 0}
-            <ControlsNavigationPlaylist api={api} list={response.starred.song} callbackCheckSonByIndex={callbackCheckSonByIndex} callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+            <div class="divide-y px-2 border-theme mx-2 mt-2">
+                <LineBack />
+            </div>
+            
+            {#if response.starred.song && response.starred.song.length > 0}
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                    <ControlsNavigationPlaylist api={api} list={response.starred.song} callbackCheckSonByIndex={callbackCheckSonByIndex} callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+                </div>
 
-            {#each response.starred.song as song}
-                <DirectoryLineMusic bind:song={song} api={api} />
-            {/each}
-        {/if}
+                <div class="divide-y border-theme m-2 overflow-y-auto">
+                    {#each response.starred.song as song}
+                        <DirectoryLineMusic bind:song={song} api={api} />
+                    {/each}
+                </div>
+            {/if}
+    
+        {/await}
 
-    {/await}
+    </div>
 </div>

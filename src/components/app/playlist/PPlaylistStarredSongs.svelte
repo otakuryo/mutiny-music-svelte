@@ -5,6 +5,7 @@
 	import LineBack from '$components/app/playlist/partials/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -65,18 +66,30 @@
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServerStarred}
-        <div class="w-full">loading...</div>
-    {:then response}
-        <LineBack />
-        
-        {#if response.starred.song && response.starred.song.length > 0}
-            <ControlsNavigationPlaylist api={api} list={response.starred.song} callbackCheckSonByIndex={callbackCheckSonByIndex} callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+    <div class="content-parent">
 
-            {#each response.starred.song as song}
-                <DirectoryLineMusic bind:song={song} api={api} />
-            {/each}
-        {/if}
+        {#await dataFromServerStarred}
+            <LoadingLinePL />
+        {:then response}
+            <div class="divide-y px-2 border-theme mx-2 mt-2">
+                <LineBack />
+            </div>
+            
+            {#if response.starred.song && response.starred.song.length > 0}
 
-    {/await}
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                    <ControlsNavigationPlaylist api={api} list={response.starred.song} callbackCheckSonByIndex={callbackCheckSonByIndex} callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+                </div>
+    
+                <div class="divide-y border-theme m-2 overflow-y-auto">
+
+                    {#each response.starred.song as song}
+                        <DirectoryLineMusic bind:song={song} api={api} />
+                    {/each}
+
+                </div>
+            {/if}
+    
+        {/await}
+    </div>
 </div>

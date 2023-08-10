@@ -7,6 +7,7 @@
 	import { Disc, Users } from 'lucide-svelte';
 	import InputTextCreatePlaylist from './partials/InputTextCreatePlaylist.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
@@ -43,35 +44,47 @@
 
 <div class="main-left-panel">
 
-    <div class="p-2">
-        <InputTextCreatePlaylist refreshCallback={refreshViewOnClick}/>
-    </div>
+    <div class="content-parent">
 
-    {#await dataFromServer}
-        <div class="w-full">loading...</div>
-    {:then playlists}
+        <div class="p-2 border-theme mx-2 mt-2">
+            <InputTextCreatePlaylist refreshCallback={refreshViewOnClick}/>
+        </div>
     
-        {#if playlists.playlists.playlist && playlists.playlists.playlist.length > 0}
-            <LineTitle title="Playlists" />
+        {#await dataFromServer}
+            <LoadingLinePL />
+        {:then playlists}
+        
+            {#if playlists.playlists.playlist && playlists.playlists.playlist.length > 0}
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                    
+                    <LineTitle title="Playlists" />
+        
+                    {#each playlists.playlists.playlist as playlist}
+                        <PlaylistLineSong playlist={playlist} api={api} refreshViewOnClick={refreshViewOnClick} />
+                    {/each}
 
-            {#each playlists.playlists.playlist as playlist}
-                <PlaylistLineSong playlist={playlist} api={api} refreshViewOnClick={refreshViewOnClick} />
-            {/each}
-        {/if}
+                </div>
+            {/if}
+    
+        {/await}
 
-    {/await}
+        <div class="divide-y px-2 border-theme mx-2 mt-2">
+            
+            <LineInternalUrl url="/playlists/starred-songs/" title="Starred Songs" />
+            <LineInternalUrl url="/playlists/starred-albums/" title="Starred Albums" >
+                <div slot="icon">
+                    <Disc strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
+                </div>
+            </LineInternalUrl>
+        
+            <LineInternalUrl url="/playlists/starred-artists/" title="Starred Artists (Working)" >
+                <div slot="icon">
+                    <Users strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
+                </div>
+            </LineInternalUrl>
 
-    <LineInternalUrl url="/playlists/starred-songs/" title="Starred Songs" />
-    <LineInternalUrl url="/playlists/starred-albums/" title="Starred Albums" >
-        <div slot="icon">
-            <Disc strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
         </div>
-    </LineInternalUrl>
-
-    <LineInternalUrl url="/playlists/starred-artists/" title="Starred Artists (Working)" >
-        <div slot="icon">
-            <Users strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
-        </div>
-    </LineInternalUrl>
+    
+    </div>
 
 </div>

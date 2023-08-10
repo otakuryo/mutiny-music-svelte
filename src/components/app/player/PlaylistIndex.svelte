@@ -14,18 +14,24 @@
     
 </script>
 
-<div class="pl-3 main-right-panel">
-    <div class="main-color divide-y sticky top-0 z-10">
-        <PlayerInformationSong />
-        <PlayerControls />
-        <PlayerPlaylistInformation />
-    </div>
-    
-    <div class="h-100 divide-y">
-        {#each localPlaylist as song, index}
-            {#if !song.isDir}
-                <PlayerLineMusic bind:song={song} index={index} />
-            {/if}
-        {/each}
+<div class="main-right-panel">
+    <div class="content-parent">
+
+        <div class="main-color divide-y px-2 border-theme mx-2 mt-2">
+            <PlayerInformationSong />
+            <PlayerControls />
+            <PlayerPlaylistInformation />
+        </div>
+        
+        <div class="overflow-y-auto divide-y border-theme m-2">
+            
+            {#each localPlaylist as song, index}
+                {#if !song.isDir}
+                    <PlayerLineMusic bind:song={song} index={index} />
+                {/if}
+            {/each}
+
+        </div>
+
     </div>
 </div>
