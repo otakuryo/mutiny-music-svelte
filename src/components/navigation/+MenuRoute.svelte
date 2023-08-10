@@ -43,7 +43,7 @@
 </script>
 
 <!-- desktop menu -->
-<header class=" fixed h-10 w-screen dark:text-zinc-300 bg-white dark:bg-zinc-900 z-50 dark:border-b-white border-b-2 border-b-zinc-300">
+<header class=" fixed h-20 md:h-10 w-screen dark:text-zinc-300 bg-white dark:bg-zinc-900 z-50 dark:border-b-white border-b-2 border-b-zinc-300">
     <div class="text-lg mx-auto max-w-6xl flex flex-row justify-between h-full">
         <a href="/" class="mx-6 flex items-center " aria-label="Website Logo">
             <Headphones class="w-8 h-8"/>
@@ -71,7 +71,7 @@
 </header>
 
 <!-- Space for the menu -->
-<div class="h-10 w-screen"></div>
+<div class="h-20 md:h-10 w-screen"></div>
 
 <header class="nav-menu hidden z-50 main-color relative h-screen">
     <div class="h-full overflow-scroll">
