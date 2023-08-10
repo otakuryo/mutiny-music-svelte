@@ -53,29 +53,41 @@ html {
     outline: 1px solid theme('colors.red.500');
 }
 
-.h-screen-wo-menu {
-    height: calc(100vh - theme('height.12'));
-}
+@layer utilities {
+    
+    .h-screen-wo-menu-20 {
+        height: calc(100vh - theme('height.20'));
+    }
 
-.max-h-screen-wo-menu {
-    height: calc(100vh - theme('height.12'));
+    .max-h-screen-wo-menu-20 {
+        max-height: calc(100vh - theme('height.20'));
+    }
+
+    .h-screen-wo-menu-10 {
+        height: calc(100vh - theme('height.10'));
+    }
+
+    .max-h-screen-wo-menu-10 {
+        max-height: calc(100vh - theme('height.10'));
+    }
+
 }
 
 .main-left-panel {
-    @apply divide-y w-9/12 fixed h-screen-wo-menu bottom-0 left-0 overflow-y-scroll;
+    @apply divide-y w-9/12 fixed h-screen-wo-menu-20 md:h-screen-wo-menu-10 bottom-0 left-0 overflow-y-scroll;
 }
 
 .main-right-panel {
-    @apply divide-y w-3/12 fixed h-screen-wo-menu bottom-0 right-0;
+    @apply divide-y w-3/12 fixed h-screen-wo-menu-20 md:h-screen-wo-menu-10 bottom-0 right-0;
 }
 
 .main-left-panel > .content-parent,
 .main-right-panel > .content-parent {
-    @apply w-full flex flex-col max-h-screen-wo-menu;
+    @apply w-full flex flex-col max-h-screen-wo-menu-20 md:max-h-screen-wo-menu-10;
 }
 
 .main-center-panel-full {
-    @apply divide-y w-full fixed h-screen-wo-menu bottom-0 right-0 overflow-y-scroll;
+    @apply divide-y w-full fixed h-screen-wo-menu-20 md:h-screen-wo-menu-10 bottom-0 right-0 overflow-y-scroll;
 }
 
 .navigation-sticky {

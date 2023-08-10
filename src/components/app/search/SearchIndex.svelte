@@ -20,7 +20,7 @@
     let artistScrollPosition = 0;
     let songScrollPosition = 0;
 
-    export let query: string = 'eva';
+    export let query: string = '';
     let artistCount = 10;
     let artistOffset = 0;
     let albumCount = 10;
