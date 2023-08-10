@@ -4,6 +4,7 @@
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import LoadingLineAr from './partials/LoadingLineAr.svelte';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { artist: ArtistWithAlbumsID3 });
 
@@ -41,23 +42,26 @@
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServer}
-        <div class="w-full">loading...</div>
-    {:then serverResponse}
+    <div class="content-parent">
 
-        {#if serverResponse.artist.album && serverResponse.artist.album.length > 0}
+        {#await dataFromServer}
+            <LoadingLineAr />
+        {:then serverResponse}
+    
+            {#if serverResponse.artist.album && serverResponse.artist.album.length > 0}
+
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                    <LineBack url="/artists" name="Volver" />
+                </div>
+                
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                    {#each serverResponse.artist.album as album}
         
-            <div class="navigation-sticky">
-                <LineBack url="/artists" name="Volver" />
-            </div>
-            
-            {#each serverResponse.artist.album as album}
-
-                <LineAlbumId3 album={album} api={api} />
-                    
-            {/each}
-
-        {/if}
-
-    {/await}
+                        <LineAlbumId3 album={album} api={api} />
+                            
+                    {/each}
+                </div>
+            {/if}
+        {/await}
+    </div>
 </div>

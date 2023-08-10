@@ -8,6 +8,7 @@
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
     import type { LetterLocal } from '$lib/types/global.d';
+	import LoadingLineDir from './partials/LoadingLineDir.svelte';
 
     type DirectoryType = (SubsonicBaseResponse & { directory: Directory });
     export let directoryId: string;
@@ -102,37 +103,48 @@
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServer}
-        <div class="w-full">loading...</div>
-    {:then libraries}
+    <div class="content-parent">
+
+        {#await dataFromServer}
+            <LoadingLineDir />
+        {:then libraries}
+
+            <div class="divide-y border-theme mx-2 mt-2">
+                <IndexLetters bind:letters={lettersArray} />
+            </div>
     
-        <div class="navigation-sticky">
-            <IndexLetters bind:letters={lettersArray} />
-
             {#if libraries.directory && libraries.directory.parent}
-                <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent}  />
+                <div class="divide-y border-theme mx-2 mt-2">
+                    <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent}  />
+                </div>
             {/if}
-            
-            <ControlsNavigationPlaylist
-                api={api}
-                list={libraries.directory.child}
-                callbackCheckSonByIndex={callbackCheckSonByIndex}
-                callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
-        </div>
 
-        {#each libraries.directory.child as song}
+            <div class="divide-y border-theme mx-2 mt-2">
+                <ControlsNavigationPlaylist
+                    api={api}
+                    list={libraries.directory.child}
+                    callbackCheckSonByIndex={callbackCheckSonByIndex}
+                    callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+            </div>
 
-            <div class="w-full block relative -top-20 invisible" id="dir-song-{song.id}"></div>
+            <div class="divide-y border-theme m-2 overflow-y-scroll">
+                {#each libraries.directory.child as song}
+        
+                    <div class="w-full block relative opacity-0 border-0" id="dir-song-{song.id}"></div>
+        
+                    {#if song.isDir}
+                        <DirectoryLineDirectory
+                            directory={song}
+                            api={api} />
+        
+                    {:else}
+                        <DirectoryLineMusic bind:song={song} api={api} />
+                    {/if}
+                {/each}
+            </div>
 
-            {#if song.isDir}
-                <DirectoryLineDirectory
-                    directory={song}
-                    api={api} />
-
-            {:else}
-                <DirectoryLineMusic bind:song={song} api={api} />
-            {/if}
-        {/each}
-
-    {/await}
+                
+    
+        {/await}
+    </div>
 </div>

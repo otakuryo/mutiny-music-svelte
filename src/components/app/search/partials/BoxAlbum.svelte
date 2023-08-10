@@ -23,7 +23,7 @@
             <ImgCover size="32" marginRigth="0" disableModal={true} api={api} title={album.name} songId={album.coverArt} />
             
             <div class="h-full w-full text-center">
-                <p class="font-sans text-base font-medium leading-7 text-slate-900 dark:text-white block line-clamp-2">{album.name}</p>
+                <p class="font-sans text-base font-medium leading-7 text-slate-900 dark:text-white block line-clamp-2-custom h-14">{album.name}</p>
             </div>
 
         </div>

@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
     import type { SearchResult3, SubsonicAPI, SubsonicBaseResponse } from '$models/servers/subsonic';
-	import BoxAlbum from './partials/BoxAlbum.svelte';
-	import BoxArtist from './partials/BoxArtist.svelte';
 	import InputText from './partials/InputText.svelte';
-	import LineSong from '$components/global/Song/LineSong.svelte';
 	import { FolderSearch, Loader } from 'lucide-svelte';
-	import BoxMore from './partials/BoxMore.svelte';
+	import HorizontalAlbums from '$components/app/search/partials/HorizontalAlbums.svelte';
+	import HorizontalArtists from '$components/app/search/partials/HorizontalArtists.svelte';
+	import VerticalSongs from '$components/app/search/partials/VerticalSongs.svelte';
 
     type SearchResult = (SubsonicBaseResponse & { searchResult3: SearchResult3 });
 
@@ -17,7 +16,11 @@
 
     let loading = false;
 
-    export let query: string = '';
+    let albumScrollPosition = 0;
+    let artistScrollPosition = 0;
+    let songScrollPosition = 0;
+
+    export let query: string = 'eva';
     let artistCount = 10;
     let artistOffset = 0;
     let albumCount = 10;
@@ -126,6 +129,10 @@
             albumOffset = 0;
             songOffset = 0;
 
+            albumScrollPosition = 0;
+            artistScrollPosition = 0;
+            songScrollPosition = 0;
+
             refreshViewOnClick();
             stateSearchText = "search-done";
         }, 1000);
@@ -174,88 +181,79 @@
     }
 </script>
 
-<style>
-    .h-100-custom {
-        height: calc(100% - theme('spacing.16'));
-    }
-</style>
-
 <div class="main-left-panel">
 
-    <div class="p-2">
-        <InputText bind:searchText={query} bind:stateSearchText={stateSearchText} />
+    <div class="content-parent">
+
+        <div class="divide-y border-theme mx-2 mt-2">
+            <InputText bind:searchText={query} bind:stateSearchText={stateSearchText} />
+        </div>
+        <!-- <div class="divide-y border-theme mx-2 mt-2"></div> -->
+
+        {#await dataFromServer}
+    
+            <div class="w-full border-theme grid justify-center items-center">
+                <Loader class="w-32 h-32 stroke-1" />
+            </div>
+    
+        {:then subsonicResponse}
+    
+            {#if !query || query === ''}
+                
+                <div class="h-full border-theme grid justify-center items-center m-2">
+                    <FolderSearch class="w-32 h-32 stroke-1" />
+                </div>
+    
+            {:else}
+    
+                {#if checkResults(subsonicResponse.searchResult3)}
+
+                    <div class="h-full border-theme grid justify-center items-center m-2">
+                        <div class="flex flex-col text-center">
+                            <FolderSearch class="w-32 h-32 stroke-1" />
+                            <div>0 results</div>
+                        </div>
+                    </div>
+
+                {/if}
+
+                {#if subsonicResponse.searchResult3 && subsonicResponse.searchResult3.album }
+                    <HorizontalAlbums
+                        bind:lastScrollLeft={albumScrollPosition}
+                        albums={subsonicResponse.searchResult3.album}
+                        api={api}
+                        refreshViewOnClick={refreshViewOnClick}
+                        loadMoreOnClick={loadMoreOnClick}
+                        loading={loading} />
+                {/if}
+    
+                {#if subsonicResponse.searchResult3 && subsonicResponse.searchResult3.artist }
+                    <HorizontalArtists
+                        bind:lastScrollLeft={artistScrollPosition}
+                        artists={subsonicResponse.searchResult3.artist}
+                        api={api}
+                        refreshViewOnClick={refreshViewOnClick}
+                        loadMoreOnClick={loadMoreOnClick}
+                        loading={loading} />
+                {/if}
+
+                {#if subsonicResponse.searchResult3 && subsonicResponse.searchResult3.song }
+                    <VerticalSongs
+                        bind:lastScrollTop={songScrollPosition}
+                        songs={subsonicResponse.searchResult3.song}
+                        api={api}
+                        loadMoreOnClick={loadMoreOnClick}
+                        loading={loading} />
+                {/if}
+
+                <div class="mb-2 w-full"></div>
+    
+            {/if}
+    
+        {:catch error}
+            <div class="w-full">{error.message}</div>
+        {/await}
     </div>
 
-    {#await dataFromServer}
 
-        <div class="w-full h-100-custom grid justify-center items-center">
-            <Loader class="w-32 h-32 stroke-1" />
-        </div>
-
-    {:then subsonicResponse}
-
-        {#if !query || query === ''}
-            
-            <div class="w-full h-100-custom grid justify-center items-center">
-                <FolderSearch class="w-32 h-32 stroke-1" />
-            </div>
-
-        {:else}
-
-            {#if checkResults(subsonicResponse.searchResult3)}
-                <div class="w-full">No results</div>
-            {/if}
-
-            {#if checkResults(subsonicResponse.searchResult3, 'album') && subsonicResponse.searchResult3.album}
-                <div class="main-color w-full pl-2 z-10"> Albums </div>
-
-                <div class="flex flex-row overflow-scroll">
-
-                    {#each subsonicResponse.searchResult3.album as album}
-        
-                        <BoxAlbum album={album} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                            
-                    {/each}
-
-                    <BoxMore loadMoreOnClick={loadMoreOnClick} loading={loading} />
-
-                </div>
-            {/if}
-
-
-            {#if checkResults(subsonicResponse.searchResult3, 'artist') && subsonicResponse.searchResult3.artist}
-                <div class="main-color w-full pl-2 z-10"> Artists </div>
-
-                <div class="flex flex-row overflow-scroll">
-
-                    {#each subsonicResponse.searchResult3.artist as artist}
-        
-                        <BoxArtist artist={artist} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                            
-                    {/each}
-
-                    <BoxMore loadMoreOnClick={loadMoreOnClick} loading={loading} />
-
-                </div>
-            {/if}
-
-
-            {#if checkResults(subsonicResponse.searchResult3, 'song') && subsonicResponse.searchResult3.song}
-                <div class="main-color w-full pl-2 z-10"> Songs </div>
-
-                {#each subsonicResponse.searchResult3.song as song}
-                    <LineSong song={song} api={api}/>
-                {/each}
-
-                <div class="w-full flex justify-center">
-                    <button class="w-full dark:text-white text-zinc-700 font-bold my-1 py-2 px-4 rounded border disabled:opacity-20" on:click={loadMoreOnClick} disabled={loading}>Load more</button>
-                </div>
-                
-            {/if}
-
-        {/if}
-
-    {:catch error}
-        <div class="w-full">{error.message}</div>
-    {/await}
 </div>

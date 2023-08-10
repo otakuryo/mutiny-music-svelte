@@ -26,6 +26,18 @@ html {
 }
 
 /**
+ * Custom break word
+ */
+.line-clamp-2-custom{
+    word-break:keep-all;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: hidden;
+}
+
+/**
 * fichero principal: ControlsPlaylist.svelte
 * Estilo para el botón de control de lista
 */

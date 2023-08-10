@@ -2,7 +2,8 @@
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
     import type { SubsonicAPI, AlbumList2, SubsonicBaseResponse } from '$models/servers/subsonic';
-	import { onMount } from 'svelte';
+	import { afterUpdate, onMount } from 'svelte';
+	import LoadingLineAl from '$components/app/albums/partials/LoadingLineAl.svelte';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { albumList2: AlbumList2 });
     type SubsonicSortType = 'alphabeticalByName'
@@ -63,24 +64,44 @@
             return data;
         });
     }
+
+    // Elements for update scroll on refresh
+    let elementContentParent: HTMLElement;
+    let lastScrollTop = 0;
+
+    afterUpdate(() => {
+        if (elementContentParent)
+            elementContentParent.scrollTop = lastScrollTop;
+    });
+
+    function onScroll(e: Event) {
+        lastScrollTop = (e.target as HTMLElement).scrollTop;
+    }
+
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServer}
-        <div class="w-full">loading...</div>
-    {:then libraries}
+    <div class="content-parent">
+        
+        {#await dataFromServer}
+            <LoadingLineAl />
+        {:then libraries}
 
-        {#if libraries.albumList2.album && libraries.albumList2.album.length > 0}
-            {#each libraries.albumList2.album as album}
-
-                <LineAlbumId3 album={album} api={api} refreshViewOnClick={refreshViewOnClick}/>
-                    
-            {/each}
-        {/if}
-
-        <div class="w-full flex justify-center">
-            <button class="w-full dark:text-white text-zinc-700 font-bold my-1 py-2 px-4 rounded border disabled:opacity-20" on:click={loadMoreOnClick} disabled={loading}>Load more</button>
-        </div>
-
-    {/await}
+            <div class="overflow-y-auto divide-y border-theme m-2" bind:this={elementContentParent} on:scroll={onScroll}>
+        
+                {#if libraries.albumList2.album && libraries.albumList2.album.length > 0}
+                    {#each libraries.albumList2.album as album}
+        
+                        <LineAlbumId3 album={album} api={api} refreshViewOnClick={refreshViewOnClick}/>
+                            
+                    {/each}
+                {/if}
+        
+                <div class="w-full flex justify-center">
+                    <button class="w-full dark:text-white text-zinc-700 font-bold m-1 py-2 px-4 rounded border disabled:opacity-20" on:click={loadMoreOnClick} disabled={loading}>Load more</button>
+                </div>
+            </div>
+    
+        {/await}
+    </div>
 </div>
