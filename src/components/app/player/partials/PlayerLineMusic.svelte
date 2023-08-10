@@ -7,6 +7,7 @@
     import { getDurationHuman, MainServerSubsonicAPI } from "$lib/js/Helpers.js";
     import ImgCover from "$components/global/ImgCover.svelte";
 	import FavoriteIcon from "$components/global/Song/partials/FavoriteIcon.svelte";
+	import { get } from "svelte/store";
 
     export let song: Child;
     export let index: number = -1;
@@ -19,29 +20,21 @@
     }
 
     function playSong() {
-        PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
+        
+        let currentSongStore = get(currentSong);
+
+        if (currentSongStore.id === song.id) {
+            PlayerStore.toggle();
+        } else {
+            PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
+        }
+
     }
 
     function deleteSong() {
         console.log("deleteSong");
         if (index === -1) return;
         PlaylistStore.removeSongByIndex(index);
-    }
-
-    /**
-     * Toggle star
-     * 
-     * If star is true, then the song is starred, so we want to remove it from starred songs
-     */
-     async function toggleStar() {
-        api = MainServerSubsonicAPI();
-        if (song.starred === undefined) {
-            await api.star({id: song.id});
-            song.starred = new Date();
-        } else {
-            await api.unstar({id: song.id});
-            song.starred = undefined;
-        }
     }
 
     // Detectamos cuando cambia la canción actual, para actualizar la duración
@@ -71,7 +64,7 @@
             
             <ImgCover api={api} title={song.title} songId={song.id} />
 
-            <div class="flex flex-col w-72">
+            <div class="flex flex-col w-72 select-none" on:click={playSong} on:keypress={playSong}>
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white truncate">{song.title}</span>
                 <span data-amplitude-song-info="time" class="font-sans text-sm font-medium text-gray-500 dark:text-gray-400">{durationHuman}</span>
             </div>
