@@ -18,7 +18,7 @@
             <ImgCover size="32" marginRigth="0" disableModal={true} api={api} title={artist.name} songId={artist.coverArt} />
             
             <div class="h-full w-full text-center">
-                <span class="font-sans text-base font-medium leading-7 text-slate-900 dark:text-white line-clamp-2">{artist.name}</span>
+                <span class="font-sans text-base font-medium leading-7 text-slate-900 dark:text-white line-clamp-2-custom h-14">{artist.name}</span>
             </div>
 
         </div>
