@@ -3,12 +3,16 @@
 	import BoxAlbum from "$components/app/search/partials/BoxAlbum.svelte";
 	import BoxMore from "$components/app/search/partials/BoxMore.svelte";
 	import { afterUpdate } from "svelte";
+	import { RotateCcw } from "lucide-svelte";
 
     export let albums: Array<AlbumID3>;
     export let api: SubsonicAPI;
-    export let refreshViewOnClick: () => void;
-    export let loadMoreOnClick: () => void;
-    export let loading: boolean;
+    export let refreshViewOnClick: () => void = () => {};
+    export let loadMoreOnClick: () => void = () => {};
+    export let loading: boolean = false;
+    export let showBtnMore: boolean = true;
+    export let showBtnRefresh: boolean = false;
+    export let title: string = "Albums";
 
 
     // Elements for update scroll on refresh
@@ -31,8 +35,14 @@
 
 {#if albums.length > 0}
 
-    <div class="divide-y border-theme mx-2 mt-2">
-        <div class="main-color w-full pl-2 z-10">Albums</div>
+
+    <div class="border-theme mx-2 mt-2 flex">
+        <div class="pl-2 z-10">{title}</div>
+        {#if !showBtnMore && showBtnRefresh }
+            <div class="pr-2 z-10 ml-auto cursor-pointer" on:click={refreshViewOnClick} on:keyup={refreshViewOnClick}>
+                <RotateCcw class="py-1" />
+            </div>
+        {/if}
     </div>
     
     <div class="divide-y border-theme mx-2 mt-2 overflow-x-scroll min-h-[13rem]" bind:this={elementContent} on:scroll={onScroll}>
@@ -45,7 +55,9 @@
                     
             {/each}
     
-            <BoxMore loadMoreOnClick={loadMoreOnClick} loading={loading} />
+            {#if showBtnMore}
+                <BoxMore loadMoreOnClick={loadMoreOnClick} loading={loading} />
+            {/if}
     
         </div>
     </div>
