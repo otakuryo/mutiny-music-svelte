@@ -47,6 +47,12 @@
 
     function addAllSongToMainPlaylistStore(){
         let list = TemporalListStore.getSongList();
+
+        // If list is empty, we add all songs
+        if (list.length === 0) {
+            addAllSongToTemporalList();
+        }
+        
         list.forEach(song => {
             PlaylistStore.addSong(song);
         });
