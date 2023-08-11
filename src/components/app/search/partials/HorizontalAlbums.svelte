@@ -22,8 +22,6 @@
     afterUpdate(() => {
         if (elementContent){
             elementContent.scrollLeft = lastScrollLeft;
-            console.log("lastScrollLeft", lastScrollLeft);
-            
         }
     });
 
