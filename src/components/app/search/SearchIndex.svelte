@@ -2,7 +2,7 @@
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
     import type { SearchResult3, SubsonicAPI, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import InputText from './partials/InputText.svelte';
-	import { FolderSearch, Loader } from 'lucide-svelte';
+	import { CheckCircle, FolderSearch, Loader } from 'lucide-svelte';
 	import HorizontalAlbums from '$components/app/search/partials/HorizontalAlbums.svelte';
 	import HorizontalArtists from '$components/app/search/partials/HorizontalArtists.svelte';
 	import VerticalSongs from '$components/app/search/partials/VerticalSongs.svelte';
@@ -183,7 +183,7 @@
 
 <div class="main-left-panel">
 
-    <div class="content-parent">
+    <div class="content-parent h-full">
 
         <div class="divide-y border-theme mx-2 mt-2">
             <InputText bind:searchText={query} bind:stateSearchText={stateSearchText} />
@@ -192,7 +192,7 @@
 
         {#await dataFromServer}
     
-            <div class="w-full border-theme grid justify-center items-center">
+            <div class="w-full border-theme grid justify-center items-center m-2">
                 <Loader class="w-32 h-32 stroke-1" />
             </div>
     

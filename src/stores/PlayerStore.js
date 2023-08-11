@@ -100,13 +100,14 @@ const player = () => {
         },
         toggle: () => {
             console.log('*: playerStore -> toggle()');
-            if (isPlaying) {
+            if (get(isPlaying)) {
                 methods.pause();
                 isPlaying.set(false);
             } else {
                 methods.play();
                 isPlaying.set(true);
-            } isStopped.set(false);
+                isStopped.set(false);
+            }
         },
         stop: () => {
             console.log('*: playerStore -> stop()');
