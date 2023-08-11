@@ -1,5 +1,5 @@
 import { SubsonicAPI } from "$models/servers/subsonic";
-import { ServerConfigPersistent } from "$stores/ServerConfigStore";
+import { ServerConfigObj, ServerConfigPersistent } from "$stores/ServerConfigStore";
 
 /**
  * Devuelve la duración en formato mm:ss
@@ -22,8 +22,8 @@ let getDurationHuman = (duration) => {
 
 let MainServerSubsonicAPI = () => {
 
-    // Obtenemos los datos del servidor desde la memoria persistente
-    let server = ServerConfigPersistent.get();
+    // Retrieve the server configuration
+    let server = getServerSubsonicConfiguration()
 
     const api = new SubsonicAPI({
         url: server.serverUrl,
@@ -38,6 +38,30 @@ let MainServerSubsonicAPI = () => {
     });
 
     return api;
+}
+
+let getServerSubsonicConfiguration = () => {
+
+    // Retrieve the server configuration
+    let server = ServerConfigObj.get();
+
+    if (server === undefined || server && server.serverUrl == "") {
+
+        console.log(`* MainServerSubsonicAPI -> Loading from localStorage`);
+
+        // Retrieve the data from the persistent memory
+        let serverLS = ServerConfigPersistent.get();
+        Object.keys(serverLS).forEach((key) => {
+            // @ts-ignore
+            ServerConfigObj.setKey(key, serverLS[key]);
+        });
+
+        // Refresh the server variable
+        server = ServerConfigObj.get();
+
+    }
+
+    return server;
 }
 
 export { 
