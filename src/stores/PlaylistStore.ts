@@ -1,14 +1,15 @@
-import { writable } from "svelte/store";
+import { get, writable } from "svelte/store";
 import { currentIndex } from "$stores/CurrentPlaySong";
-import { get } from "svelte/store";
+import type { Child } from "$models/servers/subsonic";
 
 const playlist = () => {
-    const list = [];
+    let list: Array<Child> = [];
     const { subscribe, set, update } = writable(list);
 
     const methods = {
-        addSong: (song) => {
+        addSong: (song: Child) => {
             console.log('*: playlistStore -> addSong()');
+            
             list.push(song);
             let index = list.length - 1;
                 
@@ -16,14 +17,15 @@ const playlist = () => {
 
             return index;
         },
-        addSongAtIndex: (song, index) => {
+        addSongAtIndex: (song: Child, index: number) => {
             console.log('*: playlistStore -> addSongAtIndex()');
+            
             list.splice(index, 0, song);
             set(list);
 
             return index;
         },
-        removeSongBySong: (song) => {
+        removeSongBySong: (song: Child) => {
             console.log('*: playlistStore -> removeSongBySong()');
             const index = list.indexOf(song);
 
@@ -35,20 +37,23 @@ const playlist = () => {
 
             list.splice(index, 1);
             set(list);
+            return true;
         },
-        removeSongByIndex: (index) => {
+        removeSongByIndex: (index: number) => {
             console.log('*: playlistStore -> removeSongByIndex()');
 
             // Compare current index with the index of the song to be removed
             let ci = get(currentIndex);
+            // If the current index is greater than the index of the song to be removed, decrement the current index
             if (ci > index) {
                 currentIndex.set(ci - 1);
             }
 
             list.splice(index, 1);
             set(list);
+            return true;
         },
-        getSongByIndex: (index) => {
+        getSongByIndex: (index: number) => {
             console.log('*: playlistStore -> getSongByIndex()');
             return list[index];
         },
@@ -57,7 +62,7 @@ const playlist = () => {
             console.log(list);
             return list;
         },
-        getNextSongByIndex: (index) => {
+        getNextSongByIndex: (index: number) => {
             console.log('*: playlistStore -> getNextSongByIndex()');
             if (index + 1 >= list.length) {
                 return {
@@ -84,7 +89,7 @@ const playlist = () => {
                 song: list[index + 1]
             }
         },
-        getPrevSongByIndex: (index) => {
+        getPrevSongByIndex: (index: number) => {
             console.log('*: playlistStore -> getPrevSongByIndex()');
             if (index - 1 < 0) {
                 return {
@@ -110,11 +115,51 @@ const playlist = () => {
                 index: index - 1,
                 song: list[index - 1]
             }
+        },
+        selectAllSongs: () => {
+            console.log('*: playlistStore -> selectAllSongs()');
+            list.forEach((song) => {
+                song.checked = true;
+            });
+            set(list);
+            return list;
+        },
+        unselectAllSongs: () => {
+            console.log('*: playlistStore -> unselectAllSongs()!!', list);
+            
+            list.forEach((song) => {
+                song.checked = false;
+            });
+            set(list);
+            console.log("update list complete", list);
+
+            return list;
+        },
+        removeAllSongsChecked: () => {
+            console.log('*: playlistStore -> removeCheckedSongs()');
+
+            // Compare current index with the index of the song to be removed
+            let ci = get(currentIndex);
+
+            let newList = list.filter((song, index) => {
+
+                // If the current index is greater than the index of the song to be removed, decrement the current index
+                if (ci > index) {
+                    currentIndex.set(ci - 1);
+                }
+
+                return !song.checked;
+            });
+            list = newList;
+            set(list);
+            return newList;
         }
     };
 
     return {
         subscribe,
+        set,
+        update,
         ...methods
     };
 };

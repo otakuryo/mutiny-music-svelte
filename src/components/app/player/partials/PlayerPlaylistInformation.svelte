@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { currentIndex } from "$stores/CurrentPlaySong";
     import PlaylistStore from "$stores/PlaylistStore";
     import { get } from "svelte/store";

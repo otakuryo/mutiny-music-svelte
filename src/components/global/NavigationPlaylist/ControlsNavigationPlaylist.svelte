@@ -4,7 +4,6 @@
 	import TemporalListStore from "$stores/TemporalListStore";
 	import PlaylistStore from "$stores/PlaylistStore";
 	import PlayerMenuPlaylist from "./partials/PlayerMenuPlaylist.svelte";
-	import { onMount } from "svelte";
 	import PlayerStore from "$stores/PlayerStore";
 
     export let api: SubsonicAPI;
@@ -47,6 +46,12 @@
 
     function addAllSongToMainPlaylistStore(){
         let list = TemporalListStore.getSongList();
+
+        // If list is empty, we add all songs
+        if (list.length === 0) {
+            addAllSongToTemporalList();
+        }
+        
         list.forEach(song => {
             PlaylistStore.addSong(song);
         });
