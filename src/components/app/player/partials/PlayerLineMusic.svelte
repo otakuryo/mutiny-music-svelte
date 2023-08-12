@@ -3,7 +3,7 @@
 	import { currentSong } from "$stores/CurrentPlaySong";
 	import PlayerStore, { isPlaying } from "$stores/PlayerStore";
 	import PlaylistStore from "$stores/PlaylistStore";
-	import { Pause, Play, Star, Trash2 } from "lucide-svelte";
+	import { CheckCircle, ChevronsUpDown, Circle, Pause, Play, Star, Trash2 } from "lucide-svelte";
     import { getDurationHuman, MainServerSubsonicAPI } from "$lib/js/Helpers.js";
     import ImgCover from "$components/global/ImgCover.svelte";
 	import FavoriteIcon from "$components/global/Song/partials/FavoriteIcon.svelte";
@@ -41,6 +41,24 @@
     $: if (song) {
         durationHuman = getDurationHuman(song.duration);
     }
+
+    function toggleCheck() {
+        song.checked = !song.checked;
+    }
+
+    /**
+     * Set default unchecked
+     * 
+     * TODO: Remove this function when Svelte support default values in props
+     */
+    function defaultUnchecked() {
+        if (song.checked || song.checked === undefined) {
+            song.checked = false;
+        }
+    }
+
+    defaultUnchecked();
+    
 </script>
 <div 
     class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border "
@@ -51,16 +69,34 @@
     <div class="cursor-pointer">
         <div class="py-2 flex items-center">
             
-            <!-- delete -->
-            {#if $isPlaying && $currentSong.id === song.id}
-                <div>
-                    <Trash2 class="stroke-current text-red-500 dark:text-red-700 opacity-50 h-6 w-12 cursor-not-allowed"/>
-                </div>
-            {:else}
-                <div on:click={deleteSong} on:keypress={deleteSong}>
-                    <Trash2 class="stroke-current text-red-500 dark:text-red-700 h-6 w-12"/>
-                </div>
-            {/if}
+            <div class="flex mx-2 gap-2">
+
+                <!-- <div>
+                    <ChevronsUpDown class="main-color-icon h-6 w-auto cursor-grab select-none"/>
+                </div> -->
+
+                {#if song.checked == true}
+                    <div on:click={toggleCheck} on:keypress={toggleCheck}>
+                        <CheckCircle class="main-color-icon h-6 w-auto cursor-pointer select-none"/>
+                    </div>
+                {:else}
+                    <div on:click={toggleCheck} on:keypress={toggleCheck}>
+                        <Circle class="main-color-icon h-6 w-auto cursor-pointer select-none"/>
+                    </div>
+                {/if}
+    
+                <!-- delete -->
+                {#if $isPlaying && $currentSong.id === song.id}
+                    <div>
+                        <Trash2 class="stroke-current text-red-500 dark:text-red-700 opacity-50 h-6 w-auto cursor-not-allowed"/>
+                    </div>
+                {:else}
+                    <div on:click={deleteSong} on:keypress={deleteSong}>
+                        <Trash2 class="stroke-current text-red-500 dark:text-red-700 h-6 w-auto"/>
+                    </div>
+                {/if}
+
+            </div>
             
             <ImgCover api={api} title={song.title} songId={song.id} />
 

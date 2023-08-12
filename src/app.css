@@ -17,6 +17,10 @@ html {
     @apply bg-white;
 }
 
+.main-color-icon {
+    @apply stroke-current text-slate-900 dark:text-zinc-200;
+}
+
 .text-success {
     @apply text-green-600 dark:text-green-500;
 }

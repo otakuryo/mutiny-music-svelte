@@ -4,7 +4,6 @@
 	import TemporalListStore from "$stores/TemporalListStore";
 	import PlaylistStore from "$stores/PlaylistStore";
 	import PlayerMenuPlaylist from "./partials/PlayerMenuPlaylist.svelte";
-	import { onMount } from "svelte";
 	import PlayerStore from "$stores/PlayerStore";
 
     export let api: SubsonicAPI;

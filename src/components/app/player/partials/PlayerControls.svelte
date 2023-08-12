@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Pause, Play, SkipBack, SkipForward, Timer } from "lucide-svelte";
     import PlayerStore, { isPlaying } from "$stores/PlayerStore";
     import PlaylistStore from "$stores/PlaylistStore";
@@ -42,7 +42,7 @@
     /**
 	 * @type { NodeJS.Timeout | undefined }
 	 */
-    let intervalDuration;
+    let intervalDuration: NodeJS.Timeout | undefined = undefined;
 
     function getCurrentPosition() {
         console.log("getCurrentPosition");
