@@ -69,14 +69,20 @@
 
 </script>
 
+<style>
+    .custom-w-full {
+        width: calc(100% - theme('width.12'));
+    }
+</style>
+
 <div class="divider-y w-full py-3">
-    <div class="flex flex-row">
+    <div class="flex flex-row max-w-full">
         
         <ImgCover songId={songId} api={api} size="40" title={song?.title} />
         
         {#if song }
             <div class="flex flex-col justify-center">
-                <div class="marquee w-10/12">
+                <div class="marquee custom-w-full">
                     <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }">{song.title}</div>
                     <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }" aria-hidden="true">{song.title}</div>
                 </div>
