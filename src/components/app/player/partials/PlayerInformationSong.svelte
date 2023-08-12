@@ -76,7 +76,7 @@
         
         {#if song }
             <div class="flex flex-col justify-center">
-                <div class="marquee">
+                <div class="marquee w-10/12">
                     <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }">{song.title}</div>
                     <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }" aria-hidden="true">{song.title}</div>
                 </div>
