@@ -103,8 +103,6 @@
     }
 
     function onDragOver(event: DragEvent) {
-        console.log("onDragOver");
-        
 		event.preventDefault();
         if (!event.dataTransfer) return;
 		event.dataTransfer.dropEffect = 'move';
