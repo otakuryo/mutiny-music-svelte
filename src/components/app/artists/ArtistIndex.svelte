@@ -5,6 +5,9 @@
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 	import LoadingLineAr from './partials/LoadingLineAr.svelte';
+	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
+	import BreadcrumbStore from '$stores/BreadcrumbStore';
+	import { AddItemToBreadcrumbs } from '$lib/ts/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { artist: ArtistWithAlbumsID3 });
 
@@ -27,6 +30,9 @@
             api = MainServerSubsonicAPI();
 
             let resMusic: IndexesTypeLocal = await api.getArtistWithAlbums({id: artistID});
+
+            AddItemToBreadcrumbs(resMusic.artist.name, `/artists?id=${resMusic.artist.id}` );
+
             return resMusic;
 
         } catch (error) {
@@ -48,10 +54,14 @@
             <LoadingLineAr />
         {:then serverResponse}
     
+            <div class="divide-y border-theme mx-2 mt-2">
+                <BreadcrumbBase />
+            </div>
+
             {#if serverResponse.artist.album && serverResponse.artist.album.length > 0}
 
                 <div class="divide-y px-2 border-theme mx-2 mt-2">
-                    <LineBack url="/artists" name="Volver" />
+                    <LineBack url="/artists" name="Volver" onBack={BreadcrumbStore.removeLastItem} />
                 </div>
                 
                 <div class="divide-y px-2 border-theme mx-2 mt-2">

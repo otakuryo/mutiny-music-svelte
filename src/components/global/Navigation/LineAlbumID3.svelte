@@ -19,7 +19,7 @@
     data-id={album.id}>
         <div class="p-2 flex items-center ">
             
-            <ImgCover api={api} title={album.name} songId={album.id} />
+            <ImgCover api={api} title={album.name} songId={album.coverArt} />
 
             <a href="/albums?id={album.id}" on:click={refreshViewOnClick} class="w-full">
 

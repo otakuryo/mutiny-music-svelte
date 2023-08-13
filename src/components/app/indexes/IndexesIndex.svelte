@@ -7,6 +7,8 @@
     import type { LetterLocal } from '$lib/types/global.d';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
+	import { AddItemToBreadcrumbs } from '$lib/ts/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { indexes: IndexesID3 });
 
@@ -38,6 +40,7 @@
             letters = getFirstLetterFromIndexes(resMusicPlaylist.indexes);
             console.log(letters);
             
+            AddItemToBreadcrumbs('Directories', `/indexes` );
 
             return resMusicPlaylist;
 
@@ -78,6 +81,8 @@
     {#await dataFromServer}
         <div class="w-full">loading...</div>
     {:then libraries}
+
+        <BreadcrumbBase />
 
         <IndexLetters bind:letters={letters} />
 

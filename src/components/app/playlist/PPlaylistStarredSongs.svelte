@@ -25,6 +25,23 @@
         try {
             api = MainServerSubsonicAPI();
             let resMusicPlaylist: PlaylistStarredServerType = await api.getStarred();
+
+            // console.log("Sort 1");
+
+            // if (!resMusicPlaylist.starred.song) return resMusicPlaylist;
+
+            // console.log("Sort 2");
+            
+            // resMusicPlaylist.starred.song = resMusicPlaylist.starred.song.sort((a, b) => {
+
+            //     if (a.created === undefined || b.created === undefined) return 0;
+
+            //     if (a.created < b.created) return 1;
+            //     if (a.created > b.created) return -1;
+                
+            //     return a.title.toLowerCase() > b.title.toLowerCase() ? 1 : -1;
+            // });
+
             return resMusicPlaylist;
         } catch (error) {
             console.log(error); 

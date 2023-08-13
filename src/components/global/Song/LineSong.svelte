@@ -80,7 +80,7 @@
 
             <BtnChecked bind:checked={song.checked} toggleChecked={toggleChecked} />
             
-            <ImgCover api={api} title={song.title} songId={song.id} />
+            <ImgCover api={api} title={song.title} songId={song.coverArt} />
 
             <div class="flex flex-col">
                 <slot name="title-line" >

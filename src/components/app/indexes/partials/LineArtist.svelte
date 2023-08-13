@@ -15,7 +15,7 @@
     data-id={artist.id}>
         <div class="p-2 flex items-center ">
             
-            <ImgCover api={api} title={artist.name} songId={artist.id} />
+            <ImgCover api={api} title={artist.name} songId={artist.coverArt} />
             <a href="/directory?id={artist.id}" on:click={refreshViewOnClick}>
 
                 <div class="flex flex-col">

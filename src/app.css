@@ -166,3 +166,7 @@ html {
         transform: translateX(calc(-100% - var(--gap)));
     }
 }
+
+.breadcrumbs .item {
+    @apply text-sm text-zinc-700 hover:opacity-75 md:ml-2 dark:text-zinc-400 dark:hover:text-white ;
+}

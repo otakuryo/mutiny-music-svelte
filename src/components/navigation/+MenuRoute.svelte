@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BreadcrumbStore from '$stores/BreadcrumbStore';
     import { Headphones, Menu } from 'lucide-svelte';
 
     const navbar_ = [
@@ -45,7 +46,7 @@
 <!-- desktop menu -->
 <header class=" fixed h-20 md:h-10 w-screen dark:text-zinc-300 bg-white dark:bg-zinc-900 z-50 dark:border-b-white border-b-2 border-b-zinc-300">
     <div class="text-lg mx-auto max-w-6xl flex flex-row justify-between h-full">
-        <a href="/" class="mx-6 flex items-center " aria-label="Website Logo">
+        <a href="/" on:click={BreadcrumbStore.clear} class="mx-6 flex items-center " aria-label="Website Logo">
             <Headphones class="w-8 h-8"/>
             <span class="self-center sm:hidden text-2xl whitespace-nowrap dark:text-white ml-3 mt-1">
                  Mutiny
@@ -54,7 +55,7 @@
     
         {#each navbar_ as { name, href }}
             <nav class="flex flex-row space-x-3 h-full items-center">
-                <a href={href} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block cursor-pointer">
+                <a href={href} on:click={BreadcrumbStore.clear} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 hidden sm:block cursor-pointer">
                     {name}
                 </a>
             </nav>
@@ -77,7 +78,7 @@
     <div class="h-full overflow-scroll">
         {#each navbar_ as { name, href }}
             <nav class="m-6 flex flex-col space-y-3">
-                <a href={href} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden cursor-pointer">
+                <a href={href} on:click={BreadcrumbStore.clear} class="dark:text-zinc-300 text-black hover:text-zinc-500 dark:hover:text-zinc-400 sm:hidden cursor-pointer">
                     {name}
                 </a>
             </nav>
