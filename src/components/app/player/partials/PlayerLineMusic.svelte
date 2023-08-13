@@ -98,7 +98,7 @@
 
             </div>
             
-            <ImgCover api={api} title={song.title} songId={song.id} />
+            <ImgCover api={api} title={song.title} songId={song.coverArt} />
 
             <div class="flex flex-col w-60 select-none" on:click={playSong} on:keypress={playSong}>
                 <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white truncate">{song.title}</span>

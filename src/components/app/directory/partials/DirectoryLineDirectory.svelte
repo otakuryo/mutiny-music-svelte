@@ -20,7 +20,7 @@
 
         <div class="p-2 flex items-center ">
             
-            <ImgCover api={api} title={directory.title} songId={directory.id} />
+            <ImgCover api={api} title={directory.title} songId={directory.coverArt} />
 
             <a href="/directory?id={directory.id}" class="w-full">
 

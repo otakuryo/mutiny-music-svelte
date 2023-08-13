@@ -86,7 +86,7 @@
 
             <BtnChecked bind:checked={song.checked} toggleChecked={toggleChecked} />
             
-            <ImgCover api={api} title={song.title} songId={song.id} />
+            <ImgCover api={api} title={song.title} songId={song.coverArt} />
 
             <div class="flex flex-col w-full" on:click={addSongToPlaylistAndPlay} on:keypress={addSongToPlaylistAndPlay}>
                 <span data-amplitude-song-info="name" class="w-full font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{song.title}</span>

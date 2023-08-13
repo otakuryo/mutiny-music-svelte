@@ -77,10 +77,9 @@
 
 <div class="divider-y w-full py-3">
     <div class="flex flex-row max-w-full">
-        
-        <ImgCover songId={songId} api={api} size="40" title={song?.title} />
-        
+
         {#if song }
+            <ImgCover songId={song.coverArt} api={api} size="40" title={song.title} />
             <div class="flex flex-col justify-center">
                 <div class="marquee custom-w-full">
                     <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }">{song.title}</div>
@@ -91,6 +90,7 @@
                 <div class="text text-bg-player-light-text dark:text-cover-dark-text">{getDurationHuman(song.duration)}</div>
             </div>
         {:else}
+            <ImgCover songId={songId} api={api} size="40" title="Sin imagen" />
             <div class="flex flex-col justify-center">
                 <div class="text text-bg-player-light-text dark:text-cover-dark-text">--</div>
                 <div class="text text-bg-player-light-text dark:text-cover-dark-text">--</div>
