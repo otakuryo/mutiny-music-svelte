@@ -5,10 +5,11 @@
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { AddItemToBreadcrumbs, RemoveItemOnBreadcrumbs, MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
     import type { LetterLocal } from '$lib/types/global.d';
 	import LoadingLineDir from './partials/LoadingLineDir.svelte';
+	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
 
     type DirectoryType = (SubsonicBaseResponse & { directory: Directory });
     export let directoryId: string;
@@ -37,6 +38,12 @@
             api = MainServerSubsonicAPI();
             let resMusicDirectory: DirectoryType = await api.getMusicDirectory({id: directoryId});
             getLettersFromDirectories(resMusicDirectory.directory);
+            if (resMusicDirectory.directory) {
+                AddItemToBreadcrumbs(resMusicDirectory.directory.name, `/directory?id=${resMusicDirectory.directory.id}` );
+            } else {
+                AddItemToBreadcrumbs('Music Folders', `/directory?id=${directoryId}`);
+            }
+
             return resMusicDirectory;
         } catch (error) {
             let e: Error = error as Error;
@@ -110,12 +117,16 @@
         {:then libraries}
 
             <div class="divide-y border-theme mx-2 mt-2">
+                <BreadcrumbBase />
+            </div>
+
+            <div class="divide-y border-theme mx-2 mt-2">
                 <IndexLetters bind:letters={lettersArray} />
             </div>
     
             {#if libraries.directory && libraries.directory.parent}
                 <div class="divide-y border-theme mx-2 mt-2">
-                    <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent}  />
+                    <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent}  onBack={RemoveItemOnBreadcrumbs} />
                 </div>
             {/if}
 

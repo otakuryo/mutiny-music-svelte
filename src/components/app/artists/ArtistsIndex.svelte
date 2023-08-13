@@ -6,6 +6,8 @@
 	import LoadingLineAr from './partials/LoadingLineAr.svelte';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
 	import type { LetterLocal } from '$lib/types/global';
+	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
+	import { AddItemToBreadcrumbs } from '$lib/ts/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { artists: ArtistsID3 });
 
@@ -24,6 +26,9 @@
 
             let resMusic: IndexesTypeLocal = await api.getArtists();
             letters = getFirstLetterFromArtists(resMusic.artists);
+
+            AddItemToBreadcrumbs('Artists', `/artists` );
+            
             return resMusic;
 
         } catch (error) {
@@ -55,6 +60,10 @@
         {#await dataFromServer}
             <LoadingLineAr />
         {:then serverResponse}
+
+            <div class="divide-y border-theme mx-2 mt-2">
+                <BreadcrumbBase />
+            </div>
 
             <div class="divide-y px-2 border-theme m-2">
                 <IndexLetters letters={letters} />

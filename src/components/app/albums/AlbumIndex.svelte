@@ -7,6 +7,9 @@
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 	import LoadingLineAl from './partials/LoadingLineAl.svelte';
+	import BreadcrumbStore from '$stores/BreadcrumbStore';
+	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
+	import { AddItemToBreadcrumbs } from '$lib/ts/Helpers';
 
     type AlbumLocal = (SubsonicBaseResponse & { album: AlbumWithSongsID3 });
 
@@ -26,9 +29,10 @@
     async function getDataFromServer(): Promise<AlbumLocal> {
 
         try {
-            api = await MainServerSubsonicAPI();
+            api = MainServerSubsonicAPI();
 
             let resMusic: AlbumLocal = await api.getAlbum({id: albumId});
+            AddItemToBreadcrumbs(resMusic.album.name, `/album?id=${resMusic.album.id}` );
             return resMusic;
 
         } catch (error) {
@@ -36,47 +40,6 @@
             return {} as AlbumLocal;
         }
     }
-
-    // async function getDataFromServer(): Promise<AlbumLocal> {
-
-    //     try {
-    //         api = await initSubsonicApi();
-    //     } catch (error) {
-    //         console.log(error);
-    //         return [];            
-    //     }
-
-    //     // const resPing: SubsonicBaseResponse = await api.ping()
-
-    //     // // Si no hay una respuesta por parte del servidor, se para y no se hace nada
-    //     // if (resPing.status !== "ok") {
-    //     //     return [];
-    //     // }
-
-    //     await new Promise(r => setTimeout(r, 50));
-
-    //     let resMusicDirectory: SubsonicBaseResponse[] = [];
-
-    //     if (albumId) {
-    //         resMusicDirectory.push(await api.getMusicDirectory({id: albumId}));
-    //         return resMusicDirectory;
-    //     }
-        
-    //     const resMusicFolders: SubsonicBaseResponse & { musicFolders: MusicFolders }  = await api.getMusicFolders()
-    //     if (!resMusicFolders || !resMusicFolders.musicFolders || !resMusicFolders.musicFolders.musicFolder) {
-    //         return [];
-    //     }
-
-
-    //     if (resMusicFolders.musicFolders.musicFolder.length > 0) {
-    //         for(const folder of resMusicFolders.musicFolders.musicFolder) {
-    //             resMusicDirectory.push(await api.getMusicDirectory({id: folder.id}))
-    //         }
-    //     }
-        
-    //     return resMusicDirectory;
-
-    // }
 
     function refreshViewOnClick() {
         dataFromServer = getDataFromServer();
@@ -112,13 +75,13 @@
         {:then albumResponse}
     
             {#if albumResponse.album.song && albumResponse.album.song.length > 0}
-                <!-- {#if library.directory && library.directory.parent}
-                    <MusicFolderLineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
-                {/if} -->
 
+                <div class="divide-y border-theme mx-2 mt-2">
+                    <BreadcrumbBase />
+                </div>
                 
                 <div class="divide-y border-theme mx-2 mt-2">
-                    <LineBack url="/albums" name="Albums" />
+                    <LineBack url="/albums" name="Albums" onBack={BreadcrumbStore.removeLastItem} />
                 </div>
 
                 <div class="divide-y px-2 border-theme mx-2 mt-2">

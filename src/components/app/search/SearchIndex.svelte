@@ -6,6 +6,8 @@
 	import HorizontalAlbums from '$components/app/search/partials/HorizontalAlbums.svelte';
 	import HorizontalArtists from '$components/app/search/partials/HorizontalArtists.svelte';
 	import VerticalSongs from '$components/app/search/partials/VerticalSongs.svelte';
+	import { AddItemToBreadcrumbs } from '$lib/ts/Helpers';
+	import { onDestroy } from 'svelte';
 
     type SearchResult = (SubsonicBaseResponse & { searchResult3: SearchResult3 });
 
@@ -179,6 +181,11 @@
         // If not is 'all', 'album', 'artist' or 'song', return false
         return false;
     }
+
+    onDestroy(() => {
+        clearTimeout(timeout);
+        AddItemToBreadcrumbs('Search', `/search?query=${query}` );
+    });
 </script>
 
 <div class="main-left-panel">

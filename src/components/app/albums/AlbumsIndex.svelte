@@ -4,6 +4,9 @@
     import type { SubsonicAPI, AlbumList2, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import { afterUpdate, onMount } from 'svelte';
 	import LoadingLineAl from '$components/app/albums/partials/LoadingLineAl.svelte';
+	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
+	import BreadcrumbStore from '$stores/BreadcrumbStore';
+	import { AddItemToBreadcrumbs } from '$lib/ts/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { albumList2: AlbumList2 });
     type SubsonicSortType = 'alphabeticalByName'
@@ -35,6 +38,7 @@
             api = MainServerSubsonicAPI();
 
             let resMusic: IndexesTypeLocal = await api.getAlbumList2({type: orderBy, size: size, offset: currentOffset});
+            AddItemToBreadcrumbs('Albums', `/albums` );
             currentOffset += size;
             return resMusic;
 
@@ -86,6 +90,10 @@
         {#await dataFromServer}
             <LoadingLineAl />
         {:then libraries}
+
+            <div class="divide-y border-theme mx-2 mt-2">
+                <BreadcrumbBase />
+            </div>
 
             <div class="overflow-y-auto divide-y border-theme m-2" bind:this={elementContentParent} on:scroll={onScroll}>
         
