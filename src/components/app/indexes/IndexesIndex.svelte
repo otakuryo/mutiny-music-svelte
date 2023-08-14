@@ -94,10 +94,10 @@
     
             {#if libraries.indexes.index && libraries.indexes.index.length > 0}
     
-                <div class="divide-y border-theme mx-2 mt-2">
+                <div class="divide-y border-theme m-2 overflow-y-scroll">
                     {#each libraries.indexes.index as line, index}
         
-                        <div class="border-b-0">
+                        <div class="main-color sticky w-full -top-1 z-10 p-2 ">
                             <div class="w-full pl-2 h-8 uppercase" data-id-index="letter-{line.name}" id="letter-{line.name}"> {line.name} </div>
                         </div>
         
