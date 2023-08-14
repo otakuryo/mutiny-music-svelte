@@ -6,7 +6,7 @@
 	import LineInternalUrl from '$components/app/playlist/partials/LineInternalUrl.svelte';
 	import { Disc, Users } from 'lucide-svelte';
 	import InputTextCreatePlaylist from './partials/InputTextCreatePlaylist.svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     // export let playlistId: string|undefined = undefined;

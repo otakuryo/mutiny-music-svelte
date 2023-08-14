@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MainServerSubsonicAPI } from "$lib/js/Helpers";
+	import { MainServerSubsonicAPI } from "$lib/ts/Helpers";
 	import type { Playlist, SubsonicAPI, SubsonicBaseResponse } from "$models/servers/subsonic";
 	import TemporalListStore from "$stores/TemporalListStore";
 	import { onMount } from "svelte";

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
     import type { SearchResult3, SubsonicAPI, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import InputText from './partials/InputText.svelte';
 	import { CheckCircle, FolderSearch, Loader } from 'lucide-svelte';

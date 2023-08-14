@@ -2,7 +2,7 @@
     import type { SubsonicAPI, SubsonicBaseResponse, ArtistsID3 } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import LineArtist from '$components/app/artists/partials/LineArtist.svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import LoadingLineAr from './partials/LoadingLineAr.svelte';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
 	import type { LetterLocal } from '$lib/types/global';

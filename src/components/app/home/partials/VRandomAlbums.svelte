@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { AlbumList2, SubsonicAPI, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import HorizontalAlbums from '$components/app/search/partials/HorizontalAlbums.svelte';
 	import LoadingLine from './LoadingLine.svelte';
 

@@ -1,6 +1,6 @@
 
 <script lang="ts">
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
     import type { MusicFolders, SubsonicAPI, SubsonicBaseResponse, Error } from '$models/servers/subsonic';
 	import LoadingLineFolder from '$components/app/musicFolder/partials/LoadingLineFolder.svelte';
 	import MusicFolderLine from '$components/app/musicFolder/partials/MusicFolderLine.svelte';

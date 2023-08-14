@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { MainServerSubsonicAPI } from "$lib/js/Helpers";
+	import { MainServerSubsonicAPI } from "$lib/ts/Helpers";
 	import { Check, FilePlus, Keyboard, Loader, Save, Search, Server } from "lucide-svelte";
     type typeState = 'waiting' | 'typing' | 'save' | 'saving';
 

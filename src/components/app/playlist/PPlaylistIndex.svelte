@@ -4,7 +4,7 @@
 	import LineMusic from '$components/app/playlist/partials/LineMusic.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     export let playlistId: string|undefined = undefined;

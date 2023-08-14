@@ -5,7 +5,7 @@
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import LoadingLineAl from './partials/LoadingLineAl.svelte';
 	import BreadcrumbStore from '$stores/BreadcrumbStore';
 	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
