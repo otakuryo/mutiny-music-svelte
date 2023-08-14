@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { SubsonicAPI, SubsonicBaseResponse, Child, Error, Directory } from '$models/servers/subsonic';
-	import MusicFolderLineBack from '$components/app/musicFolder/partials/MusicFolderLineBack.svelte';
+	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import { onMount } from 'svelte';
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
@@ -126,7 +126,7 @@
     
             {#if libraries.directory && libraries.directory.parent}
                 <div class="divide-y border-theme mx-2 mt-2">
-                    <MusicFolderLineBack name={libraries.directory.name} id={libraries.directory.parent}  onBack={RemoveItemOnBreadcrumbs} />
+                    <LineBack name={libraries.directory.name} url="/directory?id={libraries.directory.parent}"  onBack={RemoveItemOnBreadcrumbs} />
                 </div>
             {/if}
 

@@ -2,7 +2,7 @@
     import type { SubsonicAPI, SubsonicBaseResponse, Starred, Child } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
-	import LineBack from '$components/app/playlist/partials/LineBack.svelte';
+	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
@@ -73,7 +73,7 @@
         {:then response}
         
             <div class="divide-y px-2 border-theme mx-2 mt-2">
-                <LineBack />
+                <LineBack url="/playlists" name="Playlists" />
             </div>
             
             {#if response.starred.album && response.starred.album.length > 0}
