@@ -4,7 +4,7 @@
     import PlaylistStore from "$stores/PlaylistStore";
     import { currentSong } from "$stores/CurrentPlaySong";
     import { get } from "svelte/store";
-    import { getDurationHuman } from "$lib/js/Helpers.js";
+    import { getDurationHuman } from "$lib/ts/Helpers.js";
 
     let disablePrev = false;
     let disableNext = false;

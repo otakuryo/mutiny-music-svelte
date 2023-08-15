@@ -7,8 +7,8 @@ export const ServerConfigObj = map<ServerConfig>({
     password: "",
     serverUrl: "",
     serverName: "",
-    serverType: "subsonic",
-    serverVersion: "1.0.0",
+    serverType: "",
+    serverVersion: "",
 })
 
 export const ServerConfigPersistent = persistentMap<ServerConfig>('settings:', {})

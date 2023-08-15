@@ -3,9 +3,9 @@
 
     export let labelSelect = "Label";
     export let nameSelect = "Name";
-    export let valueSelect = "Option 1";
+    export let valueSelect = "";
     export let idSelect = "Id";
-    export let optionsSelect = ["Option 1", "Option 2", "Option 3"];
+    export let optionsSelect = ["", "Option 2", "Option 3"];
 
     // Función que se ejecuta al cambiar el valor del select
     export let checkServer = () => {};

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { SubsonicAPI, Child } from "$models/servers/subsonic";
     import { currentSong } from "$stores/CurrentPlaySong";
-    import { MainServerSubsonicAPI, getDurationHuman } from "$lib/js/Helpers.js";
+    import { MainServerSubsonicAPI, getDurationHuman } from "$lib/ts/Helpers.js";
 	import ImgCover from "$components/global/ImgCover.svelte";
 	import FavoriteIcon from "$components/global/Song/partials/FavoriteIcon.svelte";
 	import InformationIcon from "$components/global/Song/partials/InformationIcon.svelte";

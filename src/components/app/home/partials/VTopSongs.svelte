@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { SubsonicAPI, SubsonicBaseResponse, TopSongs } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import LineSong from '$components/global/Song/LineSong.svelte';
 	import LoadingLine from './LoadingLine.svelte';
 

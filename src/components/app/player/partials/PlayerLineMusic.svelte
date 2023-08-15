@@ -4,7 +4,7 @@
 	import PlayerStore, { isPlaying } from "$stores/PlayerStore";
 	import PlaylistStore from "$stores/PlaylistStore";
 	import { CheckCircle, ChevronsUpDown, Circle, Pause, Play, Star, Trash2 } from "lucide-svelte";
-    import { getDurationHuman, MainServerSubsonicAPI } from "$lib/js/Helpers.js";
+    import { getDurationHuman, MainServerSubsonicAPI } from "$lib/ts/Helpers.js";
     import ImgCover from "$components/global/ImgCover.svelte";
 	import FavoriteIcon from "$components/global/Song/partials/FavoriteIcon.svelte";
 	import { get } from "svelte/store";

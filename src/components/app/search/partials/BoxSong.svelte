@@ -2,7 +2,7 @@
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import type { Child } from "$models/servers/subsonic/types";
 	import ImgCover from "./ImgCover.svelte";
-	import { getDurationHuman } from "$lib/js/Helpers";
+	import { getDurationHuman } from "$lib/ts/Helpers";
 
     export let song: Child;
     export let api: SubsonicAPI;

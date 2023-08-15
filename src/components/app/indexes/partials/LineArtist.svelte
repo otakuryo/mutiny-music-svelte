@@ -16,7 +16,8 @@
         <div class="p-2 flex items-center ">
             
             <ImgCover api={api} title={artist.name} songId={artist.coverArt} />
-            <a href="/directory?id={artist.id}" on:click={refreshViewOnClick}>
+
+            <a href="/directory?id={artist.id}" on:click={refreshViewOnClick} class="w-full">
 
                 <div class="flex flex-col">
                     <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{artist.name}</span>
@@ -24,9 +25,13 @@
                     </div>
                 </div>
             </a>
-            <a href="/directory?id={artist.id}" on:click={refreshViewOnClick}>
-                <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"/>
-            </a>
+
+            <div class="flex flex-col ml-auto">
+                <a href="/directory?id={artist.id}" on:click={refreshViewOnClick} class="">
+                    <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"/>
+                </a>
+            </div>
+            
         </div>
 </div>
 

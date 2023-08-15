@@ -1,7 +1,7 @@
 <script lang="ts">
     import { type MusicFolders, SubsonicAPI, type SubsonicBaseResponse, type Child } from '$models/servers/subsonic';
     import { ServerConfigPersistent } from '$stores/ServerConfigStore';
-	import MusicFolderLineBack from '$components/app/musicFolder/partials/MusicFolderLineBack.svelte';
+	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import { onMount } from 'svelte';
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
@@ -116,7 +116,7 @@
             {#if library.directory}
 
                 {#if library.directory && library.directory.parent}
-                    <MusicFolderLineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
+                    <LineBack name={library.directory.name} id={library.directory.parent} refreshViewOnClick={refreshViewOnClick}  />
                 {/if}
 
                 <ControlsNavigationPlaylist

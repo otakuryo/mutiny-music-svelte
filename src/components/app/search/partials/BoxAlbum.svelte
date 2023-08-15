@@ -3,7 +3,7 @@
 	import type { AlbumID3, Child } from "$models/servers/subsonic/types";
 	import { ArrowRight } from "lucide-svelte";
     import ImgCover from "$components/global/ImgCover.svelte";
-	import { getDurationHuman } from "$lib/js/Helpers";
+	import { getDurationHuman } from "$lib/ts/Helpers";
 
     export let album: AlbumID3;
     export let api: SubsonicAPI;

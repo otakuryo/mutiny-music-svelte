@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import LoadingLineAr from './partials/LoadingLineAr.svelte';
 	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
 	import BreadcrumbStore from '$stores/BreadcrumbStore';

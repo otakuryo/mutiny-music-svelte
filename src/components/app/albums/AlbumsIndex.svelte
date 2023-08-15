@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
+	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
     import type { SubsonicAPI, AlbumList2, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import { afterUpdate, onMount } from 'svelte';
 	import LoadingLineAl from '$components/app/albums/partials/LoadingLineAl.svelte';

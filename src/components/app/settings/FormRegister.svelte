@@ -1,19 +1,24 @@
 <script lang="ts">
     import InputText from "$components/global/+InputText.svelte";
-    import InputSelect from "$components/global/+InputSelect.svelte";
     import ButtonSubmit from "$components/global/+ButtonSubmit.svelte";
     import LabelIcon from "$components/global/+LabelIcon.svelte";
 
     import { SubsonicAPI } from '$models/servers/subsonic';
     import { ServerConfigObj, ServerConfigPersistent } from '$stores/ServerConfigStore';
+	import type { ServerConfig } from "$models/ServerConfig.model";
+	import InputSelectSimple from "$components/global/InputSelectSimple.svelte";
+	import InputTextSimple from "$components/global/InputTextSimple.svelte";
 
-    // Objeto para almacenar el estado de la conexion con el servidor
+    // Server config object
+    let server: ServerConfig = ServerConfigPersistent.get();
+
+    // Object to store the status of the connection to the server
     let statusData = {
         "status": "waiting",
         "label": "Waiting..."
     }
 
-    // Debounce, para evitar que se ejecute la funcion checkServerRemote() cada vez que se modifica un campo
+    // Debounce, to avoid the function checkServerRemote() from being executed every time a field is modified
     let debounde = setTimeout(checkServerRemote, 1000);   
     function checkServer() {
         clearTimeout(debounde);
@@ -21,17 +26,17 @@
         return;
     }
 
-    // Ejecuta la funcion checkServerRemote() para verificar la conexion con el servidor
+    // Run the checkServerRemote() function to verify the connection to the server
     async function checkServerRemote() {
 
         console.log("Run: checkServerRemote");
         
         // Obtenemos los valores de estado
-        let server = ServerConfigObj.get();
+        server = ServerConfigPersistent.get();
 
         console.log(server);
         
-        // Cancela la ejecucion si es un objeto null o si es un objeto {} vacio
+        // Cancels execution if it is a null object or if it is an empty {} object
         if (!server || Object.keys(server).length === 0) {
             statusData.status = "error";
             statusData.label = "All fields are required";
@@ -55,33 +60,38 @@
 
             console.log(resPing);
 
-            if (resPing.error) {
-                console.log("error");
-                statusData.status = "error";
-                statusData.label = `${resPing.error.message} (ERROR: ${resPing.error.code}) (ver.: ${resPing.version})`;
-                return
-            }
-            console.log("pass");
-
-            statusData.status = "pass";
-            statusData.label = `Server conected (ver.: ${resPing.version})`;
-
-            // Si no existe el tipo de servidor en el almacenamiento local, lo agregamos
+            // If the server type does not exist in the local storage, we add it
             if (!ServerConfigPersistent.get().serverType) {
                 ServerConfigObj.setKey("serverType", "subsonic")
                 ServerConfigPersistent.setKey("serverType", "subsonic")
             }
 
-            // Si no existe la version del servidor en el almacenamiento local, lo agregamos
+            // If the server version does not exist in the local storage, we add it
             if (!ServerConfigPersistent.get().serverVersion) {
+                console.log("set version");
+                
                 ServerConfigObj.setKey("serverVersion", resPing.version)
                 ServerConfigPersistent.setKey("serverVersion", resPing.version)
             }
 
+            if (resPing.error) {
+                console.log("error");
+                statusData.status = "error";
+                statusData.label = `${resPing.error.message} (ERROR: ${resPing.error.code}) (ver.: ${resPing.version})`;
+                server = ServerConfigPersistent.get();
+
+                return
+            }
+
+            statusData.status = "pass";
+            statusData.label = `Server conected (ver.: ${resPing.version})`;
+
+            server = ServerConfigPersistent.get();
+
         } catch (error) {
             console.log(`Error:`,error);
 
-            // Obtenemos los valores de estado
+            // Get status values
             statusData.status = "error";
             statusData.label = `Error: Network Error`;
         }
@@ -96,14 +106,51 @@
     <form on:submit|preventDefault={checkServer}>
         <div class="mt-8 max-w">
             <div class="grid grid-cols-1 gap-6">
-                <InputText idInput="userConfig" labelInput="Username" nameInput="user" keyLocal="username" checkServer={checkServer} />
-                <InputText idInput="passConfig" labelInput="Password" nameInput="password" typeInput="password" keyLocal="password" checkServer={checkServer} />
-    
-                <InputText idInput="urlConfig"  labelInput="Server URL"  nameInput="serverUrl"  phInput="https://255.255.255.255:8080" keyLocal="serverUrl" checkServer={checkServer} />
-                <InputText idInput="nameConfig" labelInput="Server Name" nameInput="serverName" valueInput="Mutiny Server" keyLocal="serverName" checkServer={checkServer}/>
+                
+                <InputTextSimple
+                    bind:valueInput={server.username}
+                    typeInput="text"
+                    labelInput="Username"
+                    keyLocal="username"
+                    checkServer={checkServer} />
 
-                <InputSelect idSelect="typeConfig" labelSelect="Server type" nameSelect="serverType"  optionsSelect={['subsonic','navidrone','generic']} keyLocal="serverType" checkServer={checkServer}/>
-                <InputSelect idSelect="versionConfig" labelSelect="Server Version" nameSelect="serverVersion" optionsSelect={['1.0.0','1.9.0','1.10.0','1.16.1',]} keyLocal="serverVersion" checkServer={checkServer}/>
+                <InputTextSimple
+                    bind:valueInput={server.password}
+                    typeInput="password"
+                    labelInput="Password"
+                    keyLocal="password"
+                    checkServer={checkServer} />
+
+                <InputTextSimple
+                    bind:valueInput={server.serverUrl}
+                    typeInput="text"
+                    labelInput="Server URL"
+                    phInput="https://IP:PORT"
+                    keyLocal="serverUrl"
+                    checkServer={checkServer} />
+
+                <InputTextSimple
+                    bind:valueInput={server.serverName}
+                    typeInput="text"
+                    labelInput="Server Name"
+                    phInput="Mutiny Server"
+                    defaultValueInput="Mutiny Server"
+                    keyLocal="serverName"
+                    checkServer={checkServer} />
+
+                <InputSelectSimple
+                    required={true}
+                    labelSelect="Server type"
+                    optionsSelect={['subsonic','navidrone','generic']}
+                    keyLocal="serverType"
+                    valueSelect={server.serverType} />
+
+                <InputSelectSimple 
+                    labelSelect="Server Version" 
+                    optionsSelect={['1.0.0','1.9.0','1.10.0','1.16.1',]}
+                    keyLocal="serverVersion"
+                    valueSelect={server.serverVersion} />
+
             </div>
         </div>
         <div class="mt-8 max-w">

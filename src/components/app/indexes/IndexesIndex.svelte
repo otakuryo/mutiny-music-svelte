@@ -1,14 +1,14 @@
 <script lang="ts">
 
     import type {  SubsonicAPI, SubsonicBaseResponse, IndexesID3 } from '$models/servers/subsonic';
-	import { onMount } from 'svelte';
-	import LineArtist from './partials/LineArtist.svelte';
-	import viewport from '$lib/js/useViewPortAction';
     import type { LetterLocal } from '$lib/types/global.d';
+	import { onMount } from 'svelte';
+	import LineArtist from '$components/app/indexes/partials/LineArtist.svelte';
+	import viewport from '$lib/js/useViewPortAction';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
-	import { MainServerSubsonicAPI } from '$lib/js/Helpers';
 	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
-	import { AddItemToBreadcrumbs } from '$lib/ts/Helpers';
+	import { AddItemToBreadcrumbs, MainServerSubsonicAPI } from '$lib/ts/Helpers';
+	import LoadingLineIndex from '$components/app/indexes/partials/LoadingLineIndex.svelte';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { indexes: IndexesID3 });
 
@@ -78,33 +78,42 @@
 </script>
 
 <div class="main-left-panel">
-    {#await dataFromServer}
-        <div class="w-full">loading...</div>
-    {:then libraries}
-
-        <BreadcrumbBase />
-
-        <IndexLetters bind:letters={letters} />
-
-        {#if libraries.indexes.index && libraries.indexes.index.length > 0}
-
-            {#each libraries.indexes.index as line, index}
-
-                <div class="border-b-0">
-                    <div class="w-full pl-2 h-8 uppercase" data-id-index="letter-{line.name}" id="letter-{line.name}"> {line.name} </div>
+    <div class="content-parent">
+        
+        {#await dataFromServer}
+            <LoadingLineIndex />
+        {:then libraries}
+    
+            <div class="divide-y border-theme mx-2 mt-2">
+                <BreadcrumbBase />
+            </div>
+    
+            <div class="divide-y border-theme mx-2 mt-2">
+                <IndexLetters bind:letters={letters} />
+            </div>
+    
+            {#if libraries.indexes.index && libraries.indexes.index.length > 0}
+    
+                <div class="divide-y border-theme m-2 overflow-y-scroll">
+                    {#each libraries.indexes.index as line, index}
+        
+                        <div class="main-color sticky w-full -top-1 z-10 p-2 ">
+                            <div class="w-full pl-2 h-8 uppercase" data-id-index="letter-{line.name}" id="letter-{line.name}"> {line.name} </div>
+                        </div>
+        
+                        {#if line.artist && line.artist.length > 0}
+                            <div class="divide-y" use:viewport on:enterViewport={() => {onShowLetter(index)} }>
+                                {#each line.artist as artist}
+                                    <LineArtist artist={artist} api={api} />
+                                {/each}
+                            </div>
+                        {/if}
+        
+                    {/each}
                 </div>
-
-                {#if line.artist && line.artist.length > 0}
-                    <div class="divide-y" use:viewport on:enterViewport={() => {onShowLetter(index)} }>
-                        {#each line.artist as artist}
-                            <LineArtist artist={artist} api={api} />
-                        {/each}
-                    </div>
-                {/if}
-
-            {/each}
-
-        {/if}
-
-    {/await}
+    
+            {/if}
+    
+        {/await}
+    </div>
 </div>
