@@ -8,6 +8,7 @@
 	import FolderIcon from "$components/global/Song/partials/FolderIcon.svelte";
 	import AlbumIcon from "$components/global/Song/partials/AlbumIcon.svelte";
 	import ArtistIcon from "$components/global/Song/partials/ArtistIcon.svelte";
+	import LineMarqueSimple from "./LineMarqueSimple.svelte";
     
     export let songId = "-1";
 
@@ -71,7 +72,7 @@
 
 <style>
     .custom-w-full {
-        width: calc(100% - theme('width.12'));
+        width: calc(100% - theme('width.44'));
     }
 </style>
 
@@ -79,16 +80,18 @@
     <div class="flex flex-row max-w-full">
 
         {#if song }
+            
             <ImgCover songId={song.coverArt} api={api} size="40" title={song.title} />
-            <div class="flex flex-col justify-center">
-                <div class="marquee custom-w-full">
-                    <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }">{song.title}</div>
-                    <div class="text-xl text-left font-semibold text-bg-player-light-text dark:text-cover-dark-text marquee__content { song.title.length > 30 ? 'marquee__animation' : '' }" aria-hidden="true">{song.title}</div>
-                </div>
-                <div class="text text-bg-player-light-text dark:text-cover-dark-text">{song.artist}</div>
-                <div class="text text-bg-player-light-text dark:text-cover-dark-text">{song.album}</div>
-                <div class="text text-bg-player-light-text dark:text-cover-dark-text">{getDurationHuman(song.duration)}</div>
+
+            <div class="flex flex-col custom-w-full justify-center">
+
+                <LineMarqueSimple title={song.title} customClass="text-xl text-left font-semibold" />
+                <LineMarqueSimple title={song.artist} customClass="text opacity-80" />
+                <LineMarqueSimple title={song.album} customClass="text opacity-80" />
+
+                <div class="text text-bg-player-light-text dark:text-cover-dark-text opacity-80">{getDurationHuman(song.duration)}</div>
             </div>
+
         {:else}
             <ImgCover songId={songId} api={api} size="40" title="Sin imagen" />
             <div class="flex flex-col justify-center">
