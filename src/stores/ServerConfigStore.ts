@@ -1,8 +1,8 @@
-import { map } from 'nanostores'
+import { map, type MapStore } from 'nanostores'
 import { persistentMap } from '@nanostores/persistent'
 import type { ServerConfig } from '$models/ServerConfig.model'
 
-export const ServerConfigObj = map<ServerConfig>({
+export const ServerConfigObj: MapStore<ServerConfig>  = map<ServerConfig>({
     username: "",
     password: "",
     serverUrl: "",

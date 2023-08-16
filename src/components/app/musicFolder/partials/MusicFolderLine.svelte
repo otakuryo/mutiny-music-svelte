@@ -1,16 +1,26 @@
 <script lang="ts">
+    import { onMount } from "svelte";
 	import type { MusicFolder } from "$models/servers/subsonic/types";
 	import { Folder } from "lucide-svelte";
+	import { ServerConfigObj } from "$stores/ServerConfigStore";
 
     export let folder: MusicFolder;
 
     let route = `/directory?id=${folder.id}`;
 
-    // gonic patch
-    if (folder.id === 0) {
-        route = '/indexes?id=al-1';
+    onMount(() => {
+        setDefaultRoute();
+    });
+
+    function getTypeServer(typeServer: string) {
+        return typeServer === ServerConfigObj.get().serverType
     }
 
+    function setDefaultRoute() {
+        if (getTypeServer('gonic') || folder.id === 0) {
+            route = '/indexes?id=al-1';
+        }
+    }
 </script>
 
 <div 

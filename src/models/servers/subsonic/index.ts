@@ -44,9 +44,22 @@ export * from './types.js';
 
 import { arrayBufferToBase64 } from './utils.js';
 
+export type SubsonicConfigType = 'subsonic' | 'generic' | 'navidrome' | 'madsonic' | 'airsonic' | 'airsonic-advanced' | 'gonic';
+export const SubsonicConfigTypeArray = [
+	'subsonic',
+	'generic',
+	'navidrome',
+	'madsonic',
+	'airsonic',
+	'airsonic-advanced',
+	'gonic',
+];
+
+export const SubsonicConfigVersionArray = Array.from(Array(16).keys()).map(i => `1.${i}.0`).concat(['1.16.1','latest']);
+
 export interface SubsonicConfig {
 	url: string;
-	type: 'subsonic' | 'generic' | 'navidrome';
+	type: SubsonicConfigType;
 }
 
 export type Params = Record<

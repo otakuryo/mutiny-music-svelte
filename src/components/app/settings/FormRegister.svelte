@@ -1,9 +1,9 @@
 <script lang="ts">
-    import InputText from "$components/global/+InputText.svelte";
     import ButtonSubmit from "$components/global/+ButtonSubmit.svelte";
     import LabelIcon from "$components/global/+LabelIcon.svelte";
 
-    import { SubsonicAPI } from '$models/servers/subsonic';
+    import type { SubsonicConfigType } from '$models/servers/subsonic';
+    import { SubsonicAPI, SubsonicConfigTypeArray, SubsonicConfigVersionArray } from '$models/servers/subsonic';
     import { ServerConfigObj, ServerConfigPersistent } from '$stores/ServerConfigStore';
 	import type { ServerConfig } from "$models/ServerConfig.model";
 	import InputSelectSimple from "$components/global/InputSelectSimple.svelte";
@@ -11,7 +11,7 @@
 
     // Server config object
     let server: ServerConfig = ServerConfigPersistent.get();
-
+    
     // Object to store the status of the connection to the server
     let statusData = {
         "status": "waiting",
@@ -46,7 +46,7 @@
         try {
             const api = new SubsonicAPI({
                 url: server.serverUrl,
-                type: server.serverType, // or "generic" or "navidrome"
+                type: server.serverType as SubsonicConfigType, // or "generic" or "navidrome"
             });
 
             api.loginSync({
@@ -141,13 +141,13 @@
                 <InputSelectSimple
                     required={true}
                     labelSelect="Server type"
-                    optionsSelect={['subsonic','navidrone','generic']}
+                    optionsSelect={SubsonicConfigTypeArray}
                     keyLocal="serverType"
                     valueSelect={server.serverType} />
 
                 <InputSelectSimple 
                     labelSelect="Server Version" 
-                    optionsSelect={['1.0.0','1.9.0','1.10.0','1.16.1',]}
+                    optionsSelect={SubsonicConfigVersionArray}
                     keyLocal="serverVersion"
                     valueSelect={server.serverVersion} />
 
