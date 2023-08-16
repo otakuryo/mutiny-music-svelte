@@ -1,5 +1,5 @@
 import type { BreadcrumbItem } from "$lib/types/global";
-import { SubsonicAPI } from "$models/servers/subsonic";
+import { SubsonicAPI, type SubsonicConfigType } from "$models/servers/subsonic";
 import BreadcrumbStore from "$stores/BreadcrumbStore";
 import { ServerConfigObj, ServerConfigPersistent } from "$stores/ServerConfigStore";
 
@@ -29,7 +29,7 @@ let MainServerSubsonicAPI = () => {
 
     const api = new SubsonicAPI({
         url: server.serverUrl,
-        type: server.serverType, // or "generic" or "navidrome"
+        type: server.serverType as SubsonicConfigType, // or "generic" or "navidrome"
     });
 
     api.loginSync({
