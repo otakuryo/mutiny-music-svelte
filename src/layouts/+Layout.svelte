@@ -3,6 +3,7 @@
 	import ThemeToggle from "./+ThemeToggle.svelte";
 	import MenuRoute from "$components/navigation/+MenuRoute.svelte";
 	import ImgCoverModal from "$components/global/ImgCoverModal.svelte";
+	import InformationModal from "$components/global/SongInformation/InformationModal.svelte";
 </script>
 
 <Header />
@@ -11,4 +12,5 @@
   <slot />
   <ThemeToggle />
   <ImgCoverModal />
+  <InformationModal />
 </main>

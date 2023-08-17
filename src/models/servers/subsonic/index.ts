@@ -39,6 +39,7 @@ import type {
 	VideoInfo,
 	Videos,
 	Error,
+	Child,
 } from './types.js';
 export * from './types.js';
 
@@ -392,7 +393,7 @@ export class SubsonicAPI {
 	async getSong(args: { id: string }) {
 		return this.#requestJSON<
 			SubsonicBaseResponse & {
-				song: AlbumID3;
+				song: Child;
 			}
 		>('getSong', args);
 	}

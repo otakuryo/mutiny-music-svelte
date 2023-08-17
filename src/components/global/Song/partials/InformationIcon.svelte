@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Child, SubsonicAPI } from "$models/servers/subsonic";
+	import { ShowModal, ShowSongId } from "$stores/SongInformationStore";
 	import { Info } from "lucide-svelte";
 
     export let song: Child;
@@ -8,7 +9,8 @@
     export let height: string = "h-6";
 
     function showInformation() {
-        
+        ShowSongId.set(song.id)
+        ShowModal.set(true)
     }
 
 </script>
