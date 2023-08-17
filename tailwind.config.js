@@ -42,6 +42,9 @@ module.exports = {
       },
       gridTemplateColumns: {
         1: "repeat(auto-fit, minmax(24ch, 1fr));"
+      },
+      animation:{
+        'spin-slow': 'spin 4s linear infinite',
       }
     }
   },

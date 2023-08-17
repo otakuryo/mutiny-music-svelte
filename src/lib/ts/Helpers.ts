@@ -21,6 +21,20 @@ let getDurationHuman = (duration: number|undefined) => {
     let ssStr = seconds.toString().padStart(2, "0");
     return `${mmStr}:${ssStr}`;
 }
+/**
+ * Convert bytes to megabytes
+ * 
+ * @param bytes Bytes to converter to megabytes
+ * @returns Megabytes
+ */
+let getMegabytesFromBytes = (bytes: number|undefined, withBytes: boolean = false) => {
+    
+    if (bytes === undefined) return "0MB";
+    
+    if (withBytes) return `${Math.round(bytes / 1024 / 1024)}MB (${bytes} bytes)`;
+
+    return `${Math.round(bytes / 1024 / 1024)}MB`;
+}
 
 let MainServerSubsonicAPI = () => {
 
@@ -110,6 +124,7 @@ function RemoveAllItemsOnBreadcrumbs() {
 
 export { 
     getDurationHuman,
+    getMegabytesFromBytes,
     MainServerSubsonicAPI,
     AddItemToBreadcrumbs,
     RemoveItemOnBreadcrumbs,
