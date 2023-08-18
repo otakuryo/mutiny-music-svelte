@@ -16,8 +16,37 @@
 	let fallback = imageUrl;
 
 	function getCoverArt() {
-		let image = api.getCoverArtWoFetchSync({ id: songId });
-		imageUrl = image;
+		if (parseInt(size) > 20) {
+			imageUrl = getUrlImageOriginal();
+		} else if (parseInt(size) > 10) {
+			imageUrl = getUrlImageMedium();			
+		} else {
+			imageUrl = getURLImageSmall();
+		}
+	}
+
+	/**
+	 * Get the small image url
+	 * @returns string
+	 */
+	function getURLImageSmall() {
+		return api.getCoverArtWoFetchSync({ id: songId, size: 160 });
+	}
+
+	/**
+	 * Get the medium image url
+	 * @returns string
+	 */
+	function getUrlImageMedium() {
+		return api.getCoverArtWoFetchSync({ id: songId, size: 300 });
+	}
+
+	/**
+	 * Get the original image url
+	 * @returns string
+	 */
+	function getUrlImageOriginal() {
+		return api.getCoverArtWoFetchSync({ id: songId });
 	}
 
 	getCoverArt();
@@ -27,7 +56,7 @@
 		if (disableModal) return;
 
 		ShowImageCoverStore.set(!get(ShowImageCoverStore));
-		ImageCoverStore.set(imageUrl);
+		ImageCoverStore.set(getUrlImageOriginal());
 		TitleStore.set(title);
 	}
 
