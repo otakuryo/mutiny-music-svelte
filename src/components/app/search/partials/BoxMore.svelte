@@ -2,7 +2,7 @@
 	import { PlusCircle } from "lucide-svelte";
 
     export let loadMoreOnClick = () => {};
-    export let title = 'More';
+    // export let title = 'More';
 
     export let loading = false;
 </script>
