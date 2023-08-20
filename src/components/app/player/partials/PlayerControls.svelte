@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Pause, Play, SkipBack, SkipForward, Timer } from "lucide-svelte";
-    import PlayerStore, { isPlaying } from "$stores/PlayerStore";
+    import PlayerStore, { isPlaying, bufferProgress } from "$stores/PlayerStore";
     import PlaylistStore from "$stores/PlaylistStore";
     import { currentSong } from "$stores/CurrentPlaySong";
     import { get } from "svelte/store";
@@ -34,6 +34,8 @@
         }
     }
 
+    let bufferSongPercent = '0';
+
     let currentPosition = 0;
     let duration = 0;
     let percentage = '0';
@@ -63,6 +65,14 @@
         if (isPlaying) {
             getCurrentPosition();
         }
+    });
+
+    /**
+     * Update current buffer percentage of the song
+     */
+    bufferProgress.subscribe((bufferProgress) => {
+        bufferSongPercent = Math.round(bufferProgress).toString();
+        console.log("bufferProgress", bufferProgress, bufferSongPercent);
     });
 
     function getPercentageDuration() {
@@ -116,10 +126,10 @@
     $: if (currentPosition > 0) {
         percentage = getPercentageDuration()
     };
-        
+
 </script>
 
-<style>
+<style lang="scss">
     .current-duration-container {
         @apply mx-2 mt-2 mb-0 text-center;
     }
@@ -146,11 +156,13 @@
         width: 100%;
         height: 16px;
         cursor: pointer;
-        animate: 0.2s;
-        box-shadow: 0px 0px 5px #000000;
-        background: #FFFFFF;
+        /* animation: 0.2s; */
+        /* box-shadow: 0px 0px 2px #000000; */
+        /* background: #FFFFFF; */
         border-radius: 32px;
         border: 0px solid #000000;
+
+        @apply bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-600;
     }
     input[type=range]::-webkit-slider-thumb {
         box-shadow: 0px 0px 4px #000000;
@@ -164,13 +176,15 @@
         margin-top: 0px;
     }
     input[type=range]:focus::-webkit-slider-runnable-track {
-        background: #FFFFFF;
+        /* background: #FFFFFF; */
+        @apply bg-gradient-to-r from-zinc-200 via-zinc-400 to-zinc-600;
     }
+
     input[type=range]::-moz-range-track {
         width: 100%;
         height: 16px;
         cursor: pointer;
-        animate: 0.2s;
+        /* animation: 0.2s; */
         box-shadow: 0px 0px 5px #000000;
         background: #FFFFFF;
         border-radius: 32px;
@@ -223,6 +237,22 @@
         background: #FFFFFF;
     }
 
+    /**
+     * Buffer progress
+     */
+    @for $i from 0 through 110 {
+
+        $current-position: $i;
+        $percent-char: '%';
+
+        input[type=range].pos-#{$current-position}:focus::-webkit-slider-runnable-track,
+        input[type=range].pos-#{$current-position}::-webkit-slider-runnable-track {
+            --tw-gradient-from-position: #{$current-position}#{$percent-char};
+            --tw-gradient-via-position: #{$current-position}#{$percent-char};
+            --tw-gradient-to-position: #{$current-position}#{$percent-char};
+        }
+    }
+
 </style>
 
 <div class="main-color w-full py-3">
@@ -252,6 +282,7 @@
     </div>
     <div class="w-100% mx-2 progress-container">
         <input 
+            class="pos-{bufferSongPercent}"
             type="range" 
             min="0" 
             max={duration} 
