@@ -8,6 +8,7 @@ const isStopped = writable(true);
 const isMuted = writable(false);
 const isLooping = writable(false);
 const isShuffling = writable(false);
+const bufferProgress = writable(0);
 
 const player = () => {
 
@@ -21,10 +22,11 @@ const player = () => {
 
     // https://stackoverflow.com/questions/37769535/is-there-a-way-to-indicate-audio-download-progress-buffer-when-using-howler-js
     const handleLoad = () => {
+        // @ts-ignore
         const node = playerHowl._sounds[0]._node;
         // const node:HTMLAudioElement = (audio as any)._sounds[0]._node; // For Typescript
         node.addEventListener('progress', () => {
-            const duration = playerHowl.duration();
+            const duration = playerHowl.duration(0);
             // console.log("buffer 1", node);
 
             // https://developer.mozilla.org/en-US/Apps/Fundamentals/Audio_and_video_delivery/buffering_seeking_time_ranges#Creating_our_own_Buffering_Feedback
@@ -32,8 +34,9 @@ const player = () => {
                 for (let i = 0; i < node.buffered.length; i++) {
                         // console.log("buffer 2", node.buffered);
                         if (node.buffered.start(node.buffered.length - 1 - i) < node.currentTime) {
-                        const bufferProgress = (node.buffered.end(node.buffered.length - 1 - i) / duration) * 100;
-                        console.log("buffer 3", bufferProgress);
+                        const bufferProgressNumber = (node.buffered.end(node.buffered.length - 1 - i) / duration) * 100;
+                        // console.log("buffer 3", bufferProgressNumber);
+                        bufferProgress.set(bufferProgressNumber);
                         // do what you will with it. I.E - store.set({ bufferProgress });
                         break;
                     }
@@ -157,5 +160,6 @@ export {
     isMuted,
     isLooping,
     isShuffling,
-    currentSong
+    currentSong,
+    bufferProgress
 };
