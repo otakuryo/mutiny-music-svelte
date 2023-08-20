@@ -96,7 +96,7 @@
         
         <ul class="py-2 text-sm text-black dark:text-gray-200">
             {#each playlists as item}
-                <li on:click={() => onSelectPlaylist(item)}>
+                <li on:click={() => onSelectPlaylist(item)} on:keypress={() => onSelectPlaylist(item)}>
                     <div class:disabled={disabledAll} class="block px-4 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-700 dark:hover:text-white">{item.name} <span class="opacity-50">{item.songCount}</span></div>
                 </li>
             {/each}

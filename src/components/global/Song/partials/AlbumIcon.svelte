@@ -1,9 +1,8 @@
 <script lang="ts">
-	import type { Child, SubsonicAPI } from "$models/servers/subsonic";
+	import type { Child } from "$models/servers/subsonic";
 	import { Disc } from "lucide-svelte";
 
     export let song: Child;
-    export let api: SubsonicAPI;
     export let width: string = "w-12";
     export let height: string = "h-6";
     
