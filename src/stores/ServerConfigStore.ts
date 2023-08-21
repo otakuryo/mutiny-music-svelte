@@ -9,6 +9,9 @@ export const ServerConfigObj: MapStore<ServerConfig>  = map<ServerConfig>({
     serverName: "",
     serverType: "",
     serverVersion: "",
+
+    defaultPlaylistId: "0",
+    defaultPlaylistName: "None"
 })
 
 export const ServerConfigPersistent = persistentMap<ServerConfig>('settings:', {})

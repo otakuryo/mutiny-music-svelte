@@ -68,7 +68,7 @@
 				<div class="px-2">
 					<div class="w-full main-color">
 						<div class="flow-root overflow-x-scroll h-[60vh]" >
-							<ul role="list" class="divide-y divide-zinc-200 dark:divide-zinc-700">
+							<ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
 
 								<LineInformationModal title={getMegabytesFromBytes(songInformation.size, true)} subtitle="Size">
 									<div slot="icon">

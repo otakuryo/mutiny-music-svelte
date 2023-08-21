@@ -32,7 +32,7 @@
             
             <Album strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
 
-            <a href="/playlists?id={playlist.id}" on:click={refreshViewOnClick} class="w-full">
+            <a href="/playlists?id={playlist.id}" on:click={refreshViewOnClick} on:keypress={refreshViewOnClick} class="w-full">
                 <div class="flex flex-col">
                     <span data-amplitude-playlist-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{playlist.name}</span>
                     <div>
@@ -43,18 +43,18 @@
 
             <div class="ml-auto flex flex-row">
                 {#if modeDeletion}
-                    <div on:click={confirmDelete}>
+                    <div on:click={confirmDelete} on:keypress={confirmDelete}>
                         <Check class="stroke-current text-success h-6 w-12"/>
                     </div>
-                    <div on:click={cancelDelete}>
+                    <div on:click={cancelDelete} on:keypress={cancelDelete}>
                         <X class="stroke-current text-danger h-6 w-12"/>
                     </div>
                 {:else}
-                    <div on:click={modeConfirmDelete}>
+                    <div on:click={modeConfirmDelete} on:keypress={modeConfirmDelete}>
                         <Trash class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
                     </div>
                 {/if}
-                <a href="/playlists?id={playlist.id}" on:click={refreshViewOnClick}>
+                <a href="/playlists?id={playlist.id}" on:click={refreshViewOnClick} on:keypress={refreshViewOnClick}>
                     <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
                 </a>
             </div>

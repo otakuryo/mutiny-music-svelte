@@ -6,7 +6,6 @@
 
     export let directory: Child;
     export let api: SubsonicAPI;
-    export let refreshViewOnClick: (event: MouseEvent) => void = () => {};
 
 </script>
 
@@ -24,7 +23,7 @@
 
             <a href="/directory?id={directory.id}" class="w-full">
 
-                <div class="flex flex-col w-full"  on:click={refreshViewOnClick}>
+                <div class="flex flex-col w-full">
                     <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{directory.title}</span>
                     <div>
                         <!--              
@@ -40,9 +39,7 @@
 
             {#if directory.isDir}
                 <a href="/directory?id={directory.id}" class="ml-auto">
-                    <div on:click={refreshViewOnClick}>
                     <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12"/>
-                </div>
                 </a>
             {/if}
 
