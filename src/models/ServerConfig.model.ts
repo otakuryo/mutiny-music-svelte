@@ -5,4 +5,7 @@ export interface ServerConfig {
     serverName: string
     serverType: string
     serverVersion: string
+
+    defaultPlaylistId?: string
+    defaultPlaylistName?: string
 }

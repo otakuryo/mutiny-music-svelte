@@ -9,6 +9,7 @@
 	import AlbumIcon from "$components/global/Song/partials/AlbumIcon.svelte";
 	import ArtistIcon from "$components/global/Song/partials/ArtistIcon.svelte";
 	import LineMarqueSimple from "./LineMarqueSimple.svelte";
+	import FavoriteSongForPlaylistIcon from "$components/global/Song/partials/FavoriteSongForPlaylistIcon.svelte";
     
     export let songId = "-1";
 
@@ -111,6 +112,7 @@
             <FolderIcon bind:song={song} />
             <AlbumIcon bind:song={song} />
             <ArtistIcon bind:song={song} />
+            <FavoriteSongForPlaylistIcon bind:song={song} api={api} />
         {/if}
     </div>
 </div>
