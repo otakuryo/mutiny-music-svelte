@@ -3,22 +3,20 @@
 	import type { Child } from "$models/servers/subsonic/types";
 	import LineSong from "$components/global/Song/LineSong.svelte";
 	import { CheckCircle2, Star, XCircle } from "lucide-svelte";
+	import { MainServerSubsonicAPI } from "$lib/ts/Helpers";
+	import { onMount } from "svelte";
 
     export let song: Child;
-    export let api: SubsonicAPI;
+    export let api: SubsonicAPI = MainServerSubsonicAPI();
     export let index: number;
     export let callbackRemove: (songId: number, push: boolean) => void;
 
-    let star = true;
-
     /**
-     * Toggle star and call callbackRemove
-     * 
-     * If star is true, then the song is starred, so we want to remove it from starred songs
+     * Toggle prepareForDelete and call callbackRemove
      */
     function toggleStar() {
-        star = !star;
-        callbackRemove(index, !star);
+        song.prepareForDelete = !song.prepareForDelete;
+        callbackRemove(index, song.prepareForDelete);
     }
 </script>
 
@@ -26,10 +24,10 @@
     <div slot="main-options">
 
         <div on:click={toggleStar} on:keydown={toggleStar}>
-            {#if star}
-                <CheckCircle2 class="stroke-current text-green-600 dark:text-green-500 h-6 w-12" />
-            {:else}
+            {#if song.prepareForDelete}
                 <XCircle class="stroke-current text-red-600 dark:text-red-500 h-6 w-12" />
+            {:else}
+                <CheckCircle2 class="stroke-current text-green-600 dark:text-green-500 h-6 w-12" />
             {/if}
         </div>
 

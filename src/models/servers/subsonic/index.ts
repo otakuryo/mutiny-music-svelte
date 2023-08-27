@@ -646,6 +646,10 @@ export class SubsonicAPI {
 		>('getPlaylist', args);
 	}
 
+	getPlaylistWoFetchSync(args: { id: string }) {
+		return this.#requestWoFetchSync('getPlaylist', args);
+	}
+
 	async createPlaylist(args: {
 		playlistId?: string;
 		name: string;

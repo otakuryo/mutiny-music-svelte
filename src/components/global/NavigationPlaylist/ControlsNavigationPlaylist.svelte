@@ -5,8 +5,9 @@
 	import PlaylistStore from "$stores/PlaylistStore";
 	import PlayerMenuPlaylist from "./partials/PlayerMenuPlaylist.svelte";
 	import PlayerStore from "$stores/PlayerStore";
+	import { MainServerSubsonicAPI } from "$lib/ts/Helpers";
 
-    export let api: SubsonicAPI;
+    export let api: SubsonicAPI = MainServerSubsonicAPI();
     export let list: Child[] = [];
 
     export let callbackCheckSonByIndex: () => void;

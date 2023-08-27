@@ -7,29 +7,44 @@
 	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
 	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
-    export let playlistId: string|undefined = undefined;
-    let api: SubsonicAPI;
+    import { createQuery } from '@tanstack/svelte-query'
+
+    export let playlistId: string;
+    let api: SubsonicAPI = MainServerSubsonicAPI();
     let songsToRemoveFromPlaylist: number[] = [];
 
     let disableDeleteBtn = false;
 
-    type PlaylistServerType = (SubsonicBaseResponse & { playlist: PlaylistWithSongs });
+    type PlaylistServerType = (SubsonicBaseResponse & { playlist: PlaylistWithSongs }) | undefined;
 
-    let dataFromServer : Promise<PlaylistServerType> = Promise.resolve({} as (PlaylistServerType));
+    let globalData: PlaylistServerType = undefined;
+
+    // Access the client
+    // const queryClient = useQueryClient()
+
+    // Queries
+    const queryGeneral = createQuery({
+        queryKey: [api.getPlaylistWoFetchSync({id: playlistId })],
+        queryFn: getDataFromServer,
+        staleTime: 1000 * 60 * 15, // 15 minutes
+        cacheTime: 1000 * 60 * 20, // 20 minutes
+        onSuccess: (data) => {
+            console.log("onSuccess >>>");
+            globalData = data;
+        },
+    })
 
     onMount(async () => {
         refreshViewOnClick();
     });
 
-    $: if(playlistId) {
-        refreshViewOnClick();
-    }
+    // $: if(playlistId) {
+    //     refreshViewOnClick();
+    // }
 
     async function getDataFromServer(): Promise<PlaylistServerType> {
 
         try {
-            api = MainServerSubsonicAPI();
-
             // if not playlistId, return empty object
             if (playlistId === undefined) return {} as PlaylistServerType;
             
@@ -43,7 +58,7 @@
     }
 
     function refreshViewOnClick() {
-        dataFromServer = getDataFromServer();
+        $queryGeneral.refetch();
 	}
 
     /**
@@ -61,7 +76,7 @@
 
         if (response.status === "ok") {
             songsToRemoveFromPlaylist = [];
-            dataFromServer = getDataFromServer();
+            $queryGeneral.refetch();
             disableDeleteBtn = false;
         }
     }
@@ -86,15 +101,15 @@
      * @param state 
      */
     function toggleDataFromServer(state: boolean){
-        dataFromServer.then((response) => {
-            let list = response.playlist.entry;
-            if (!list) return;
-            list.forEach((song: Child) => {
-                song.checked = state;
-            })
+        
+        if (!globalData || !globalData.playlist.entry) return;
+
+        globalData.playlist.entry.forEach((song: Child) => {
+            song.checked = state;
         })
 
-        dataFromServer = dataFromServer;
+        globalData = globalData;
+
     }
 
     /**
@@ -126,39 +141,50 @@
 <div class="main-left-panel">
     <div class="content-parent">
             
-        {#await dataFromServer}
+        {#if $queryGeneral.isLoading}
             <LoadingLinePL />
-        {:then response}
+        {:else if $queryGeneral.error}
+            <div>
+                Error...
+            </div>
+        {:else if $queryGeneral.isSuccess && $queryGeneral.data }
+
+            {#if globalData && globalData.playlist.entry && globalData.playlist.entry.length > 0}
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                    <LineBack url="/playlists" name={globalData.playlist.name} />
+                </div>
+    
+                <div class="divide-y px-2 border-theme mx-2 mt-2">
+
+                    <ControlsNavigationPlaylist
+                        list={globalData.playlist.entry}
+                        callbackCheckSonByIndex={callbackCheckSongByIndex}
+                        callbackUncheckSonByIndex={callbackUncheckSongByIndex} >
+
+                        <div slot="extra-options">
+                            <button disabled={disableDeleteBtn} type="button" class="btn-small-control-list" on:click={updatePlaylistAndRemove} on:keydown={updatePlaylistAndRemove}>Guardar</button>
+                        </div>
+            
+                    </ControlsNavigationPlaylist>
+                </div>
+
+                <div class="divide-y px-2 border-theme m-2 overflow-y-scroll">
+                    {#each globalData.playlist.entry as song, index}
+                        <LineMusic bind:song={song} index={index} callbackRemove={appendSongForRemove} />
+                    {/each}
+                </div>
+
+            {/if}
+        {:else}
 
             <div class="divide-y px-2 border-theme mx-2 mt-2">
                 <LineBack url="/playlists" name="Playlists" />
             </div>
-    
-            <div class="divide-y px-2 border-theme mx-2 mt-2">
-
-                <ControlsNavigationPlaylist
-                    list={response.playlist.entry}
-                    bind:api={api}
-                    callbackCheckSonByIndex={callbackCheckSongByIndex}
-                    callbackUncheckSonByIndex={callbackUncheckSongByIndex} >
-
-                    <div slot="extra-options">
-                        <button disabled={disableDeleteBtn} type="button" class="btn-small-control-list" on:click={updatePlaylistAndRemove} on:keydown={updatePlaylistAndRemove}>Guardar</button>
-                    </div>
-        
-                </ControlsNavigationPlaylist>
+            
+            <div class="divide-y px-2 border-theme mx-2 mt-2 p-2">
+                No data...
             </div>
-    
-    
-            {#if response.playlist.entry && response.playlist.entry.length > 0}
-
-                <div class="divide-y px-2 border-theme m-2 overflow-y-scroll">
-                    {#each response.playlist.entry as song, index}
-                        <LineMusic bind:song={song} api={api} index={index} callbackRemove={appendSongForRemove} />
-                    {/each}
-                </div>
-            {/if}
-        {/await}
+        {/if}
 
     </div>
 </div>
