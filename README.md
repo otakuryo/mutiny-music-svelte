@@ -28,7 +28,7 @@
 <h3 align="center">Mutiny Music</h3>
 
   <p align="center">
-    Music Web player, build with compatible with subsonic api web client, suport gonic, navidrone, supysonic.
+    Music Web player, compatible with subsonic api web client, suport gonic, navidrone, supysonic.
     <br />
     <a href="https://github.com/otakuryo/mutiny-music-svelte"><strong>Explore the docs »</strong></a>
     <br />
