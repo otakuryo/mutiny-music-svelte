@@ -10,7 +10,7 @@ USER root
 
 RUN wget -qO /bin/pnpm "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-linuxstatic-x64" && chmod +x /bin/pnpm
 
-RUN wget -qO /bin/pnpm-osx "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-macos-x64" && chmod +x /bin/pnpm-osx
+#RUN wget -qO /bin/pnpm-osx "https://github.com/pnpm/pnpm/releases/latest/download/pnpm-macos-x64" && chmod +x /bin/pnpm-osx
 
 USER node
 
