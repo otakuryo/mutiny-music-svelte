@@ -151,6 +151,7 @@ export interface Child {
 	songId?: string;
 	checked?: boolean;
 	durationFormatted?: string;
+	prepareForDelete?: boolean;
 }
 
 export interface Directory {

@@ -77,7 +77,7 @@
     }
 </style>
 
-<div class="divider-y w-full py-3">
+<div class="divider-y w-full py-2">
     <div class="flex flex-row max-w-full">
 
         {#if song }
