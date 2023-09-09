@@ -9,14 +9,13 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+[![Netlify Status][netlify-shield]][netlify-url]
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
-
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -217,6 +216,8 @@ Project Link: [https://github.com/otakuryo/mutiny-music-svelte](https://github.c
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[netlify-shield]: https://api.netlify.com/api/v1/badges/66e93619-a168-4a44-bdf7-3e8ecb1e29de/deploy-status
+[netlify-url]: https://app.netlify.com/sites/super-nougat-57cf9e/deploys
 [contributors-shield]: https://img.shields.io/github/contributors/otakuryo/mutiny-music-svelte.svg?style=for-the-badge
 [contributors-url]: https://github.com/otakuryo/mutiny-music-svelte/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/otakuryo/mutiny-music-svelte.svg?style=for-the-badge
