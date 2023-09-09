@@ -75,4 +75,5 @@
 	class:cursor-zoom-in={!disableModal}
 	alt={title}
 	on:click={toggleModalImage}
+	on:keypress={toggleModalImage}
 />
