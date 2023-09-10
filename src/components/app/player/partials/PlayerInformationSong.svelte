@@ -16,9 +16,9 @@
     // Si hay un error al cargar la imagen, se intenta cargar la imagen del padre
     // Si hay un error al cargar la imagen del padre, se carga una imagen por defecto
     let countHandleError = 0;
-    let imageUrl = "https://placehold.it/310x310";
-    let imageUrlParent = "https://placehold.it/310x310";
-    let fallback = "https://placehold.it/310x310";
+    let imageUrl = "/placeholder/album_placeholder_310x310.png";
+    let imageUrlParent = "/placeholder/album_placeholder_310x310.png";
+    let fallback = "/placeholder/album_placeholder_310x310.png";
 
     /**
      * Canción actual

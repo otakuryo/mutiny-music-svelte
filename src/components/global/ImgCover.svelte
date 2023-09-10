@@ -12,7 +12,7 @@
 	export let marginRigth = '3';
 	export let disableModal = false;
 
-	let imageUrl = 'https://placehold.it/310x310';
+	let imageUrl = '/placeholder/album_placeholder_310x310.png';
 	let fallback = imageUrl;
 
 	function getCoverArt() {
