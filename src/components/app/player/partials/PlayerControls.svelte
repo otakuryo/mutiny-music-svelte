@@ -10,6 +10,8 @@
 	import PlayerButtonPrev from "./btns/PlayerButtonPrev.svelte";
 	import PlayerButtonNext from "./btns/PlayerButtonNext.svelte";
 	import PlayerButtonPlayPause from "./btns/PlayerButtonPlayPause.svelte";
+	import PlayerButtonRewind from "./btns/PlayerButtonRewind.svelte";
+	import PlayerButtonForward from "./btns/PlayerButtonForward.svelte";
 
     let disableAll = false;
     let disablePrev = false;
@@ -265,6 +267,9 @@
 
     <div class="flex flex-row justify-center">
 
+        <!-- Rewind button -->
+        <PlayerButtonRewind bind:disableAll={disableAll}/>
+
         <!-- Repeat button -->
         <PlayerButtonRepeat bind:disableAll={disableAll}/>
 
@@ -279,6 +284,9 @@
 
         <!-- Shuffle button -->
         <PlayerButtonSuffle bind:disableAll={disableAll}/>
+
+        <!-- Forward button -->
+        <PlayerButtonForward bind:disableAll={disableAll}/>
 
     </div>
 

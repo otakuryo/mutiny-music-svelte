@@ -10,6 +10,7 @@ const isLooping = writable(true);
 const isSingleLooping = writable(false);
 const isShuffling = writable(false);
 const bufferProgress = writable(0);
+const userSettingSeek = writable(15);
 
 const player = () => {
 
@@ -163,5 +164,6 @@ export {
     isSingleLooping,
     isShuffling,
     currentSong,
-    bufferProgress
+    bufferProgress,
+    userSettingSeek
 };
