@@ -141,6 +141,9 @@ const player = () => {
         rate: (rate) => {
             playerHowl.rate(rate);
         },
+        getRate: () => {
+            return playerHowl.rate();
+        },
         currentTime: () => {
             return playerHowl.seek() || 0;
         },
