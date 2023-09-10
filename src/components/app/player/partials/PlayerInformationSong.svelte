@@ -78,7 +78,7 @@
 </style>
 
 <div class="divider-y w-full py-2">
-    <div class="flex flex-row max-w-full">
+    <div class="flex flex-row max-w-full min-h-[10rem]">
 
         {#if song }
             
@@ -105,7 +105,7 @@
 
         
     </div>
-    <div class="flex gap-1 w-full mt-2">
+    <div class="flex gap-1 w-full mt-2 min-h-[1.5rem]">
         {#if song && song.id !== "-1"}
             <FavoriteIcon bind:song={song} api={api} />
             <InformationIcon bind:song={song} />
