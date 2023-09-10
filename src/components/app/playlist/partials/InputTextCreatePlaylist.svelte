@@ -46,7 +46,8 @@
             stateSearchText = 'waiting';
             refreshCallback();
         } catch (error) {
-            console.log("Error saving playlist", error);
+            let e: Error = error as Error;
+            throw new Error(e.message);
         }
     }
     

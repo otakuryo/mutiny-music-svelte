@@ -56,6 +56,8 @@
 
         } catch (error) {
             console.log("No se ha podido añadir la playlist", error);
+            let e: Error = error as Error;
+            throw new Error(e.message);
         }
         
     }
