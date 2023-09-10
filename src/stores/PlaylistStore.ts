@@ -1,6 +1,7 @@
 import { get, writable } from "svelte/store";
 import { currentIndex } from "$stores/CurrentPlaySong";
 import type { Child } from "$models/servers/subsonic";
+import { isLooping, isSingleLooping, isShuffling } from "$stores/PlayerStore";
 
 const playlist = () => {
     let list: Array<Child> = [];
@@ -78,15 +79,51 @@ const playlist = () => {
         getNextSong: () => {
             console.log('*: playlistStore -> getNextSong()');
             let index = get(currentIndex);
-            if (index + 1 >= list.length) {
+
+            let _isLooping = get(isLooping);
+            let _isSingleLooping = get(isSingleLooping);
+            let _isShuffling = get(isShuffling);
+
+            // If shuffling is enabled, return a random song
+            // If looping is enabled, return the first song
+            // If looping is disabled, return undefined
+            // If looping is enabled and single looping is enabled, return the current song
+            if (_isShuffling) {
+                let randomIndex = Math.floor(Math.random() * list.length);
                 return {
-                    index: 0,
-                    song: list[0]
+                    index: randomIndex,
+                    song: list[randomIndex]
                 }
-            }
-            return {
-                index: index + 1,
-                song: list[index + 1]
+            } else {
+
+                if (_isLooping) {
+                    if (_isSingleLooping) {
+                        return {
+                            index: index,
+                            song: list[index]
+                        }
+                    }else {
+                        if (index + 1 >= list.length) {
+                            return {
+                                index: 0,
+                                song: list[0]
+                            }
+                        }
+                    }
+
+                }else{
+                    if (index + 1 >= list.length) {
+                        return {
+                            index: -999,
+                            song: undefined
+                        }
+                    }
+                }
+
+                return {
+                    index: index + 1,
+                    song: list[index + 1]
+                }
             }
         },
         getPrevSongByIndex: (index: number) => {

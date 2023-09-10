@@ -78,8 +78,8 @@
             return resMusic;
 
         } catch (error) {
-            console.log(error); 
-            return {} as SearchResult;
+            let e: Error = error as Error;
+            throw new Error(e.message);
         }
     }
 
@@ -256,9 +256,12 @@
                 <div class="mb-2 w-full"></div>
     
             {/if}
-    
         {:catch error}
-            <div class="w-full">{error.message}</div>
+
+            <div class="divide-y border-theme mx-2 mt-2">
+                <div class="w-full pl-2 z-10 text-red-500">Error: {error.message}</div>
+            </div>
+            
         {/await}
     </div>
 

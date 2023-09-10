@@ -36,7 +36,8 @@
             });
 
         } catch (error) {
-            console.error(error);
+            let e: Error = error as Error;
+            throw new Error(e.message);
         }
     }
 

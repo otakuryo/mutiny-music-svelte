@@ -9,7 +9,7 @@
 </script>
 
 <style>
-    .start-animation-line {
+    /* .start-animation-line {
         animation: start-animation-line 1.5s ease-in-out;
     }
 
@@ -20,7 +20,7 @@
         100% {
             width: 100%;
         }
-    }
+    } */
 </style>
 <div class="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden transition duration-500">
     <div class="grid place-items-center h-full w-12 text-gray-300">
@@ -36,7 +36,7 @@
         {/if}
 
     </div>
-
+    <!-- svelte-ignore a11y-autofocus -->
     <input
         class="peer h-full w-full outline-none text-sm text-gray-700 pr-2 border-none focus:outline-none focus:outline-transparent focus:ring-0 focus:border-transparent"
         type="text"

@@ -65,7 +65,11 @@
             {/if}
             
         {:catch error}
-            <div class="text-red-500">Error: {error.message}</div>
+
+            <div class="divide-y border-theme mx-2 mt-2">
+                <div class="w-full pl-2 z-10 text-red-500">Error: {error.message}</div>
+            </div>
+            
         {/await}
     </div>
 </div>

@@ -1,5 +1,6 @@
 <script lang="ts">
-	import BreadcrumbStore from '$stores/BreadcrumbStore';
+	import MutinyIcon from '$components/global/+MutinyIcon.svelte';
+import BreadcrumbStore from '$stores/BreadcrumbStore';
     import { Headphones, Menu } from 'lucide-svelte';
 
     const navbar_ = [
@@ -47,7 +48,7 @@
 <header class=" fixed h-20 md:h-10 w-screen dark:text-zinc-300 bg-white dark:bg-zinc-900 z-50 dark:border-b-white border-b-2 border-b-zinc-300">
     <div class="text-lg mx-auto max-w-6xl flex flex-row justify-between h-full">
         <a href="/" on:click={BreadcrumbStore.clear} class="mx-6 flex items-center " aria-label="Website Logo">
-            <Headphones class="w-8 h-8"/>
+            <MutinyIcon size="w-auto h-8" />
             <span class="self-center sm:hidden text-2xl whitespace-nowrap dark:text-white ml-3 mt-1">
                  Mutiny
             </span>

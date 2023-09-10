@@ -36,8 +36,8 @@
             return resMusic;
 
         } catch (error) {
-            console.log(error); 
-            return {} as AlbumLocal;
+            let e: Error = error as Error;
+            throw new Error(e.message);
         }
     }
 
@@ -110,6 +110,11 @@
                 
             {/if}
 
+        {:catch error}
+            <div class="divide-y border-theme mx-2 mt-2">
+                <div class="w-full pl-2 z-10 text-red-500">{error.message}</div>
+            </div>
+            
         {/await}
     </div>
 </div>
