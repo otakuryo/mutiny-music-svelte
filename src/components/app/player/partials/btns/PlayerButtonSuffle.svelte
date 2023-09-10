@@ -17,12 +17,6 @@
     }
 </script>
 
-<style>
-    button:disabled {
-        @apply opacity-50 cursor-not-allowed;
-    }
-</style>
-
 <button class="player-button-base" on:click={shuffleSong} on:keypress={shuffleSong} disabled={disableAll}>
     {#if active}
         <Shuffle class="icon-base-success"/>

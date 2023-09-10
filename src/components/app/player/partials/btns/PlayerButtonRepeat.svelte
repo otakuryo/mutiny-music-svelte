@@ -31,14 +31,6 @@
     
 </script>
 
-<style>
-
-    button:disabled {
-        @apply opacity-50 cursor-not-allowed;
-    }
-
-</style>
-
 <!-- Loop track -->
 <button class="player-button-base" on:click={localToggleRepeat} on:keypress={localToggleRepeat} disabled={disableAll}>
     {#if type === RepeatEnum.NONE}

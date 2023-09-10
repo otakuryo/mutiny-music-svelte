@@ -129,6 +129,7 @@ html {
 /* File: src/components/app/player/partials/PlayerControls.svelte */
 .player-button-base {
     @apply mx-2 mt-0 rounded-full;
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
 }
 .player-button-base .icon-base {
     @apply stroke-current text-slate-900 h-6 w-6;

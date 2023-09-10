@@ -7,6 +7,9 @@
     import { getDurationHuman } from "$lib/ts/Helpers.js";
 	import PlayerButtonRepeat from "./btns/PlayerButtonRepeat.svelte";
 	import PlayerButtonSuffle from "./btns/PlayerButtonSuffle.svelte";
+	import PlayerButtonPrev from "./btns/PlayerButtonPrev.svelte";
+	import PlayerButtonNext from "./btns/PlayerButtonNext.svelte";
+	import PlayerButtonPlayPause from "./btns/PlayerButtonPlayPause.svelte";
 
     let disableAll = false;
     let disablePrev = false;
@@ -141,10 +144,6 @@
         @apply mx-2 mt-2 mb-0 text-center;
     }
 
-    button:disabled {
-        @apply opacity-50 cursor-not-allowed;
-    }
-
     /* Estilos para el input range - https://www.cssportal.com/style-input-range/ */
     .progress-container {
         height: 22px;
@@ -270,23 +269,13 @@
         <PlayerButtonRepeat bind:disableAll={disableAll}/>
 
         <!-- Prev track -->
-        <button class="player-button-base" on:click={skipBack} on:keypress={skipBack} disabled={disablePrev}>
-            <SkipBack class="icon-base"/>
-        </button>
+        <PlayerButtonPrev skipBack={skipBack} bind:disablePrev={disablePrev}/>
 
         <!-- Pause/play -->
-        <button class="player-button-base" on:click={togglePlaying} on:keypress={togglePlaying} disabled={disablePlay}>
-            {#if $isPlaying}
-                <Pause class="icon-base"/>
-            {:else}
-                <Play class="icon-base"/>
-            {/if}
-        </button> 
+        <PlayerButtonPlayPause togglePlaying={togglePlaying} bind:disablePlay={disablePlay}/>
 
         <!-- Next track -->
-        <button class="player-button-base" on:click={skipForward} on:keypress={skipForward} disabled={disableNext}>
-            <SkipForward class="icon-base"/>
-        </button>
+        <PlayerButtonNext skipForward={skipForward} bind:disableNext={disableNext}/>
 
         <!-- Shuffle button -->
         <PlayerButtonSuffle bind:disableAll={disableAll}/>
