@@ -6,7 +6,8 @@ import {currentIndex, currentSong} from "./CurrentPlaySong";
 const isPlaying = writable(false);
 const isStopped = writable(true);
 const isMuted = writable(false);
-const isLooping = writable(false);
+const isLooping = writable(true);
+const isSingleLooping = writable(false);
 const isShuffling = writable(false);
 const bufferProgress = writable(0);
 
@@ -159,6 +160,7 @@ export {
     isStopped,
     isMuted,
     isLooping,
+    isSingleLooping,
     isShuffling,
     currentSong,
     bufferProgress

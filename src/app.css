@@ -137,6 +137,10 @@ html {
     @apply dark:text-white;
 }
 
+.player-button-base .icon-base-success {
+    @apply text-green-600 dark:text-green-500 h-6 w-6;
+}
+
 /** 
 * File: src/components/app/player/partials/PlayerInformationSong.svelte
 *

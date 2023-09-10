@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { Pause, Play, SkipBack, SkipForward, Timer } from "lucide-svelte";
+	import { Pause, Play, SkipBack, SkipForward } from "lucide-svelte";
     import PlayerStore, { isPlaying, bufferProgress } from "$stores/PlayerStore";
     import PlaylistStore from "$stores/PlaylistStore";
     import { currentSong } from "$stores/CurrentPlaySong";
     import { get } from "svelte/store";
     import { getDurationHuman } from "$lib/ts/Helpers.js";
+	import PlayerButtonRepeat from "./btns/PlayerButtonRepeat.svelte";
+	import PlayerButtonSuffle from "./btns/PlayerButtonSuffle.svelte";
 
+    let disableAll = false;
     let disablePrev = false;
     let disableNext = false;
     let disablePlay = false;
@@ -31,6 +34,8 @@
         let {index ,song} = PlaylistStore.getNextSong();
         if (song) {
             PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
+        }else{
+            PlayerStore.stop();
         }
     }
 
@@ -82,10 +87,12 @@
 
     currentSong.subscribe((item) => {
         if (item.id !== '-1'){
+            disableAll = false;
             disablePrev = false;
             disableNext = false;
             disablePlay = false;
         } else {
+            disableAll = true;
             disablePrev = true;
             disableNext = true;
             disablePlay = true;
@@ -258,11 +265,16 @@
 <div class="main-color w-full py-3">
 
     <div class="flex flex-row justify-center">
+
+        <!-- Repeat button -->
+        <PlayerButtonRepeat bind:disableAll={disableAll}/>
+
+        <!-- Prev track -->
         <button class="player-button-base" on:click={skipBack} on:keypress={skipBack} disabled={disablePrev}>
             <SkipBack class="icon-base"/>
         </button>
 
-        <!-- Pausar -->
+        <!-- Pause/play -->
         <button class="player-button-base" on:click={togglePlaying} on:keypress={togglePlaying} disabled={disablePlay}>
             {#if $isPlaying}
                 <Pause class="icon-base"/>
@@ -271,9 +283,13 @@
             {/if}
         </button> 
 
+        <!-- Next track -->
         <button class="player-button-base" on:click={skipForward} on:keypress={skipForward} disabled={disableNext}>
             <SkipForward class="icon-base"/>
         </button>
+
+        <!-- Shuffle button -->
+        <PlayerButtonSuffle bind:disableAll={disableAll}/>
 
     </div>
 
