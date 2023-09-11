@@ -155,7 +155,7 @@
             name="volume-range"
             step="1"
             on:input={onInput}
-            on:wheel={onWheelInput}
+            on:wheel|passive={onWheelInput}
             class="player-button-base w-12 text-sm text-center font-medium mr-2 px-2.5 pb-0 pt-0.5 rounded-full">
     </div>
 </button>
