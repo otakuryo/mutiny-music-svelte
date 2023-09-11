@@ -18,6 +18,20 @@ const playlist = () => {
 
             return index;
         },
+        addSongs: (songs: Array<Child>) => {
+            console.log('*: playlistStore -> addSongs()');
+
+            list = list.concat(songs);
+            set(list);
+
+            return list.length - 1;
+        },
+        setList: (songs: Array<Child>) => {
+            console.log('*: playlistStore -> setList()');
+            list = list.concat(songs);
+            set(list);
+            return list.length - 1;
+        },
         addSongAtIndex: (song: Child, index: number) => {
             console.log('*: playlistStore -> addSongAtIndex()');
             

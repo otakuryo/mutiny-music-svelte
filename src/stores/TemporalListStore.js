@@ -1,7 +1,7 @@
 import { writable } from "svelte/store";
 
 const TemporalList = () => {
-    const list = [];
+    let list = [];
     const { subscribe, set, update } = writable(list);
 
     const methods = {
@@ -13,6 +13,13 @@ const TemporalList = () => {
             set(list);
 
             return index;
+        },
+        setList: (newList) => {
+            console.log('*: TemporalListStore -> setList()');
+            list = list.concat(newList);
+            set(list);
+
+            return list.length - 1;
         },
         addSongAtIndex: (song, index) => {
             console.log('*: TemporalListStore -> addSongAtIndex()');

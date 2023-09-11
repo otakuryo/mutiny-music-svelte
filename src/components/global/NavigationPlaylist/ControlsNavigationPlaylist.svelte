@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Child, Playlist} from "$models/servers/subsonic/types";
+    import type { Child} from "$models/servers/subsonic/types";
 	import type { SubsonicAPI } from "$models/servers/subsonic";
 	import TemporalListStore from "$stores/TemporalListStore";
 	import PlaylistStore from "$stores/PlaylistStore";
@@ -12,25 +12,168 @@
     export let callbackCheckSonByIndex: () => void;
     export let callbackUncheckSonByIndex: () => void;
 
-    function addAllSongToTemporalList() {
-        let localIndexes: number[] = [];
-        TemporalListStore.clear();
-        list.forEach((song, index) => {
-            if (song.isDir) {
+    let selectAllDisabled = false;
+    let deselectAllDisabled = false;
+    let addAllToPlaylistToEndDisabled = false;
+    let addAllToPlaylistToEndAndPlayDisabled = false;
+    let showListDisabled = false;
+
+    // Old version
+    // function addAllSongToTemporalList() {
+    //     let localIndexes: number[] = [];
+    //     TemporalListStore.clear();
+    //     list.forEach((song, index) => {
+    //         if (song.isDir) {
                 
+    //         }else{
+    //             song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
+    //             song.songId = song.id;
+    //             song.checked = true;
+    //             TemporalListStore.addSong(song);
+    //             localIndexes.push(index);
+    //         }
+    //     });
+
+    //     callbackCheckSonByIndex();
+    // }
+
+    /**
+     * Enable all buttons
+     */
+    function allBtnsEnabled() {
+        selectAllDisabled = false;
+        deselectAllDisabled = false;
+        addAllToPlaylistToEndDisabled = false;
+        addAllToPlaylistToEndAndPlayDisabled = false;
+        showListDisabled = false;
+    }
+
+    /**
+     * Disable all buttons
+     */
+    function allBtnsDisabled() {
+        selectAllDisabled = true;
+        deselectAllDisabled = true;
+        addAllToPlaylistToEndDisabled = true;
+        addAllToPlaylistToEndAndPlayDisabled = true;
+        showListDisabled = true;
+    }
+
+    /**
+     * Button trigger
+     * 
+     * Add all songs to temporal list
+     */
+    function addAllSongToTemporalListV2() {
+        allBtnsDisabled();
+        addAllSongToTemporalListV2Async().then(() => {
+            allBtnsEnabled();
+        });
+    }
+
+    /**
+     * Add all songs to temporal list
+     */
+    async function addAllSongToTemporalListV2Async() {
+
+        // Prepare variables
+        let localIndexes: number[] = [];
+        let localSongs: Child[] = [];
+
+        TemporalListStore.clear();
+        let haveDirs = true;
+
+        let _tmp_songs_ = getSongsAndDirs(list);
+
+        // While we have directories, we will continue to search for songs
+        while (haveDirs) {
+
+            // If we have songs, we add them to the list
+            if(_tmp_songs_.localSongs.length > 0){
+                _tmp_songs_.localSongs.forEach(song => {
+                    song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
+                    song.songId = song.id;
+                    song.checked = true;
+                    localSongs.push(song);
+                });
+                localIndexes = localIndexes.concat(_tmp_songs_.localIndexes);
+            }
+    
+            // If we have directories, we will search for songs in them
+            if(_tmp_songs_.localDirIds.length > 0){
+                let serverSongs = await getSongsFromArrayOfDirsAsync(_tmp_songs_.localDirIds);
+                _tmp_songs_ = getSongsAndDirs(serverSongs);
+            }else{
+                // If we don't have directories, we finish the loop
+                _tmp_songs_ = {
+                    localDirIds: [],
+                    localSongs: [],
+                    localIndexes: []
+                }
+                haveDirs = false;
+            }
+        }
+
+        // Add songs to temporal list
+        // TemporalListStore.setList(localSongs);
+        localSongs.forEach(song => {
+            TemporalListStore.addSong(song);
+        });
+
+        console.log("finalizado localSongs", localSongs);
+        callbackCheckSonByIndex();
+    }
+
+    /**
+     * Get songs and directories from a list of songs
+     * 
+     * @param _songs
+     */
+    function getSongsAndDirs(_songs: Child[]){
+
+        let localDirIds: string[] = [];
+        let localSongs: Child[] = [];
+        let localIndexes: number[] = [];
+
+        _songs.forEach((song, index) => {
+            if (song.isDir) {
+                localDirIds.push(song.id);
             }else{
                 song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
                 song.songId = song.id;
                 song.checked = true;
-                TemporalListStore.addSong(song);
+                localSongs.push(song);
                 localIndexes.push(index);
             }
         });
 
-        callbackCheckSonByIndex();
-
+        return {
+            localDirIds,
+            localSongs,
+            localIndexes
+        }
     }
 
+    /**
+     * Get songs from an array of directories
+     * 
+     * @param ids 
+     */
+    async function getSongsFromArrayOfDirsAsync(ids: string[]) {
+        let arrOfDirs = ids.map(id => api.getMusicDirectory({id: id}) );
+        let response = await Promise.all(arrOfDirs);
+        let songs: Child[] = [];
+        response.forEach(res => {
+            songs = songs.concat(res.directory.child);
+        });
+        return songs;
+    }
+
+    /**
+     * Button trigger
+     * 
+     * Clear all songs from temporal list
+     */
     function clearAllSongToTemporalList() {
         TemporalListStore.clear();
         let localIndexes: number[] = [];
@@ -44,35 +187,66 @@
         callbackUncheckSonByIndex();
     }
 
+    /**
+     * Button trigger
+     * 
+     * Add all songs to main playlist
+     */
     function addAllSongToMainPlaylistStore(){
+        addAllSongToMainPlaylistStoreAsync()
+    }
+
+    /**
+     * Add all songs to main playlist
+     */
+    async function addAllSongToMainPlaylistStoreAsync(){
+        allBtnsDisabled();
         let list = TemporalListStore.getSongList();
 
         // If list is empty, we add all songs
         if (list.length === 0) {
-            addAllSongToTemporalList();
+            await addAllSongToTemporalListV2Async();
         }
+
+        PlaylistStore.setList(list);
         
-        list.forEach(song => {
-            PlaylistStore.addSong(song);
-        });
+        // list.forEach(song => {
+        //     PlaylistStore.addSong(song); 
+        // });
         setTimeout(() => {
             clearAllSongToTemporalList();
+            allBtnsEnabled();
         }, 100);
     }
 
+    /**
+     * Button trigger
+     * 
+     * Add all songs to main playlist and play
+     */
     function addAllSongToMainPlaylistStoreAndPlay(){
+        addAllSongToMainPlaylistStoreAndPlayAsync()
+    }
+
+    /**
+     * Add all songs to main playlist and play
+     */
+    async function addAllSongToMainPlaylistStoreAndPlayAsync(){
+        allBtnsDisabled();
         let list = TemporalListStore.getSongList();
 
         // If list is empty, we add all songs
         if (list.length === 0) {
-            addAllSongToTemporalList();
+            await addAllSongToTemporalListV2Async();
         }
 
         let index = PlaylistStore.getSongList().length;
 
-        list.forEach(song => {
-            PlaylistStore.addSong(song);
-        });
+        PlaylistStore.setList(list);
+
+        // list.forEach(song => {
+        //     PlaylistStore.addSong(song);
+        // });
         
         if (list.length > 0) {
             let song = list[0];
@@ -81,6 +255,7 @@
 
         setTimeout(() => {
             clearAllSongToTemporalList();
+            allBtnsEnabled();
         }, 100);
     }
 
@@ -92,11 +267,50 @@
 </script>
 
 <div class="flex w-100 flex-row main-color">
-    <button type="button" class="btn-small-control-list" on:click={addAllSongToTemporalList} on:keypress={addAllSongToTemporalList}>Seleccionar todos</button>
-    <button type="button" class="btn-small-control-list" on:click={clearAllSongToTemporalList} on:keypress={clearAllSongToTemporalList}>Deseleccionar todos</button>
-    <button type="button" class="btn-small-control-list" on:click={addAllSongToMainPlaylistStore} on:keypress={addAllSongToMainPlaylistStore}>Añadir al final</button>
-    <button type="button" class="btn-small-control-list" on:click={addAllSongToMainPlaylistStoreAndPlay} on:keypress={addAllSongToMainPlaylistStoreAndPlay}>Añadir al final y Reproducir</button>
-    <button type="button" class="btn-small-control-list cursor-help" on:click={shoGetSongList} on:keypress={shoGetSongList}>Show list</button>
+    <button
+        type="button"
+        class="btn-small-control-list"
+        disabled={selectAllDisabled}
+        on:click={addAllSongToTemporalListV2}
+        on:keypress={addAllSongToTemporalListV2}>
+            Seleccionar todos
+    </button>
+
+    <button
+        type="button"
+        class="btn-small-control-list"
+        disabled={deselectAllDisabled}
+        on:click={clearAllSongToTemporalList}
+        on:keypress={clearAllSongToTemporalList}>
+            Deseleccionar todos
+    </button>
+
+    <button
+        type="button"
+        class="btn-small-control-list"
+        disabled={addAllToPlaylistToEndDisabled}
+        on:click={addAllSongToMainPlaylistStore}
+        on:keypress={addAllSongToMainPlaylistStore}>
+            Añadir al final
+    </button>
+
+    <button
+        type="button"
+        class="btn-small-control-list"
+        disabled={addAllToPlaylistToEndAndPlayDisabled}
+        on:click={addAllSongToMainPlaylistStoreAndPlay}
+        on:keypress={addAllSongToMainPlaylistStoreAndPlay}>
+            Añadir al final y Reproducir
+    </button>
+
+    <button
+        type="button"
+        class="btn-small-control-list cursor-help"
+        disabled={showListDisabled}
+        on:click={shoGetSongList}
+        on:keypress={shoGetSongList}>
+            Show list
+    </button>
 
     <PlayerMenuPlaylist title="Add to playlist" />
     
