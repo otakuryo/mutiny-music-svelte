@@ -38,7 +38,7 @@
     });
 </script>
 
-<div on:click={changeThemeAppearance} on:keyup={changeThemeAppearance} class="theme-toggle main-color sm:top-4 bottom-4 right-4 ">
+<div on:click={changeThemeAppearance} on:keyup={changeThemeAppearance} class="theme-toggle main-color-solid sm:top-4 bottom-4 right-4 ">
   <button aria-label="theme toggle">
     <Moon class="w-6 dark:hidden" />
     <Sun class="w-6 dark:text-white dark:block hidden" />

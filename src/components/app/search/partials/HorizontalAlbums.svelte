@@ -34,7 +34,7 @@
 {#if albums.length > 0}
 
 
-    <div class="border-theme mx-2 mt-2 flex">
+    <div class="main-color border-theme mx-2 mt-2 flex">
         <div class="pl-2 z-10">{title}</div>
         {#if !showBtnMore && showBtnRefresh }
             <div class="pr-2 z-10 ml-auto cursor-pointer" on:click={refreshViewOnClick} on:keyup={refreshViewOnClick}>
@@ -43,7 +43,7 @@
         {/if}
     </div>
     
-    <div class="divide-y border-theme mx-2 mt-2 overflow-x-scroll min-h-[13rem]" bind:this={elementContent} on:scroll={onScroll}>
+    <div class="main-color divide-y border-theme mx-2 mt-2 overflow-x-scroll min-h-[13rem]" bind:this={elementContent} on:scroll={onScroll}>
     
         <div class="flex flex-row">
     

@@ -75,14 +75,14 @@
 </script>
 
 <div 
-    class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border "
+    class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border"
     data-id={song.id}
     data-id-index={song.id}
     data-is-dir={song.isDir}
     data-parent={song.parent}
     data-title={song.title}>
     <div class="cursor-pointer">
-        <div class="py-2 flex items-center">
+        <div class="py-2 px-2 flex items-center">
 
             <BtnChecked bind:checked={song.checked} toggleChecked={toggleChecked} />
             

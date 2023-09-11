@@ -48,7 +48,7 @@
 <div class="main-left-panel">
     <div class="content-parent">
 
-        <div class="divide-y border-theme mx-2 mt-2">
+        <div class="main-color divide-y border-theme mx-2 mt-2">
             <BreadcrumbBase />
         </div>
         
@@ -57,7 +57,7 @@
         {:then musicFolders}
         
             {#if musicFolders && musicFolders.musicFolders && musicFolders.musicFolders.musicFolder && musicFolders.musicFolders.musicFolder.length > 0}
-                <div class="overflow-y-scroll divide-y border-theme m-2">
+                <div class="main-color overflow-y-scroll divide-y border-theme m-2">
                     {#each musicFolders.musicFolders.musicFolder as musicFolder}
                         <MusicFolderLine folder={musicFolder} />
                     {/each}
@@ -66,7 +66,7 @@
             
         {:catch error}
 
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <div class="w-full pl-2 z-10 text-red-500">Error: {error.message}</div>
             </div>
             

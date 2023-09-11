@@ -84,11 +84,11 @@
             <LoadingLineIndex />
         {:then libraries}
     
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <BreadcrumbBase />
             </div>
     
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <IndexLetters bind:letters={letters} />
             </div>
     

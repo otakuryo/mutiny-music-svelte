@@ -46,14 +46,14 @@
 
     {#if responseRandomSongs.randomSongs && responseRandomSongs.randomSongs.song && responseRandomSongs.randomSongs.song.length > 0 }
     
-        <div class="border-theme mx-2 mt-2 flex">
+        <div class="main-color border-theme mx-2 mt-2 flex">
             <div class="pl-2 z-10"> Random songs </div>
             <div class="pr-2 z-10 ml-auto cursor-pointer" on:click={refreshViewOnClick} on:keyup={refreshViewOnClick}>
                 <RotateCcw class="py-1" />
             </div>
         </div>
     
-        <div class="divide-y border-theme mx-2 mt-2 overflow-y-scroll min-h-[13rem]">
+        <div class="main-color divide-y border-theme mx-2 mt-2 overflow-y-scroll min-h-[13rem]">
 
             {#each responseRandomSongs.randomSongs.song as song}
                 <LineSong song={song} api={api}/>
@@ -65,7 +65,7 @@
     
 {:catch error}
 
-    <div class="divide-y border-theme mx-2 mt-2">
+    <div class="main-color divide-y border-theme mx-2 mt-2">
         <div class="w-full pl-2 z-10 text-red-500">{error.message}</div>
     </div>
 

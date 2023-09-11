@@ -9,11 +9,28 @@ html {
     font-size: var(--font-size-base);
 }
 
+body {
+    @apply h-screen overflow-hidden dark:text-white;
+    @apply font-inter selection:bg-blue-500/70 text-xl;
+}
+
 /**
- * Color de fondo general
+ * Background color for the body
+ */
+.body-color {
+    @apply dark:bg-zinc-900 bg-zinc-50;
+}
+
+/**
+ * Background color for the main container and sections
  */
 .main-color {
-    @apply dark:text-zinc-300 dark:bg-zinc-900;
+    @apply dark:text-zinc-300 dark:bg-zinc-800/10;
+    @apply bg-white;
+}
+
+.main-color-solid {
+    @apply dark:text-zinc-300 dark:bg-zinc-800;
     @apply bg-white;
 }
 
@@ -78,11 +95,13 @@ html {
 }
 
 .main-left-panel {
-    @apply divide-y w-9/12 fixed h-screen-wo-menu-20 md:h-screen-wo-menu-10 bottom-0 left-0 overflow-y-scroll;
+    @apply divide-y fixed h-screen-wo-menu-20 md:h-screen-wo-menu-10 bottom-0 left-0 overflow-y-scroll;
+    @apply w-8/12 2xl:w-9/12;
 }
 
 .main-right-panel {
-    @apply divide-y w-3/12 fixed h-screen-wo-menu-20 md:h-screen-wo-menu-10 bottom-0 right-0;
+    @apply divide-y fixed h-screen-wo-menu-20 md:h-screen-wo-menu-10 bottom-0 right-0;
+    @apply w-4/12 2xl:w-3/12;
 }
 
 .main-left-panel > .content-parent,
@@ -99,7 +118,7 @@ html {
 }
 
 .border-theme {
-    @apply border border-zinc-300 dark:border-zinc-600 rounded;
+    @apply border border-zinc-300 dark:border-zinc-700 rounded;
 }
 
 /**

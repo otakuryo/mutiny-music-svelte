@@ -91,11 +91,11 @@
             <LoadingLineAl />
         {:then libraries}
 
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <BreadcrumbBase />
             </div>
 
-            <div class="overflow-y-auto divide-y border-theme m-2" bind:this={elementContentParent} on:scroll={onScroll}>
+            <div class="main-color overflow-y-auto divide-y border-theme m-2" bind:this={elementContentParent} on:scroll={onScroll}>
         
                 {#if libraries.albumList2.album && libraries.albumList2.album.length > 0}
                     {#each libraries.albumList2.album as album}

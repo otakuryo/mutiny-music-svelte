@@ -76,15 +76,15 @@
     
             {#if albumResponse.album.song && albumResponse.album.song.length > 0}
 
-                <div class="divide-y border-theme mx-2 mt-2">
+                <div class="main-color divide-y border-theme mx-2 mt-2">
                     <BreadcrumbBase />
                 </div>
                 
-                <div class="divide-y border-theme mx-2 mt-2">
+                <div class="main-color divide-y border-theme mx-2 mt-2">
                     <LineBack url="/albums" name="Albums" onBack={BreadcrumbStore.removeLastItem} />
                 </div>
 
-                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                <div class="divide-y border-theme mx-2 mt-2">
 
                     <ControlsNavigationPlaylist
                         api={api}
@@ -93,7 +93,7 @@
                         callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
                 </div>
     
-                <div class="divide-y px-2 border-theme mx-2 mt-2 overflow-y-scroll">
+                <div class="main-color divide-y border-theme mx-2 mt-2 overflow-y-scroll">
                     {#each albumResponse.album.song as song}
         
                             {#if song.isDir}

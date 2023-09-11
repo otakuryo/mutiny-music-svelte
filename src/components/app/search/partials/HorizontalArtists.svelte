@@ -27,11 +27,11 @@
 
 {#if artists.length > 0}
 
-    <div class="divide-y border-theme mx-2 mt-2">
+    <div class="main-color divide-y border-theme mx-2 mt-2">
         <div class="main-color w-full pl-2 z-10"> Artists </div>
     </div>
 
-    <div class="divide-y border-theme mx-2 mt-2 overflow-x-scroll min-h-[13rem]" bind:this={elementContent} on:scroll={onScroll}>
+    <div class="main-color divide-y border-theme mx-2 mt-2 overflow-x-scroll min-h-[13rem]" bind:this={elementContent} on:scroll={onScroll}>
         <div class="flex flex-row">
 
             {#each artists as artist}

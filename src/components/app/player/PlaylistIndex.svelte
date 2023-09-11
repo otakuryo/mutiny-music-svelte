@@ -119,10 +119,10 @@
             <PlayerControls />
             <PlayerPlaylistInformation />
         </div>
-        <div class="main-color divide-y px-2 border-theme mx-2 mt-2">
+        <div class="main-color divide-y border-theme mx-2 mt-2">
             <PlayerListNavigation />
         </div>
-        <div class="overflow-y-auto divide-y border-theme m-2">
+        <div class="main-color overflow-y-auto divide-y border-theme m-2">
             
             {#each $PlaylistStore as song, index}
                 {#if !song.isDir}
