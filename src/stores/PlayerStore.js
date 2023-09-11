@@ -54,6 +54,7 @@ const player = () => {
         src: playlist,
         html5: true,
         preload: true,
+        autoplay: false,
         onplay: () => {
             console.log("Playing");
         },
