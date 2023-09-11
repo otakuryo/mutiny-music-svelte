@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Pause, Play, SkipBack, SkipForward } from "lucide-svelte";
-    import PlayerStore, { isPlaying, bufferProgress } from "$stores/PlayerStore";
+    import PlayerStore, { isPlaying, bufferProgress, scrobblePercent } from "$stores/PlayerStore";
     import PlaylistStore from "$stores/PlaylistStore";
     import { currentSong } from "$stores/CurrentPlaySong";
     import { get } from "svelte/store";
-    import { getDurationHuman } from "$lib/ts/Helpers.js";
+    import { MainServerSubsonicAPI, getDurationHuman } from "$lib/ts/Helpers.js";
 	import PlayerButtonRepeat from "./btns/PlayerButtonRepeat.svelte";
 	import PlayerButtonSuffle from "./btns/PlayerButtonSuffle.svelte";
 	import PlayerButtonPrev from "./btns/PlayerButtonPrev.svelte";
@@ -17,6 +17,9 @@
     let disablePrev = false;
     let disableNext = false;
     let disablePlay = false;
+
+    let isScrobbling = false;
+    let scrobbleRegistered = false;
 
     function togglePlaying() {
         if (get(isPlaying)) {
@@ -90,6 +93,40 @@
         return (currentPosition / duration * 100).toFixed(2);
     }
 
+    function setScrobble(){
+        if (scrobbleRegistered) return;
+        
+        if (currentPosition === 0) return;
+
+        if (isScrobbling) return;
+        isScrobbling = true;
+
+        console.log("setScrobble", duration);
+
+        let song = get(currentSong);
+        if (song.id === '-1') return;
+        let _duration = duration ?? song.duration;
+        let percentage = (currentPosition / _duration * 100);
+        if (percentage < get(scrobblePercent)) {
+            isScrobbling = false;
+            return;
+        };
+
+        let scrobble = {
+            id: song.id
+        }
+        
+        MainServerSubsonicAPI().scrobble(scrobble).then((res) => {
+            console.log("Scrobble", res);
+        }).catch((err) => {
+            console.error("Scrobble", err);
+        }).finally(() => {
+            isScrobbling = false;
+            scrobbleRegistered = true;
+        });
+
+    }
+
     currentSong.subscribe((item) => {
         if (item.id !== '-1'){
             disableAll = false;
@@ -137,7 +174,13 @@
     $: durationHuman = getDurationHuman(currentPosition);
     $: if (currentPosition > 0) {
         percentage = getPercentageDuration()
+        setScrobble();
     };
+
+    $: if (currentPosition === 0) {
+        isScrobbling = false;
+        scrobbleRegistered = false;
+    }
 
 </script>
 
