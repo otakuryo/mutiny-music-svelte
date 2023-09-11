@@ -61,20 +61,20 @@
             <LoadingLineAr />
         {:then serverResponse}
 
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <BreadcrumbBase />
             </div>
 
-            <div class="divide-y px-2 border-theme m-2">
+            <div class="main-color divide-y px-2 border-theme m-2">
                 <IndexLetters letters={letters} />
             </div>
 
             {#if serverResponse.artists.index && serverResponse.artists.index.length > 0}
-                <div class="divide-y px-2 border-theme m-2 overflow-y-scroll">
+                <div class="main-color divide-y border-theme m-2 overflow-y-scroll">
     
                     {#each serverResponse.artists.index as artistIndex}
 
-                        <div class="main-color sticky w-full -top-1 z-10 p-2">
+                        <div class="main-color-solid sticky w-full -top-1 z-10 p-2">
                             {artistIndex.name} 
                         </div>
 

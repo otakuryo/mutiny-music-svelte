@@ -192,14 +192,14 @@
 
     <div class="content-parent h-full">
 
-        <div class="divide-y border-theme mx-2 mt-2">
+        <div class="divide-y mx-2 mt-2">
             <InputText bind:searchText={query} bind:stateSearchText={stateSearchText} />
         </div>
         <!-- <div class="divide-y border-theme mx-2 mt-2"></div> -->
 
         {#await dataFromServer}
     
-            <div class="w-full border-theme grid justify-center items-center m-2">
+            <div class="main-color w-full border-theme grid justify-center items-center m-2">
                 <Loader class="w-32 h-32 stroke-1" />
             </div>
     
@@ -258,7 +258,7 @@
             {/if}
         {:catch error}
 
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <div class="w-full pl-2 z-10 text-red-500">Error: {error.message}</div>
             </div>
             

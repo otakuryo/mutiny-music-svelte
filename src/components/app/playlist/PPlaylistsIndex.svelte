@@ -46,7 +46,7 @@
 
     <div class="content-parent">
 
-        <div class="p-2 border-theme mx-2 mt-2">
+        <div class="p-2 mx-2 mt-2">
             <InputTextCreatePlaylist refreshCallback={refreshViewOnClick}/>
         </div>
     
@@ -55,7 +55,7 @@
         {:then playlists}
         
             {#if playlists.playlists.playlist && playlists.playlists.playlist.length > 0}
-                <div class="divide-y px-2 border-theme mx-2 mt-2">
+                <div class="main-color divide-y px-2 border-theme mx-2 mt-2">
                     
                     <LineTitle title="Playlists" />
         
@@ -68,13 +68,13 @@
             
         {:catch error}
 
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <div class="w-full pl-2 z-10 text-red-500">Error: {error.message}</div>
             </div>
 
         {/await}
 
-        <div class="divide-y px-2 border-theme mx-2 mt-2">
+        <div class="main-color divide-y px-2 border-theme mx-2 mt-2">
             
             <LineInternalUrl url="/playlists/starred-songs/" title="Starred Songs" />
             <LineInternalUrl url="/playlists/starred-albums/" title="Starred Albums" >

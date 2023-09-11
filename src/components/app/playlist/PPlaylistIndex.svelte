@@ -130,11 +130,11 @@
             <LoadingLinePL />
         {:then response}
 
-            <div class="divide-y px-2 border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <LineBack url="/playlists" name="Playlists" />
             </div>
     
-            <div class="divide-y px-2 border-theme mx-2 mt-2">
+            <div class="divide-y border-theme mx-2 mt-2">
 
                 <ControlsNavigationPlaylist
                     list={response.playlist.entry}
@@ -152,7 +152,7 @@
     
             {#if response.playlist.entry && response.playlist.entry.length > 0}
 
-                <div class="divide-y px-2 border-theme m-2 overflow-y-scroll">
+                <div class="main-color divide-y border-theme m-2 overflow-y-scroll">
                     {#each response.playlist.entry as song, index}
                         <LineMusic bind:song={song} api={api} index={index} callbackRemove={appendSongForRemove} />
                     {/each}

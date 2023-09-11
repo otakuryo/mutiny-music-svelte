@@ -10,7 +10,7 @@
 </script>
 
 <div 
-    class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border "
+    class="relative w-player flex flex-col shadow-player-light bg-player-light-background border-player-light-border dark:shadow-player-dark dark:bg-player-dark-background dark:border-player-dark-border"
     data-id={directory.id}
     data-id-index={directory.id}
     data-is-dir={directory.isDir}

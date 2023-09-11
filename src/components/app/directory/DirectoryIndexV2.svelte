@@ -116,16 +116,16 @@
             <LoadingLineDir />
         {:then libraries}
 
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <BreadcrumbBase />
             </div>
 
-            <div class="divide-y border-theme mx-2 mt-2">
+            <div class="main-color divide-y border-theme mx-2 mt-2">
                 <IndexLetters bind:letters={lettersArray} />
             </div>
     
             {#if libraries.directory && libraries.directory.parent}
-                <div class="divide-y border-theme mx-2 mt-2">
+                <div class="main-color divide-y border-theme mx-2 mt-2">
                     <LineBack name={libraries.directory.name} url="/directory?id={libraries.directory.parent}"  onBack={RemoveItemOnBreadcrumbs} />
                 </div>
             {/if}
@@ -138,7 +138,7 @@
                     callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
             </div>
 
-            <div class="divide-y border-theme m-2 overflow-y-scroll">
+            <div class="divide-y border-theme m-2 overflow-y-scroll main-color">
                 {#each libraries.directory.child as song}
         
                     <div class="w-full block relative opacity-0 border-0" id="dir-song-{song.id}"></div>

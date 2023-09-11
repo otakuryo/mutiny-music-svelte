@@ -41,11 +41,11 @@
 
     {#if responseTopSongs.topSongs && responseTopSongs.topSongs.song && responseTopSongs.topSongs.song.length > 0 }
     
-        <div class="divide-y border-theme mx-2 mt-2">
+        <div class="main-color divide-y border-theme mx-2 mt-2">
             <div class="main-color w-full pl-2 z-10"> Top song </div>
         </div>
     
-        <div class="divide-y border-theme mx-2 mt-2 overflow-y-scroll min-h-[13rem]">
+        <div class="main-color divide-y border-theme mx-2 mt-2 overflow-y-scroll min-h-[13rem]">
 
             {#each responseTopSongs.topSongs.song as song}
                 <LineSong song={song} api={api}/>
@@ -57,7 +57,7 @@
     
 {:catch error}
 
-    <div class="divide-y border-theme mx-2 mt-2">
+    <div class="main-color divide-y border-theme mx-2 mt-2">
         <div class="w-full pl-2 z-10 text-red-500">{error.message}</div>
     </div>
 

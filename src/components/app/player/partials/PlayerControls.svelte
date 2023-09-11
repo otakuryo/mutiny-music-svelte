@@ -315,7 +315,7 @@
 
 </style>
 
-<div class="main-color w-full py-3">
+<div class="w-full py-3">
 
     <div class="flex flex-row justify-center">
 
