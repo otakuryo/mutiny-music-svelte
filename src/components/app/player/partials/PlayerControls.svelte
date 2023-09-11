@@ -12,6 +12,7 @@
 	import PlayerButtonRewind from "./btns/PlayerButtonRewind.svelte";
 	import PlayerButtonForward from "./btns/PlayerButtonForward.svelte";
 	import PlayerButtonVolume from "./btns/PlayerButtonVolume.svelte";
+	import PlayerButtonVolumeRange from "./btns/PlayerButtonVolumeRange.svelte";
 
     let disableAll = false;
     let disablePrev = false;
@@ -341,6 +342,8 @@
 
         <!-- Forward button -->
         <PlayerButtonForward bind:disableAll={disableAll}/>
+
+        <PlayerButtonVolumeRange bind:disableAll={disableAll}/>
 
     </div>
 

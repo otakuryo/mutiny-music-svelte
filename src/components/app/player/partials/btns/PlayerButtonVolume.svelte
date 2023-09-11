@@ -19,25 +19,31 @@
         PlayerStore.volume(_volume)
     }
 
-    // function onWheelInput(event: any){
-    //     let _volume = get(userSettingVolume);
-    //     if (event.deltaY < 0) {
-    //         _volume += 0.01;
-    //     }
-    //     if (event.deltaY > 0) {
-    //         _volume -= 0.01;
-    //     }
-    //     if (_volume < 0) {
-    //         _volume = 0;
-    //     }
-    //     if (_volume > 1) {
-    //         _volume = 1;
-    //     }
-    //     console.log(_volume, _volume * 100);
-    //     userSettingVolume.set(_volume);
-    //     event.target.value = _volume * 100;
-    //     PlayerStore.volume(_volume)
-    // }
+    userSettingVolume.subscribe((volume) => {
+        value = volume * 100;
+    })
+
+    function onWheelInput(event: any){
+        let _volume = get(userSettingVolume);
+        if (event.deltaY < 0) {
+            _volume += 0.01;
+        }
+        if (event.deltaY > 0) {
+            _volume -= 0.01;
+        }
+        if (_volume < 0) {
+            _volume = 0;
+        }
+        if (_volume > 1) {
+            _volume = 1;
+        }
+
+        _volume = Math.round(_volume * 100) / 100;
+
+        userSettingVolume.set(_volume);
+        event.target.value = _volume * 100;
+        PlayerStore.volume(_volume)
+    }
 </script>
 
 <style>
@@ -68,4 +74,5 @@
     name="volume"
     step="1"
     on:input={onInput}
+    on:wheel={onWheelInput}
     class="player-button-base w-12 text-black dark:text-white bg-transparent text-sm text-center font-medium mr-2 px-2.5 pb-0 pt-0.5 rounded-full focus:ring-black dark:focus:ring-white focus:border-black dark:focus:border-white">
