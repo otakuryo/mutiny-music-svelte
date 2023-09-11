@@ -68,4 +68,4 @@
     name="volume"
     step="1"
     on:input={onInput}
-    class="player-button-base text-black dark:text-white bg-transparent text-sm text-center font-medium mr-2 px-2.5 pb-0 pt-0.5 rounded-full focus:ring-black dark:focus:ring-white focus:border-black dark:focus:border-white">
+    class="player-button-base w-12 text-black dark:text-white bg-transparent text-sm text-center font-medium mr-2 px-2.5 pb-0 pt-0.5 rounded-full focus:ring-black dark:focus:ring-white focus:border-black dark:focus:border-white">
