@@ -30,7 +30,7 @@ body {
 }
 
 .main-color-solid {
-    @apply dark:text-zinc-300 dark:bg-zinc-800;
+    @apply dark:text-zinc-300 dark:bg-zinc-900;
     @apply bg-white;
 }
 

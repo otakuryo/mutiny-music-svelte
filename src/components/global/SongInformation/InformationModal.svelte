@@ -50,7 +50,7 @@
 >
 	<div class="relative w-full max-w-2xl">
 		<!-- Modal content -->
-		<div class="relative rounded-sm shadow border border-white main-color">
+		<div class="relative rounded-sm shadow border border-white main-color-solid">
 			<!-- Modal header -->
 			<div class="flex items-start justify-between p-4 border-b rounded-sm-t">
 				<h3 class="text-xl font-semibold text-gray-900 dark:text-white min-h-8">{songInformation?.title}</h3>
@@ -66,8 +66,8 @@
 
 			{#if songInformation}
 				<div class="px-2">
-					<div class="w-full main-color">
-						<div class="flow-root overflow-x-scroll h-[60vh]" >
+					<div class="w-full main-color-solid">
+						<div class="flow-root overflow-x-scroll overflow-y-none h-[60vh]" >
 							<ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
 
 								<LineInformationModal title={getMegabytesFromBytes(songInformation.size, true)} subtitle="Size">
@@ -150,7 +150,7 @@
 
 									<div slot="action">
 										{#if songInformation.albumId}
-											<a type="button" on:click={toggleModal} href="/albums?id={songInformation.albumId}" class="btn-small-control-list">
+											<a type="button" on:click={toggleModal} href="/albums?id={songInformation.albumId}" class="btn-small-control-list flex">
 												<FolderSymlink class="w-6 h-6" />
 											</a>
 										{/if}
@@ -164,7 +164,7 @@
 
 									<div slot="action">
 										{#if songInformation.artistId}
-											<a type="button" on:click={toggleModal} href="/artists?id={songInformation.artistId}" class="btn-small-control-list">
+											<a type="button" on:click={toggleModal} href="/artists?id={songInformation.artistId}" class="btn-small-control-list flex">
 												<FolderSymlink class="w-6 h-6" />
 											</a>
 										{/if}
@@ -178,7 +178,7 @@
 
 									<div slot="action">
 										{#if songInformation.artistId}
-											<a type="button" on:click={toggleModal} href="/directory?id={songInformation.parent}" class="btn-small-control-list">
+											<a type="button" on:click={toggleModal} href="/directory?id={songInformation.parent}" class="btn-small-control-list flex">
 												<FolderSymlink class="w-6 h-6" />
 											</a>
 										{/if}
