@@ -11,7 +11,7 @@ const isSingleLooping = writable(false);
 const isShuffling = writable(false);
 const bufferProgress = writable(0);
 const userSettingSeek = writable(15);
-const userSettingVolume = writable(0.5);
+const userSettingVolume = writable(1.0);
 const scrobblePercent = writable(70);
 
 const player = () => {
@@ -82,6 +82,7 @@ const player = () => {
 
             currentSong.set(songObj);
             currentIndex.set(index);
+            playerHowl.volume(get(userSettingVolume));
         },
         setSongAndPlay: (song, songObj = {}, index = 0) => {
             console.log('*: playerStore -> setSongAndPlay()');
@@ -127,6 +128,7 @@ const player = () => {
         },
         volume: (volume) => {
             playerHowl.volume(volume);
+            userSettingVolume.set(volume);
         },
         mute: () => {
             playerHowl.mute();

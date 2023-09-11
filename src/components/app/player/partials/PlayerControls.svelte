@@ -11,6 +11,7 @@
 	import PlayerButtonPlayPause from "./btns/PlayerButtonPlayPause.svelte";
 	import PlayerButtonRewind from "./btns/PlayerButtonRewind.svelte";
 	import PlayerButtonForward from "./btns/PlayerButtonForward.svelte";
+	import PlayerButtonVolume from "./btns/PlayerButtonVolume.svelte";
 
     let disableAll = false;
     let disablePrev = false;
@@ -318,6 +319,8 @@
 
     <div class="flex flex-row justify-center">
 
+        <PlayerButtonVolume bind:disableAll={disableAll}/>
+        
         <!-- Rewind button -->
         <PlayerButtonRewind bind:disableAll={disableAll}/>
 
