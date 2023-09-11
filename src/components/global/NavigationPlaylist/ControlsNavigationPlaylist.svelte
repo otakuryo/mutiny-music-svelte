@@ -136,14 +136,16 @@
         let localIndexes: number[] = [];
 
         _songs.forEach((song, index) => {
-            if (song.isDir) {
-                localDirIds.push(song.id);
-            }else{
-                song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
-                song.songId = song.id;
-                song.checked = true;
-                localSongs.push(song);
-                localIndexes.push(index);
+            if( song ){
+                if (song.isDir) {
+                    localDirIds.push(song.id);
+                }else{
+                    song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
+                    song.songId = song.id;
+                    song.checked = true;
+                    localSongs.push(song);
+                    localIndexes.push(index);
+                }
             }
         });
 
