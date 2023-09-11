@@ -97,7 +97,7 @@
                 <div class="divide-y border-theme m-2 overflow-y-scroll">
                     {#each libraries.indexes.index as line, index}
         
-                        <div class="main-color sticky w-full -top-1 z-10 p-2 ">
+                        <div class="main-color-solid sticky w-full -top-1 z-10 p-2 ">
                             <div class="w-full pl-2 h-8 uppercase" data-id-index="letter-{line.name}" id="letter-{line.name}"> {line.name} </div>
                         </div>
         
