@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Pause, Play, SkipBack, SkipForward } from "lucide-svelte";
     import PlayerStore, { isPlaying, bufferProgress, scrobblePercent } from "$stores/PlayerStore";
     import PlaylistStore from "$stores/PlaylistStore";
     import { currentSong } from "$stores/CurrentPlaySong";
@@ -64,14 +63,24 @@
         if (intervalDuration) {
             clearInterval(intervalDuration);
         }
+
         intervalDuration = setInterval(() => {
-            
-            duration = PlayerStore.duration();
+
+            setDuration();
 
             // @ts-ignore
             currentPosition = Math.round(PlayerStore.currentTime());
 
         }, 1000);
+    }
+
+    function setDuration() {
+        if (PlayerStore.duration() === Infinity) {
+            let song = get(currentSong);
+            duration = song.duration;
+        } else {
+            duration = PlayerStore.duration();
+        }
     }
 
     isPlaying.subscribe((isPlaying) => {
@@ -99,14 +108,13 @@
         if (currentPosition === 0) return;
 
         if (isScrobbling) return;
+
         isScrobbling = true;
-
-        console.log("setScrobble", duration);
-
+        
         let song = get(currentSong);
         if (song.id === '-1') return;
-        let _duration = duration ?? song.duration;
-        let percentage = (currentPosition / _duration * 100);
+
+        let percentage = (currentPosition / duration * 100);
         if (percentage < get(scrobblePercent)) {
             isScrobbling = false;
             return;
@@ -117,9 +125,9 @@
         }
         
         MainServerSubsonicAPI().scrobble(scrobble).then((res) => {
-            console.log("Scrobble", res);
+            console.log("Scrobble response", res);
         }).catch((err) => {
-            console.error("Scrobble", err);
+            console.error("Scrobble error", err);
         }).finally(() => {
             isScrobbling = false;
             scrobbleRegistered = true;
