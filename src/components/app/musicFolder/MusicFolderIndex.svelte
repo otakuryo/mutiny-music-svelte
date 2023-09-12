@@ -33,8 +33,6 @@
     }
 
     function onGoLink() {
-        console.log('onGoLink');
-
         let breadItem: BreadcrumbItem = {
             name: 'Music Folders',
             path: '/directory'

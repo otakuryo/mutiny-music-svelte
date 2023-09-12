@@ -1,5 +1,5 @@
 import type { BreadcrumbItem } from "$lib/types/global";
-import { get, writable } from "svelte/store";
+import { writable } from "svelte/store";
 
 const BreadcrumbStoreFunction = () => {
     
@@ -13,10 +13,8 @@ const BreadcrumbStoreFunction = () => {
                 
 
                 if(items.find((i) => i.path == item.path)) {
-                    console.log("1 BreadcrumbStoreFunction.addItem", item, items);
                     return items;  
                 }else {
-                    console.log(" 2 BreadcrumbStoreFunction.addItem", item, items);
                     return [...items, item];
                 }
 

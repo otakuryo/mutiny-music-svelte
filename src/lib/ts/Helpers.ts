@@ -96,8 +96,7 @@ let getServerSubsonicConfiguration = () => {
  * ```
  */
 function AddItemToBreadcrumbs(name: string, currentPath: string) {
-    console.log('onGoLink');
-
+    
     let breadItem: BreadcrumbItem = {
         name: name,
         path: currentPath

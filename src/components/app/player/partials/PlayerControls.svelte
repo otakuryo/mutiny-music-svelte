@@ -96,7 +96,6 @@
      */
     bufferProgress.subscribe((bufferProgress) => {
         bufferSongPercent = Math.round(bufferProgress).toString();
-        console.log("bufferProgress", bufferProgress, bufferSongPercent);
     });
 
     function getPercentageDuration() {
