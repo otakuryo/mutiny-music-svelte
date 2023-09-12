@@ -20,9 +20,9 @@
     // Attributes for IndexLetters
     let lettersArray: Array<LetterLocal> = [];
 
-    onMount(async () => {
-        refreshViewOnClick();
-    });
+    // onMount(async () => {
+    //     refreshViewOnClick();
+    // });
 
     // Refresh view when click on a link
     $: if (directoryId) {
