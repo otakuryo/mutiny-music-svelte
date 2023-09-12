@@ -54,7 +54,6 @@ const player = () => {
         src: playlist,
         html5: true,
         preload: true,
-        autoplay: false,
         onplay: () => {
             console.log("Playing");
         },
@@ -67,7 +66,7 @@ const player = () => {
         },
         onend: onEndedCallback,
     };
-    let  playerHowl = new Howl(configHowl);
+    let  playerHowl = false;
 
     const {subscribe, set, update} = writable(playerHowl);
 
@@ -75,8 +74,10 @@ const player = () => {
         setSong: (song, songObj = {}, index = 0) => {
             console.log('*: playerStore -> setSong()');
             console.log(song);
-            playerHowl.stop();
-            playerHowl.unload();
+            if (playerHowl) {
+                playerHowl.stop();
+                playerHowl.unload();
+            }
             playlist[0] = song;
             playerHowl = new Howl(configHowl);
             playerHowl.load();
@@ -128,7 +129,9 @@ const player = () => {
             playerHowl.seek(time);
         },
         volume: (volume) => {
-            playerHowl.volume(volume);
+            if (playerHowl) {
+                playerHowl.volume(volume);
+            }
             userSettingVolume.set(volume);
         },
         mute: () => {
