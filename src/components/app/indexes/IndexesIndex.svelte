@@ -19,9 +19,9 @@
 
     let letters: Array<LetterLocal> = [];
 
-    onMount(async () => {
-        dataFromServer = getDataFromServer();
-    });
+    // onMount(async () => {
+    //     dataFromServer = getDataFromServer();
+    // });
 
     $: if(musicFolderId) {
         refreshViewOnClick();
@@ -38,7 +38,7 @@
             let resMusicPlaylist: IndexesTypeLocal = await api.getIndexesID3({musicFolderId: musicFolderId});
 
             letters = getFirstLetterFromIndexes(resMusicPlaylist.indexes);
-            console.log(letters);
+            console.log(">>",letters);
             
             AddItemToBreadcrumbs('Directories', `/indexes` );
 
