@@ -8,6 +8,8 @@
 	import PlayerPlaylistInformation from "./partials/PlayerPlaylistInformation.svelte";
 	import { currentIndex } from "$stores/CurrentPlaySong";
 
+    import VirtualList from "$components/global/VirtualList/VirtualList.svelte";
+
     let hovering = -1;
     let selectItem = -1;
 
@@ -109,6 +111,10 @@
         selectItem = -1;
         return false;
     }
+
+    let start;
+    let end;
+
 </script>
 
 <div class="main-right-panel">
@@ -119,12 +125,34 @@
             <PlayerControls />
             <PlayerPlaylistInformation />
         </div>
-        <div class="main-color divide-y border-theme mx-2 mt-2">
+        <div class="main-color divide-y border-theme mx-2 mt-2 relative">
             <PlayerListNavigation />
+            <div class="absolute top-0 right-0">
+                {start} - {end}
+            </div>
         </div>
         <div class="main-color overflow-y-auto divide-y border-theme m-2">
             
-            {#each $PlaylistStore as song, index}
+            <VirtualList items={$PlaylistStore} let:item let:index bind:start bind:end>
+            
+                {#if !item.isDir}
+                    <div 
+                        class="select-none"
+                        draggable={true}
+                        on:dragstart={event => dragstart(event, index)}
+                        on:drop|preventDefault={event => drop(event, index)}
+                        on:dragover={onDragOver}
+                        on:dragenter={() => hovering = index}
+                        class:main-color={selectItem === index}
+                        class:cursor-grabbing={selectItem === index}
+                        class:opacity-25={hovering === index} >
+                            <PlayerLineMusic song={item} index={index} />
+                    </div>
+                {/if}
+
+            </VirtualList>
+            
+            <!-- {#each $PlaylistStore as song, index}
                 {#if !song.isDir}
                     <div 
                         class="select-none"
@@ -139,7 +167,7 @@
                             <PlayerLineMusic bind:song={song} index={index} />
                     </div>
                 {/if}
-            {/each}
+            {/each} -->
 
         </div>
 
