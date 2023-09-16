@@ -3,9 +3,30 @@
 	import type { Child } from "$models/servers/subsonic/types";
 	import { ArrowRight } from "lucide-svelte";
     import ImgCover from "$components/global/ImgCover.svelte";
+	import TemporalListStore from "$stores/TemporalListStore";
+	import BtnCheckedFolder from "$components/global/BtnCheckedFolder.svelte";
+	import { getAllSongFromDirectoryRecursive } from "$lib/ts/Helpers";
 
     export let directory: Child;
     export let api: SubsonicAPI;
+
+    function toggleChecked() {
+        console.log("toggleChecked");
+        
+        directory.checked = !directory.checked;
+
+        getAllSongFromDirectoryRecursive([directory], api).then((songs) => {
+            if (directory.checked) {
+                TemporalListStore.addList(songs);
+            } else {
+                songs.forEach((song) => {
+                    let _song_index = TemporalListStore.getSongIndexById(song.id);
+                    if (_song_index === -1) return;
+                    TemporalListStore.removeSongByIndex(_song_index);
+                });
+            }
+        });
+    }
 
 </script>
 
@@ -19,6 +40,8 @@
 
         <div class="p-2 flex items-center ">
             
+            <BtnCheckedFolder bind:checked={directory.checked} toggleChecked={toggleChecked} />
+
             <ImgCover api={api} title={directory.title} songId={directory.coverArt} />
 
             <a href="/directory?id={directory.id}" class="w-full">

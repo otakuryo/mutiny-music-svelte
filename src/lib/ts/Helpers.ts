@@ -168,7 +168,7 @@ async function getAllSongFromDirectoryRecursive(list: Child[], api: SubsonicAPI)
         }
 
         // Add songs to temporal list
-        // TemporalListStore.setList(localSongs);
+        // TemporalListStore.addList(localSongs);
         // localSongs.forEach(song => {
         //     TemporalListStore.addSong(song);
         // });

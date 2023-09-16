@@ -90,13 +90,13 @@
         dataFromServer.then((libraries) => {
 
             libraries.directory.child.forEach((element: Child) => {
-                if (!element.isDir) {
-                    element.checked = state;
-                }
+                element.checked = state;
             });
+
+            dataFromServer = dataFromServer;
+
         })
 
-        dataFromServer = dataFromServer;
     }
 
     function callbackCheckSonByIndex(){
@@ -144,10 +144,7 @@
                     <div class="w-full block relative opacity-0 border-0" id="dir-song-{song.id}"></div>
         
                     {#if song.isDir}
-                        <DirectoryLineDirectory
-                            bind:directory={song}
-                            api={api} />
-        
+                        <DirectoryLineDirectory bind:directory={song} api={api} />
                     {:else}
                         <DirectoryLineMusic bind:song={song} api={api} />
                     {/if}

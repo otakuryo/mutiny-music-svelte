@@ -6,12 +6,19 @@
 	import PlayerMenuPlaylist from "./partials/PlayerMenuPlaylist.svelte";
 	import PlayerStore from "$stores/PlayerStore";
 	import { getAllSongFromDirectoryRecursive } from "$lib/ts/Helpers";
+	import { onMount } from "svelte";
 
     export let api: SubsonicAPI;
     export let list: Child[] = [];
 
     export let callbackCheckSonByIndex: () => void;
     export let callbackUncheckSonByIndex: () => void;
+
+    onMount(() => {
+        allBtnsDisabled();
+        TemporalListStore.clear();
+        allBtnsEnabled();
+    });
 
     let selectAllDisabled = false;
     let deselectAllDisabled = false;
@@ -52,7 +59,7 @@
         TemporalListStore.clear();
         
         getAllSongFromDirectoryRecursive(list, api).then((songs) => {
-            TemporalListStore.setList(songs);
+            TemporalListStore.addList(songs);
             allBtnsEnabled();
             callbackCheckSonByIndex();
         });
@@ -102,7 +109,7 @@
     //     }
 
     //     // Add songs to temporal list
-    //     // TemporalListStore.setList(localSongs);
+    //     // TemporalListStore.addList(localSongs);
     //     localSongs.forEach(song => {
     //         TemporalListStore.addSong(song);
     //     });
@@ -165,14 +172,6 @@
      */
     function clearAllSongToTemporalList() {
         TemporalListStore.clear();
-        let localIndexes: number[] = [];
-        list.forEach((song, index) => {
-            if (song.isDir) {
-                
-            }else{
-                localIndexes.push(index);
-            }
-        });
         callbackUncheckSonByIndex();
     }
 
@@ -198,12 +197,12 @@
             // await addAllSongToTemporalListV2Async();
 
             let songs = await getAllSongFromDirectoryRecursive(list, api);
-            TemporalListStore.setList(songs);
+            TemporalListStore.addList(songs);
             _list = TemporalListStore.getSongList();
             
         }
 
-        PlaylistStore.setList(_list);
+        PlaylistStore.addList(_list);
         
         setTimeout(() => {
             clearAllSongToTemporalList();
@@ -233,14 +232,14 @@
             // await addAllSongToTemporalListV2Async();
 
             let songs = await getAllSongFromDirectoryRecursive(list, api);
-            TemporalListStore.setList(songs);
+            TemporalListStore.addList(songs);
             _list = TemporalListStore.getSongList();
             
         }
 
         let index = PlaylistStore.getSongList().length;
 
-        PlaylistStore.setList(_list);
+        PlaylistStore.addList(_list);
         
         if (_list.length > 0) {
             let song = _list[0];

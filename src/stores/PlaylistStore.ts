@@ -26,9 +26,15 @@ const playlist = () => {
 
             return list.length - 1;
         },
+        addList: (songs: Array<Child>) => {
+            console.log('*: playlistStore -> addList()');
+            list = list.concat(songs);
+            set(list);
+            return list.length - 1;
+        },
         setList: (songs: Array<Child>) => {
             console.log('*: playlistStore -> setList()');
-            list = list.concat(songs);
+            list = songs;
             set(list);
             return list.length - 1;
         },
