@@ -1,5 +1,5 @@
 import type { BreadcrumbItem } from "$lib/types/global";
-import { SubsonicAPI, type SubsonicConfigType } from "$models/servers/subsonic";
+import { SubsonicAPI, type Child, type SubsonicConfigType } from "$models/servers/subsonic";
 import BreadcrumbStore from "$stores/BreadcrumbStore";
 import { ServerConfigObj, ServerConfigPersistent } from "$stores/ServerConfigStore";
 
@@ -121,11 +121,119 @@ function RemoveAllItemsOnBreadcrumbs() {
     BreadcrumbStore.clear();
 }
 
+async function getAllSongFromDirectoryRecursive(list: Child[], api: SubsonicAPI){
+
+
+    /**
+     * Add all songs to temporal list
+     */
+    async function getAllSongsRecursive() {
+
+        // Prepare variables
+        let localIndexes: number[] = [];
+        let localSongs: Child[] = [];
+
+        //// TemporalListStore.clear();
+        let haveDirs = true;
+
+        let _tmp_songs_ = getSongsAndDirs(list);
+
+        // While we have directories, we will continue to search for songs
+        while (haveDirs) {
+
+            // If we have songs, we add them to the list
+            if(_tmp_songs_.localSongs.length > 0){
+                _tmp_songs_.localSongs.forEach(song => {
+                    song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
+                    song.songId = song.id;
+                    song.checked = true;
+                    localSongs.push(song);
+                });
+                localIndexes = localIndexes.concat(_tmp_songs_.localIndexes);
+            }
+    
+            // If we have directories, we will search for songs in them
+            if(_tmp_songs_.localDirIds.length > 0){
+                let serverSongs = await getSongsFromArrayOfDirsAsync(_tmp_songs_.localDirIds);
+                _tmp_songs_ = getSongsAndDirs(serverSongs);
+            }else{
+                // If we don't have directories, we finish the loop
+                _tmp_songs_ = {
+                    localDirIds: [],
+                    localSongs: [],
+                    localIndexes: []
+                }
+                haveDirs = false;
+            }
+        }
+
+        // Add songs to temporal list
+        // TemporalListStore.setList(localSongs);
+        // localSongs.forEach(song => {
+        //     TemporalListStore.addSong(song);
+        // });
+
+        console.log("Helpers.ts --> finalizado localSongs", localSongs);
+        // callbackCheckSonByIndex();
+        return localSongs;
+    }
+
+    /**
+     * Get songs and directories from a list of songs
+     * 
+     * @param _songs
+     */
+    function getSongsAndDirs(_songs: Child[]){
+
+        let localDirIds: string[] = [];
+        let localSongs: Child[] = [];
+        let localIndexes: number[] = [];
+
+        _songs.forEach((song, index) => {
+            if( song ){
+                if (song.isDir) {
+                    localDirIds.push(song.id);
+                }else{
+                    song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
+                    song.songId = song.id;
+                    song.checked = true;
+                    localSongs.push(song);
+                    localIndexes.push(index);
+                }
+            }
+        });
+
+        return {
+            localDirIds,
+            localSongs,
+            localIndexes
+        }
+    }
+
+    /**
+     * Get songs from an array of directories
+     * 
+     * @param ids 
+     */
+    async function getSongsFromArrayOfDirsAsync(ids: string[]) {
+        let arrOfDirs = ids.map(id => api.getMusicDirectory({id: id}) );
+        let response = await Promise.all(arrOfDirs);
+        let songs: Child[] = [];
+        response.forEach(res => {
+            songs = songs.concat(res.directory.child);
+        });
+        return songs;
+    }
+
+    return await getAllSongsRecursive();
+}
+
 export { 
     getDurationHuman,
     getMegabytesFromBytes,
     MainServerSubsonicAPI,
     AddItemToBreadcrumbs,
     RemoveItemOnBreadcrumbs,
-    RemoveAllItemsOnBreadcrumbs
+    RemoveAllItemsOnBreadcrumbs,
+    getAllSongFromDirectoryRecursive
 };

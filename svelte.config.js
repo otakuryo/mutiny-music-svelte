@@ -19,6 +19,7 @@ const config = {
 			$layouts: './src/layouts',
 			$models: './src/models',
 			$interfaces: './src/interfaces',
+			$src: './src',
 		},
 		adapter: adapter({
 			pages: 'build',

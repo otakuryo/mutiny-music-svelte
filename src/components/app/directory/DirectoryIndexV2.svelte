@@ -145,7 +145,7 @@
         
                     {#if song.isDir}
                         <DirectoryLineDirectory
-                            directory={song}
+                            bind:directory={song}
                             api={api} />
         
                     {:else}

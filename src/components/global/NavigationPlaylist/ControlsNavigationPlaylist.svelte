@@ -5,6 +5,7 @@
 	import PlaylistStore from "$stores/PlaylistStore";
 	import PlayerMenuPlaylist from "./partials/PlayerMenuPlaylist.svelte";
 	import PlayerStore from "$stores/PlayerStore";
+	import { getAllSongFromDirectoryRecursive } from "$lib/ts/Helpers";
 
     export let api: SubsonicAPI;
     export let list: Child[] = [];
@@ -17,25 +18,6 @@
     let addAllToPlaylistToEndDisabled = false;
     let addAllToPlaylistToEndAndPlayDisabled = false;
     let showListDisabled = false;
-
-    // Old version
-    // function addAllSongToTemporalList() {
-    //     let localIndexes: number[] = [];
-    //     TemporalListStore.clear();
-    //     list.forEach((song, index) => {
-    //         if (song.isDir) {
-                
-    //         }else{
-    //             song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
-    //             song.songId = song.id;
-    //             song.checked = true;
-    //             TemporalListStore.addSong(song);
-    //             localIndexes.push(index);
-    //         }
-    //     });
-
-    //     callbackCheckSonByIndex();
-    // }
 
     /**
      * Enable all buttons
@@ -66,110 +48,115 @@
      */
     function addAllSongToTemporalListV2() {
         allBtnsDisabled();
-        addAllSongToTemporalListV2Async().then(() => {
+
+        TemporalListStore.clear();
+        
+        getAllSongFromDirectoryRecursive(list, api).then((songs) => {
+            TemporalListStore.setList(songs);
             allBtnsEnabled();
+            callbackCheckSonByIndex();
         });
     }
 
     /**
      * Add all songs to temporal list
      */
-    async function addAllSongToTemporalListV2Async() {
+    // async function addAllSongToTemporalListV2Async() {
 
-        // Prepare variables
-        let localIndexes: number[] = [];
-        let localSongs: Child[] = [];
+    //     // Prepare variables
+    //     let localIndexes: number[] = [];
+    //     let localSongs: Child[] = [];
 
-        TemporalListStore.clear();
-        let haveDirs = true;
+    //     TemporalListStore.clear();
+    //     let haveDirs = true;
 
-        let _tmp_songs_ = getSongsAndDirs(list);
+    //     let _tmp_songs_ = getSongsAndDirs(list);
 
-        // While we have directories, we will continue to search for songs
-        while (haveDirs) {
+    //     // While we have directories, we will continue to search for songs
+    //     while (haveDirs) {
 
-            // If we have songs, we add them to the list
-            if(_tmp_songs_.localSongs.length > 0){
-                _tmp_songs_.localSongs.forEach(song => {
-                    song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
-                    song.songId = song.id;
-                    song.checked = true;
-                    localSongs.push(song);
-                });
-                localIndexes = localIndexes.concat(_tmp_songs_.localIndexes);
-            }
+    //         // If we have songs, we add them to the list
+    //         if(_tmp_songs_.localSongs.length > 0){
+    //             _tmp_songs_.localSongs.forEach(song => {
+    //                 song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
+    //                 song.songId = song.id;
+    //                 song.checked = true;
+    //                 localSongs.push(song);
+    //             });
+    //             localIndexes = localIndexes.concat(_tmp_songs_.localIndexes);
+    //         }
     
-            // If we have directories, we will search for songs in them
-            if(_tmp_songs_.localDirIds.length > 0){
-                let serverSongs = await getSongsFromArrayOfDirsAsync(_tmp_songs_.localDirIds);
-                _tmp_songs_ = getSongsAndDirs(serverSongs);
-            }else{
-                // If we don't have directories, we finish the loop
-                _tmp_songs_ = {
-                    localDirIds: [],
-                    localSongs: [],
-                    localIndexes: []
-                }
-                haveDirs = false;
-            }
-        }
+    //         // If we have directories, we will search for songs in them
+    //         if(_tmp_songs_.localDirIds.length > 0){
+    //             let serverSongs = await getSongsFromArrayOfDirsAsync(_tmp_songs_.localDirIds);
+    //             _tmp_songs_ = getSongsAndDirs(serverSongs);
+    //         }else{
+    //             // If we don't have directories, we finish the loop
+    //             _tmp_songs_ = {
+    //                 localDirIds: [],
+    //                 localSongs: [],
+    //                 localIndexes: []
+    //             }
+    //             haveDirs = false;
+    //         }
+    //     }
 
-        // Add songs to temporal list
-        // TemporalListStore.setList(localSongs);
-        localSongs.forEach(song => {
-            TemporalListStore.addSong(song);
-        });
+    //     // Add songs to temporal list
+    //     // TemporalListStore.setList(localSongs);
+    //     localSongs.forEach(song => {
+    //         TemporalListStore.addSong(song);
+    //     });
 
-        console.log("finalizado localSongs", localSongs);
-        callbackCheckSonByIndex();
-    }
+    //     console.log("finalizado localSongs", localSongs);
+    //     callbackCheckSonByIndex();
+    // }
 
     /**
      * Get songs and directories from a list of songs
      * 
      * @param _songs
      */
-    function getSongsAndDirs(_songs: Child[]){
+    // function getSongsAndDirs(_songs: Child[]){
 
-        let localDirIds: string[] = [];
-        let localSongs: Child[] = [];
-        let localIndexes: number[] = [];
+    //     let localDirIds: string[] = [];
+    //     let localSongs: Child[] = [];
+    //     let localIndexes: number[] = [];
 
-        _songs.forEach((song, index) => {
-            if( song ){
-                if (song.isDir) {
-                    localDirIds.push(song.id);
-                }else{
-                    song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
-                    song.songId = song.id;
-                    song.checked = true;
-                    localSongs.push(song);
-                    localIndexes.push(index);
-                }
-            }
-        });
+    //     _songs.forEach((song, index) => {
+    //         if( song ){
+    //             if (song.isDir) {
+    //                 localDirIds.push(song.id);
+    //             }else{
+    //                 song.downloadSongUrl = api.downloadWoFetchSync({id: song.id});
+    //                 song.songId = song.id;
+    //                 song.checked = true;
+    //                 localSongs.push(song);
+    //                 localIndexes.push(index);
+    //             }
+    //         }
+    //     });
 
-        return {
-            localDirIds,
-            localSongs,
-            localIndexes
-        }
-    }
+    //     return {
+    //         localDirIds,
+    //         localSongs,
+    //         localIndexes
+    //     }
+    // }
 
     /**
      * Get songs from an array of directories
      * 
      * @param ids 
      */
-    async function getSongsFromArrayOfDirsAsync(ids: string[]) {
-        let arrOfDirs = ids.map(id => api.getMusicDirectory({id: id}) );
-        let response = await Promise.all(arrOfDirs);
-        let songs: Child[] = [];
-        response.forEach(res => {
-            songs = songs.concat(res.directory.child);
-        });
-        return songs;
-    }
+    // async function getSongsFromArrayOfDirsAsync(ids: string[]) {
+    //     let arrOfDirs = ids.map(id => api.getMusicDirectory({id: id}) );
+    //     let response = await Promise.all(arrOfDirs);
+    //     let songs: Child[] = [];
+    //     response.forEach(res => {
+    //         songs = songs.concat(res.directory.child);
+    //     });
+    //     return songs;
+    // }
 
     /**
      * Button trigger
@@ -203,18 +190,21 @@
      */
     async function addAllSongToMainPlaylistStoreAsync(){
         allBtnsDisabled();
-        let list = TemporalListStore.getSongList();
+        let _list = TemporalListStore.getSongList();
 
         // If list is empty, we add all songs
-        if (list.length === 0) {
-            await addAllSongToTemporalListV2Async();
+        if (_list.length === 0) {
+
+            // await addAllSongToTemporalListV2Async();
+
+            let songs = await getAllSongFromDirectoryRecursive(list, api);
+            TemporalListStore.setList(songs);
+            _list = TemporalListStore.getSongList();
+            
         }
 
-        PlaylistStore.setList(list);
+        PlaylistStore.setList(_list);
         
-        // list.forEach(song => {
-        //     PlaylistStore.addSong(song); 
-        // });
         setTimeout(() => {
             clearAllSongToTemporalList();
             allBtnsEnabled();
@@ -235,23 +225,25 @@
      */
     async function addAllSongToMainPlaylistStoreAndPlayAsync(){
         allBtnsDisabled();
-        let list = TemporalListStore.getSongList();
+        let _list = TemporalListStore.getSongList();
 
         // If list is empty, we add all songs
-        if (list.length === 0) {
-            await addAllSongToTemporalListV2Async();
+        if (_list.length === 0) {
+
+            // await addAllSongToTemporalListV2Async();
+
+            let songs = await getAllSongFromDirectoryRecursive(list, api);
+            TemporalListStore.setList(songs);
+            _list = TemporalListStore.getSongList();
+            
         }
 
         let index = PlaylistStore.getSongList().length;
 
-        PlaylistStore.setList(list);
-
-        // list.forEach(song => {
-        //     PlaylistStore.addSong(song);
-        // });
+        PlaylistStore.setList(_list);
         
-        if (list.length > 0) {
-            let song = list[0];
+        if (_list.length > 0) {
+            let song = _list[0];
             PlayerStore.setSongAndPlay(song.downloadSongUrl, song, index);
         }
 
