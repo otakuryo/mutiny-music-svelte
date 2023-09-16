@@ -14,9 +14,16 @@ const TemporalList = () => {
 
             return index;
         },
+        addList: (newList) => {
+            console.log('*: TemporalListStore -> addList()');
+            list = list.concat(newList);
+            set(list);
+
+            return list.length - 1;
+        },
         setList: (newList) => {
             console.log('*: TemporalListStore -> setList()');
-            list = list.concat(newList);
+            list = newList;
             set(list);
 
             return list.length - 1;
