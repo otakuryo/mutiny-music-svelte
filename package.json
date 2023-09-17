@@ -3,7 +3,7 @@
 	"version": "0.2.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev --port 3000 --host",
+		"dev": "vite dev --port 3000 --host --config vite-dev.config.js",
 		"prebuild": "svelte-sitemap --domain https://server.deagustin.com",
 		"build": "vite build",
 		"preview": "vite preview --port 3999 --host",
