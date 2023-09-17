@@ -1,6 +1,6 @@
 <script lang="ts">
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
-	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
+	import { MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
     import type { SubsonicAPI, AlbumList2, SubsonicBaseResponse } from '$models/servers/subsonic';
 	import { afterUpdate, onMount } from 'svelte';
 	import LoadingLineAl from '$components/app/albums/partials/LoadingLineAl.svelte';
@@ -82,6 +82,17 @@
         lastScrollTop = (e.target as HTMLElement).scrollTop;
     }
 
+    function clearCache(){
+        console.log("clearCache");
+        let cache = getCacheConfig();
+
+        cache.deleteKeyMatch({stringMatch: "getAlbumList"})
+        .then((count) => {
+            console.log("Cache cleared", count);
+            refreshViewOnClick();
+        });
+    }
+
 </script>
 
 <div class="main-left-panel">
@@ -93,6 +104,18 @@
 
             <div class="main-color divide-y border-theme mx-2 mt-2">
                 <BreadcrumbBase />
+            </div>
+
+            <div class="main-color divide-y border-theme mx-2 mt-2">
+                <div class="flex w-100 flex-row main-color">
+                    <button
+                        type="button"
+                        class="btn-small-control-list"
+                        on:click={clearCache}
+                        on:keypress={clearCache}>
+                            Clear cache
+                    </button>
+                </div>
             </div>
 
             <div class="main-color overflow-y-auto divide-y border-theme m-2" bind:this={elementContentParent} on:scroll={onScroll}>

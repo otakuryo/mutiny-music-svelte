@@ -4,7 +4,7 @@
 	import LineMusic from '$components/app/playlist/partials/LineMusic.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
-	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
+	import { MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
 	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     export let playlistId: string|undefined = undefined;
@@ -121,6 +121,17 @@
     //     console.log(playlists);
     // }));
 
+    function clearCache(){
+        console.log("clearCache");
+        if (playlistId === undefined) return;
+        let cache = getCacheConfig();
+
+        cache.deleteKeyMatch({stringMatch: playlistId})
+        .then((count) => {
+            console.log("Cache cleared", count);
+            refreshViewOnClick();
+        });
+    }
 </script>
 
 <div class="main-left-panel">
@@ -143,7 +154,18 @@
                     callbackUncheckSonByIndex={callbackUncheckSongByIndex} >
 
                     <div slot="extra-options">
-                        <button disabled={disableDeleteBtn} type="button" class="btn-small-control-list" on:click={updatePlaylistAndRemove} on:keydown={updatePlaylistAndRemove}>Guardar</button>
+
+                        <div class="flex flex-row">
+                            <button
+                                type="button"
+                                class="btn-small-control-list"
+                                on:click={clearCache}
+                                on:keypress={clearCache}>
+                                    Clear cache
+                            </button>
+    
+                            <button disabled={disableDeleteBtn} type="button" class="btn-small-control-list" on:click={updatePlaylistAndRemove} on:keydown={updatePlaylistAndRemove}>Guardar</button>
+                        </div>
                     </div>
         
                 </ControlsNavigationPlaylist>

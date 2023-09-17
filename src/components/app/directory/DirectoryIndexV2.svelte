@@ -1,11 +1,10 @@
 <script lang="ts">
     import type { SubsonicAPI, SubsonicBaseResponse, Child, Error, Directory } from '$models/servers/subsonic';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
-	import { onMount } from 'svelte';
 	import DirectoryLineDirectory from '$components/app/directory/partials/DirectoryLineDirectory.svelte';
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
-	import { AddItemToBreadcrumbs, RemoveItemOnBreadcrumbs, MainServerSubsonicAPI } from '$lib/ts/Helpers';
+	import { AddItemToBreadcrumbs, RemoveItemOnBreadcrumbs, MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
     import type { LetterLocal } from '$lib/types/global.d';
 	import LoadingLineDir from './partials/LoadingLineDir.svelte';
@@ -107,6 +106,17 @@
         toggleDataFromServer(false);
     }
 
+    function clearCache(){
+        console.log("clearCache");
+        let cache = getCacheConfig();
+
+        cache.deleteKeyMatch({stringMatch: directoryId})
+        .then((count) => {
+            console.log("Cache cleared", count);
+            refreshViewOnClick();
+        });
+    }
+
 </script>
 
 <div class="main-left-panel">
@@ -135,7 +145,20 @@
                     api={api}
                     list={libraries.directory.child}
                     callbackCheckSonByIndex={callbackCheckSonByIndex}
-                    callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+                    callbackUncheckSonByIndex={callbackUncheckSonByIndex} >
+
+                    <div slot="extra-options">
+                        <div class="flex flex-row">
+                            <button
+                                type="button"
+                                class="btn-small-control-list cursor-help"
+                                on:click={clearCache}
+                                on:keypress={clearCache}>
+                                    Clear cache
+                            </button>
+                        </div>
+                    </div>
+                </ControlsNavigationPlaylist>
             </div>
 
             <div class="divide-y border-theme m-2 overflow-y-scroll main-color">
