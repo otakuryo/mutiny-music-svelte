@@ -44,6 +44,7 @@ import type {
 export * from './types.js';
 
 import { arrayBufferToBase64 } from './utils.js';
+import { getCacheConfig } from '$lib/ts/Helpers.js';
 
 export type SubsonicConfigType = 'subsonic' | 'generic' | 'navidrome' | 'madsonic' | 'airsonic' | 'airsonic-advanced' | 'gonic';
 export const SubsonicConfigTypeArray = [
@@ -142,13 +143,12 @@ export class SubsonicAPI {
 		return this.#requestJSON<T>(method, params);
 	}
 
-	async #requestJSON<T>(method: string, args?: Params) {
-		return this.#request(method, args)
-			.then(async res => res.json())
+	async #requestJSON<T>(method: string, args?: Params, withCache: boolean = true) {
+		return this.#request(method, args, withCache)
 			.then(async res => res?.['subsonic-response'] as Promise<T>);
 	}
 
-	async #request(method: string, params?: Params) {
+	async #request(method: string, params?: Params, withCache: boolean = true): Promise<string|Response> {
 		if (!this.authenticated) throw new Error('not authenticated');
 		if (!this.#user) throw new Error('not authenticated');
 		if (!this.#fetch) throw new Error('not authenticated');
@@ -191,10 +191,48 @@ export class SubsonicAPI {
 			url.searchParams.set('s', salt);
 		}
 
-
 		console.log(url.toString());
 
-		return this.#fetch(url.toString());
+		if (withCache) {
+			return await this.fetchWithCache(url.toString());
+		} else {
+			console.log("Cache API disabled.");
+			let response = await this.#fetch(url);
+			return response.json();
+		}
+		
+	}
+
+	async fetchWithCache(url: string): Promise<string|Response> {
+
+		if (!this.#fetch) throw new Error('not authenticated');
+
+		let cacheConfig = getCacheConfig();
+
+		if (cacheConfig.checkIfSupported()) {
+			let startDate = new Date();
+			console.log("Cache API supported.");
+
+			let cachedResponse: Response = await cacheConfig.get({urlKey: url});
+			if (cachedResponse) {
+				let endDate = new Date();
+				console.log("Time elapsed: " + (endDate.getTime() - startDate.getTime()) + "ms");
+				return cachedResponse;
+			} else {
+				let response = await this.#fetch(url);
+				let responseJSON: string = await response.json();
+				let responseJSONString = JSON.stringify(responseJSON);
+				await cacheConfig.set({urlKey: url, dataJSON: responseJSONString});
+				let endDate = new Date();
+				console.log("Time elapsed: " + (endDate.getTime() - startDate.getTime()) + "ms");
+				
+				return responseJSON;
+			}
+		} else {
+			console.log("Cache API Not supported.");
+			let response = await this.#fetch(url);
+			return response.json();
+		}
 	}
 
 	async #requestWoFetch(method: string, params?: Params) {
@@ -475,7 +513,7 @@ export class SubsonicAPI {
 			SubsonicBaseResponse & {
 				topSongs: TopSongs;
 			}
-		>('getTopSongs', args);
+		>('getTopSongs', args, false);
 	}
 
 	async getAlbumList(args: {
@@ -495,11 +533,15 @@ export class SubsonicAPI {
 		genre?: string;
 		musicFolderId?: string;
 	}) {
+		
+		// Disable cache for random, newest, highest, frequent, recent
+		let disableCache = !(args.type === 'random' || args.type === 'newest' || args.type === 'highest' || args.type === 'frequent' || args.type === 'recent');
+
 		return this.#requestJSON<
 			SubsonicBaseResponse & {
 				albumList: AlbumList;
 			}
-		>('getAlbumList', args);
+		>('getAlbumList', args, disableCache);
 	}
 
 	async getAlbumList2(args: {
@@ -519,11 +561,15 @@ export class SubsonicAPI {
 		genre?: string;
 		musicFolderId?: string;
 	}) {
+		
+		// Disable cache for random, newest, highest, frequent, recent
+		let disableCache = !(args.type === 'random' || args.type === 'newest' || args.type === 'highest' || args.type === 'frequent' || args.type === 'recent');
+
 		return this.#requestJSON<
 			SubsonicBaseResponse & {
 				albumList2: AlbumList2;
 			}
-		>('getAlbumList2', args);
+		>('getAlbumList2', args, disableCache);
 	}
 
 	async getRandomSongs(args?: {
@@ -537,7 +583,7 @@ export class SubsonicAPI {
 			SubsonicBaseResponse & {
 				randomSongs: Songs;
 			}
-		>('getRandomSongs', args);
+		>('getRandomSongs', args, false);
 	}
 
 	async getSongsByGenre(args: {
@@ -593,7 +639,7 @@ export class SubsonicAPI {
 			SubsonicBaseResponse & {
 				searchResult2: SearchResult2;
 			}
-		>('search2', args);
+		>('search2', args, false);
 	}
 
 	async search2(args: {
@@ -610,7 +656,7 @@ export class SubsonicAPI {
 			SubsonicBaseResponse & {
 				searchResult2: SearchResult2;
 			}
-		>('search2', args);
+		>('search2', args, false);
 	}
 
 	async search3(args: {
@@ -627,7 +673,7 @@ export class SubsonicAPI {
 			SubsonicBaseResponse & {
 				searchResult3: SearchResult3;
 			}
-		>('search3', args);
+		>('search3', args, false);
 	}
 
 	async getPlaylists(args?: { username?: string }) {
@@ -635,7 +681,7 @@ export class SubsonicAPI {
 			SubsonicBaseResponse & {
 				playlists: Playlists;
 			}
-		>('getPlaylists', args);
+		>('getPlaylists', args, false);
 	}
 
 	async getPlaylist(args: { id: string }) {

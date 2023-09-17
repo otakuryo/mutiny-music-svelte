@@ -2,7 +2,7 @@
     import type { SubsonicAPI, SubsonicBaseResponse, ArtistsID3 } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
 	import LineArtist from '$components/app/artists/partials/LineArtist.svelte';
-	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
+	import { MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
 	import LoadingLineAr from './partials/LoadingLineAr.svelte';
 	import IndexLetters from '$components/global/Navigation/IndexLetters.svelte';
 	import type { LetterLocal } from '$lib/types/global';
@@ -53,6 +53,17 @@
         dataFromServer = getDataFromServer();
 	}
 
+    function clearCache(){
+        console.log("clearCache");
+        let cache = getCacheConfig();
+
+        cache.deleteKeyMatch({stringMatch: "getArtists"})
+        .then((count) => {
+            console.log("Cache cleared", count);
+            refreshViewOnClick();
+        });
+    }
+
 </script>
 
 <div class="main-left-panel">
@@ -67,6 +78,18 @@
 
             <div class="main-color divide-y px-2 border-theme m-2">
                 <IndexLetters letters={letters} />
+            </div>
+
+            <div class="main-color divide-y border-theme mx-2 mt-2">
+                <div class="flex w-100 flex-row main-color">
+                    <button
+                        type="button"
+                        class="btn-small-control-list"
+                        on:click={clearCache}
+                        on:keypress={clearCache}>
+                            Clear cache
+                    </button>
+                </div>
             </div>
 
             {#if serverResponse.artists.index && serverResponse.artists.index.length > 0}

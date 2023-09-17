@@ -5,7 +5,7 @@
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
-	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
+	import { MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
 	import LoadingLineAl from './partials/LoadingLineAl.svelte';
 	import BreadcrumbStore from '$stores/BreadcrumbStore';
 	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
@@ -65,6 +65,17 @@
         toggleDataFromServer(false);
     }
 
+    function clearCache(){
+        console.log("clearCache");
+        let cache = getCacheConfig();
+
+        cache.deleteKeyMatch({stringMatch: albumId})
+        .then((count) => {
+            console.log("Cache cleared", count);
+            refreshViewOnClick();
+        });
+    }
+
 </script>
 
 <div class="main-left-panel">
@@ -90,7 +101,21 @@
                         api={api}
                         list={albumResponse.album.song}
                         callbackCheckSonByIndex={callbackCheckSonByIndex}
-                        callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+                        callbackUncheckSonByIndex={callbackUncheckSonByIndex} >
+
+                        <div slot="extra-options">
+                            <div class="flex flex-row">
+                                <button
+                                    type="button"
+                                    class="btn-small-control-list"
+                                    on:click={clearCache}
+                                    on:keypress={clearCache}>
+                                        Clear cache
+                                </button>
+                            </div>
+                        </div>
+
+                    </ControlsNavigationPlaylist>
                 </div>
     
                 <div class="main-color divide-y border-theme mx-2 mt-2 overflow-y-scroll">

@@ -121,6 +121,13 @@ function RemoveAllItemsOnBreadcrumbs() {
     BreadcrumbStore.clear();
 }
 
+/**
+ * Get all songs from a directory and its subdirectories
+ * 
+ * @param list Songs list
+ * @param api SubsonicAPI
+ * @returns 
+ */
 async function getAllSongFromDirectoryRecursive(list: Child[], api: SubsonicAPI){
 
 
@@ -228,6 +235,56 @@ async function getAllSongFromDirectoryRecursive(list: Child[], api: SubsonicAPI)
     return await getAllSongsRecursive();
 }
 
+/**
+ * Get the configuration of the cache
+ */
+function getCacheConfig(){
+
+    const cacheObj = {
+        nameCache: 'MutinyMusicCache',
+        checkIfSupported: function() {
+            if (!('caches' in window)) {
+                console.log('Cache API not supported.');
+                return false;
+            }
+            return true;
+        },
+        init: async function() {
+            return await caches.open(this.nameCache);
+        },
+        set: async function({urlKey, dataJSON}: {urlKey: string, dataJSON: string}) {
+            const cache = await caches.open(this.nameCache);
+            cache.put(urlKey, new Response(dataJSON));
+        },
+        deleteKeyMatch: async function({stringMatch}: {stringMatch: string}) {
+            const cache = await caches.open(this.nameCache);
+            let k = await cache.keys();
+            let count = 0;
+            await Promise.all(k.map(async (key) => {
+                if(key.url.includes(stringMatch)){
+                    await cache.delete(key);
+                    count++;
+                }
+            }));
+
+            return count;
+        },
+        delete: async function({urlKey}: {urlKey: string}) {
+            const cache = await caches.delete(urlKey);
+            return cache;
+        },
+        get: async function({urlKey}: {urlKey: string}) {
+            const cache = await caches.open(this.nameCache);
+            let r = await cache.match(urlKey);
+            if(r === undefined) return undefined;
+            let response = await r.json();
+            return response;
+        }
+    }
+
+    return cacheObj;
+}
+
 export { 
     getDurationHuman,
     getMegabytesFromBytes,
@@ -235,5 +292,6 @@ export {
     AddItemToBreadcrumbs,
     RemoveItemOnBreadcrumbs,
     RemoveAllItemsOnBreadcrumbs,
-    getAllSongFromDirectoryRecursive
+    getAllSongFromDirectoryRecursive,
+    getCacheConfig
 };

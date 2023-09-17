@@ -4,7 +4,7 @@
 	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
-	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
+	import { MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
 	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
 
     // export let playlistId: string|undefined = undefined;
@@ -63,6 +63,18 @@
     function callbackUncheckSonByIndex() {
         toggleDataFromServer(false);
     }
+
+    
+    function clearCache(){
+        console.log("clearCache");
+        let cache = getCacheConfig();
+
+        cache.deleteKeyMatch({stringMatch: "getStarred"})
+        .then((count) => {
+            console.log("Cache cleared", count);
+            refreshViewOnClick();
+        });
+    }
 </script>
 
 <div class="main-left-panel">
@@ -78,7 +90,25 @@
             
             {#if response.starred.album && response.starred.album.length > 0}
                 <div class="divide-y border-theme mx-2 mt-2">
-                    <ControlsNavigationPlaylist api={api} list={response.starred.album} callbackCheckSonByIndex={callbackCheckSonByIndex} callbackUncheckSonByIndex={callbackUncheckSonByIndex} />
+                    <ControlsNavigationPlaylist
+                        api={api}
+                        list={response.starred.album}
+                        callbackCheckSonByIndex={callbackCheckSonByIndex}
+                        callbackUncheckSonByIndex={callbackUncheckSonByIndex} >
+
+                        <div slot="extra-options">
+                            <div class="flex flex-row">
+                                <button
+                                    type="button"
+                                    class="btn-small-control-list"
+                                    on:click={clearCache}
+                                    on:keypress={clearCache}>
+                                        Clear cache
+                                </button>
+                            </div>
+                        </div>
+
+                    </ControlsNavigationPlaylist>
                 </div>
     
                 <div class="main-color divide-y border-theme m-2 overflow-y-auto">

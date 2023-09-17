@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import LineAlbumId3 from '$components/global/Navigation/LineAlbumID3.svelte';
-	import { MainServerSubsonicAPI } from '$lib/ts/Helpers';
+	import { MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
 	import LoadingLineAr from './partials/LoadingLineAr.svelte';
 	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
 	import BreadcrumbStore from '$stores/BreadcrumbStore';
@@ -45,6 +45,17 @@
         dataFromServer = getDataFromServer();
 	}
 
+    function clearCache(){
+        console.log("clearCache");
+        let cache = getCacheConfig();
+
+        cache.deleteKeyMatch({stringMatch: artistID})
+        .then((count) => {
+            console.log("Cache cleared", count);
+            refreshViewOnClick();
+        });
+    }
+
 </script>
 
 <div class="main-left-panel">
@@ -62,6 +73,18 @@
 
                 <div class="main-color divide-y border-theme mx-2 mt-2">
                     <LineBack url="/artists" name="Volver" onBack={BreadcrumbStore.removeLastItem} />
+                </div>
+                
+                <div class="main-color divide-y border-theme mx-2 mt-2">
+                    <div class="flex w-100 flex-row">
+                        <button
+                            type="button"
+                            class="btn-small-control-list"
+                            on:click={clearCache}
+                            on:keypress={clearCache}>
+                                Clear cache
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="main-color divide-y px-2 border-theme mx-2 mt-2">

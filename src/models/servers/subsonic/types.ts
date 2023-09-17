@@ -50,6 +50,11 @@ export interface ArtistID3 {
 	id: string;
 	name: string;
 	starred?: Date;
+
+	downloadSongUrl?: string;
+	songId?: string;
+	checked?: boolean;
+	durationFormatted?: string;
 }
 
 export interface ArtistInfo extends ArtistInfoBase {

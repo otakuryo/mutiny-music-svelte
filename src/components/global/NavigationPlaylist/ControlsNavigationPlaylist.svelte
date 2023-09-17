@@ -305,6 +305,15 @@
             Show list
     </button>
 
+    <!-- <button
+        type="button"
+        class="btn-small-control-list cursor-help"
+        disabled={showListDisabled}
+        on:click={shoGetSongList}
+        on:keypress={shoGetSongList}>
+            Clear cache
+    </button> -->
+
     <PlayerMenuPlaylist title="Add to playlist" />
     
     <slot name="extra-options"></slot>
