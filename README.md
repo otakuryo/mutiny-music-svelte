@@ -141,7 +141,19 @@ This is an example of how to list things you need to use the software and how to
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### For use with ssl
 
+Can use SSL with docker, for this you need to create a folder called `cert` in the root of the project, and inside it place the files `cert.pem` and `key.pem` (or rename them in the `docker-compose.yml` file).
+
+On macos can use mkcert for create self-signed certificates.
+
+```sh
+mkcert -install
+cd cert
+mkcert -key-file key.pem -cert-file cert.pem localhost
+```
+
+| More info [https://stackoverflow.com/questions/73205096/run-sveltekit-dev-with-https](https://stackoverflow.com/questions/73205096/run-sveltekit-dev-with-https)
 
 <!-- USAGE EXAMPLES -->
 ## Usage
