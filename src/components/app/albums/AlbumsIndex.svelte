@@ -89,6 +89,7 @@
         cache.deleteKeyMatch({stringMatch: "getAlbumList"})
         .then((count) => {
             console.log("Cache cleared", count);
+            currentOffset = 0;
             refreshViewOnClick();
         });
     }
