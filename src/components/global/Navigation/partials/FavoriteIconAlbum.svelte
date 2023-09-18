@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { getCacheConfig } from "$lib/ts/Helpers";
-	import type { ArtistID3, SubsonicAPI } from "$models/servers/subsonic";
+	import type { AlbumID3, SubsonicAPI } from "$models/servers/subsonic";
 	import { Star } from "lucide-svelte";
 
-    export let artist: ArtistID3;
+    export let album: AlbumID3;
     export let api: SubsonicAPI;
     export let width: string = "w-12";
     export let height: string = "h-6";
@@ -11,23 +11,22 @@
     /**
      * Toggle star
      * 
-     * If star is true, then the artist is starred, so we want to remove it from starred artists
+     * If star is true, then the album is starred, so we want to remove it from starred albums
      */
      async function toggleStar() {
-        console.log("toggleStar", artist);
+        console.log("toggleStar", album);
         
-        if (artist.starred === undefined) {
-            let response = await api.star({artistId: artist.id});
+        if (album.starred === undefined) {
+            let response = await api.star({albumId: album.id});
             if (response.status == "ok") {
-                artist.starred = new Date();
+                album.starred = new Date();
             }
         } else {
-            let response = await api.unstar({artistId: artist.id});
+            let response = await api.unstar({albumId: album.id});
             if (response.status == "ok") {
-                artist.starred = undefined;
+                album.starred = undefined;
             }
         }
-
         clearCache();
     }
 
@@ -37,21 +36,20 @@
 
         cache.deleteKeyMatch({stringMatch: "getStarred"})
         .then((count) => {
-            console.log("Cache cleared: getStarred", count);
+            console.log("Cache cleared", count);
         });
 
-        cache.deleteKeyMatch({stringMatch: "getArtists"})
+        cache.deleteKeyMatch({stringMatch: "getAlbumList"})
         .then((count) => {
-            console.log("Cache cleared: getArtists", count);
+            console.log("Cache cleared", count);
         });
-
     }
 
 </script>
 
 <!-- Añadir a favoritos -->
 <div on:click={toggleStar} on:keydown={toggleStar}>
-    {#if artist.starred !== undefined }
+    {#if album.starred !== undefined }
         <Star class="stroke-current text-slate-900 dark:text-yellow-200 cursor-pointer {height} {width}" fill="yellow"/>
     {:else}
         <Star class="stroke-current text-slate-900 dark:text-yellow-200 cursor-pointer {height} {width}" />

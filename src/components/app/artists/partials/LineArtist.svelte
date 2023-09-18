@@ -26,7 +26,7 @@
                 </div>
             </a>
 
-            <FavoriteIcon artist={artist} api={api} width="w-12" height="h-6" />
+            <FavoriteIcon bind:artist={artist} api={api} width="w-12" height="h-6" />
             
             <a href="/artists?id={artist.id}" on:click={refreshViewOnClick} class="ml-auto">
                 <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"/>

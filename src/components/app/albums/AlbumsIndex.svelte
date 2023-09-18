@@ -5,7 +5,6 @@
 	import { afterUpdate, onMount } from 'svelte';
 	import LoadingLineAl from '$components/app/albums/partials/LoadingLineAl.svelte';
 	import BreadcrumbBase from '$components/global/breadcrumb/BreadcrumbBase.svelte';
-	import BreadcrumbStore from '$stores/BreadcrumbStore';
 	import { AddItemToBreadcrumbs } from '$lib/ts/Helpers';
 
     type IndexesTypeLocal = (SubsonicBaseResponse & { albumList2: AlbumList2 });
