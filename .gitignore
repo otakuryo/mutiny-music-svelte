@@ -123,3 +123,7 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Ignore Cert folder
+cert
+certs

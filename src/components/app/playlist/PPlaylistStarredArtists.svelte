@@ -1,31 +1,32 @@
 <script lang="ts">
-    import type { SubsonicAPI, SubsonicBaseResponse, Starred, Starred2, Child } from '$models/servers/subsonic';
-    import { ServerConfigPersistent } from '$stores/ServerConfigStore';
+    import type { SubsonicAPI, SubsonicBaseResponse, Starred2, Child } from '$models/servers/subsonic';
 	import { onMount } from 'svelte';
-	import DirectoryLineMusic from '$components/app/directory/partials/DirectoryLineMusic.svelte';
 	import LineBack from '$components/global/Navigation/LineBack.svelte';
 	import ControlsNavigationPlaylist from '$components/global/NavigationPlaylist/ControlsNavigationPlaylist.svelte';
-	import { MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
+	import { AddItemToBreadcrumbs, MainServerSubsonicAPI, getCacheConfig } from '$lib/ts/Helpers';
 	import LoadingLinePL from '$components/app/playlist/partials/LoadingLinePL.svelte';
+	import LineArtist from '../artists/partials/LineArtist.svelte';
 
-    // export let playlistId: string|undefined = undefined;
     let api: SubsonicAPI;
 
-    type PlaylistStarredServerType = (SubsonicBaseResponse & { starred: Starred });
-    // type PlaylistStarredServerType2 = (SubsonicBaseResponse & { starred: Starred2 });
+    type PlaylistStarredServerType2 = (SubsonicBaseResponse & { starred2: Starred2 });
 
-    let dataFromServerStarred: Promise<PlaylistStarredServerType> = Promise.resolve({} as (PlaylistStarredServerType));
-    // let dataFromServerStarred2: Promise<PlaylistStarredServerType2> = Promise.resolve({} as (PlaylistStarredServerType2));
+    let dataFromServerStarred: Promise<PlaylistStarredServerType2> = Promise.resolve({} as (PlaylistStarredServerType2));
 
     onMount(async () => {
+        addRouteToBreadcrumb();
         refreshViewOnClick();
     });
 
-    async function getDataStarredFromServer(): Promise<PlaylistStarredServerType> {
+    function addRouteToBreadcrumb() {
+        AddItemToBreadcrumbs("Starred Artists", "/playlists/starred-artists/");
+    }
+
+    async function getDataStarredFromServer(): Promise<PlaylistStarredServerType2> {
 
         try {
             api = MainServerSubsonicAPI();
-            let resMusicPlaylist: PlaylistStarredServerType = await api.getStarred();
+            let resMusicPlaylist: PlaylistStarredServerType2 = await api.getStarred2();
             return resMusicPlaylist;
         } catch (error) {
             let e: Error = error as Error;
@@ -47,7 +48,7 @@
      */
      function toggleDataFromServer(state: boolean){
         dataFromServerStarred.then((response) => {
-            let list = response.starred.song;
+            let list = response.starred2.song;
             if (!list) return;
             list.forEach((song: Child) => {
                 song.checked = state;
@@ -90,36 +91,28 @@
                 <LineBack url="/playlists" name="Playlists" />
             </div>
             
-            {#if response.starred.song && response.starred.song.length > 0}
-                <div class="divide-y border-theme mx-2 mt-2">
+            <div class="divide-y border-theme mx-2 mt-2">
 
-                    <ControlsNavigationPlaylist
-                        api={api}
-                        list={response.starred.song}
-                        callbackCheckSonByIndex={callbackCheckSonByIndex}
-                        callbackUncheckSonByIndex={callbackUncheckSonByIndex} >
-
-                        <div slot="extra-options">
-                            <div class="flex flex-row">
-                                <button
-                                    type="button"
-                                    class="btn-small-control-list"
-                                    on:click={clearCache}
-                                    on:keypress={clearCache}>
-                                        Clear cache
-                                </button>
-                            </div>
-                        </div>
-
-                    </ControlsNavigationPlaylist>
+                <div class="flex flex-row">
+                    <button
+                        type="button"
+                        class="btn-small-control-list"
+                        on:click={clearCache}
+                        on:keypress={clearCache}>
+                            Clear cache
+                    </button>
                 </div>
+                
+            </div>
 
+            {#if response.starred2.artist && response.starred2.artist.length > 0}
                 <div class="main-color divide-y border-theme m-2 overflow-y-auto">
-                    {#each response.starred.song as song}
-                        <DirectoryLineMusic bind:song={song} api={api} />
+                    {#each response.starred2.artist as artist}
+                        <LineArtist bind:artist={artist} api={api} refreshViewOnClick={refreshViewOnClick} />
                     {/each}
                 </div>
             {/if}
+
         {:catch error}
 
             <div class="main-color divide-y border-theme mx-2 mt-2">

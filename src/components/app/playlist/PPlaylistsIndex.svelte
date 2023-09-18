@@ -83,7 +83,7 @@
                 </div>
             </LineInternalUrl>
         
-            <LineInternalUrl url="/playlists/starred-artists/" title="Starred Artists (Working)" >
+            <LineInternalUrl url="/playlists/starred-artists/" title="Starred Artists" >
                 <div slot="icon">
                     <Users strokeWidth="1" class="w-12 h-12 rounded-sm mr-3 border-bg-player-light-background dark:border-cover-dark-border object-cover"/>
                 </div>

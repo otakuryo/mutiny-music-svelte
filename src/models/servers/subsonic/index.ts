@@ -780,19 +780,19 @@ export class SubsonicAPI {
 	}
 
 	async star(args: { id?: string; albumId?: string; artistId?: string }) {
-		return this.#requestJSON<SubsonicBaseResponse>('star', args);
+		return this.#requestJSON<SubsonicBaseResponse>('star', args, false);
 	}
 
 	async unstar(args: { id?: string; albumId?: string; artistId?: string }) {
-		return this.#requestJSON<SubsonicBaseResponse>('unstar', args);
+		return this.#requestJSON<SubsonicBaseResponse>('unstar', args, false);
 	}
 
 	async setRating(args: { id: string; rating: number }) {
-		return this.#requestJSON<SubsonicBaseResponse>('setRating', args);
+		return this.#requestJSON<SubsonicBaseResponse>('setRating', args, false);
 	}
 
 	async scrobble(args: { id: string; submission?: boolean; time?: number }) {
-		return this.#requestJSON<SubsonicBaseResponse>('scrobble', args);
+		return this.#requestJSON<SubsonicBaseResponse>('scrobble', args, false);
 	}
 
 	async getShares() {
