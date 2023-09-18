@@ -32,7 +32,7 @@
     <a href="https://github.com/otakuryo/mutiny-music-svelte"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://super-nougat-57cf9e.netlify.app/">View Demo</a>
+    <a href="https://mutynic.netlify.app/">View Demo</a>
     ·
     <a href="https://github.com/otakuryo/mutiny-music-svelte/issues">Report Bug</a>
     ·
@@ -229,7 +229,7 @@ Project Link: [https://github.com/otakuryo/mutiny-music-svelte](https://github.c
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [netlify-shield]: https://api.netlify.com/api/v1/badges/66e93619-a168-4a44-bdf7-3e8ecb1e29de/deploy-status
-[netlify-url]: https://app.netlify.com/sites/super-nougat-57cf9e/deploys
+[netlify-url]: https://app.netlify.com/sites/mutynic/deploys
 [contributors-shield]: https://img.shields.io/github/contributors/otakuryo/mutiny-music-svelte.svg?style=for-the-badge
 [contributors-url]: https://github.com/otakuryo/mutiny-music-svelte/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/otakuryo/mutiny-music-svelte.svg?style=for-the-badge

@@ -307,7 +307,7 @@
 
     <!-- <button
         type="button"
-        class="btn-small-control-list cursor-help"
+        class="btn-small-control-list"
         disabled={showListDisabled}
         on:click={shoGetSongList}
         on:keypress={shoGetSongList}>

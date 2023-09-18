@@ -4,6 +4,7 @@
 	import { ArrowRight } from "lucide-svelte";
     import ImgCover from "$components/global/ImgCover.svelte";
 	import { getDurationHuman } from "$lib/ts/Helpers";
+	import FavoriteIconAlbum from "./partials/FavoriteIconAlbum.svelte";
 
     export let album: AlbumID3;
     export let api: SubsonicAPI;
@@ -38,6 +39,8 @@
                     </div>
                 </div>
             </a>
+
+            <FavoriteIconAlbum bind:album={album} api={api} />
             
             <a href="/albums?id={album.id}" on:click={refreshViewOnClick} class="ml-auto">
                 <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"/>

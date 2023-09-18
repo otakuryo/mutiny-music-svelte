@@ -127,3 +127,7 @@ dist
 # netlify build output
 .netlify
 .netlify/
+
+# Ignore Cert folder
+cert
+certs

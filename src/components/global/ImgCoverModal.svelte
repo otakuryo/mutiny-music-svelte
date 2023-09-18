@@ -19,7 +19,7 @@
 >
 	<div class="relative w-full max-w-2xl">
 		<!-- Modal content -->
-		<div class="relative rounded-sm shadow border border-white main-color">
+		<div class="relative rounded-sm shadow border border-white main-color-solid">
 			<!-- Modal header -->
 			<div class="flex items-start justify-between p-4 border-b rounded-sm-t">
 				<h3 class="text-xl font-semibold text-gray-900 dark:text-white min-h-8">{$TitleStore}</h3>

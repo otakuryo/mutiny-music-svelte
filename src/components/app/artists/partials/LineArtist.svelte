@@ -3,6 +3,7 @@
 	import type { ArtistID3 } from "$models/servers/subsonic/types";
 	import { ArrowRight } from "lucide-svelte";
     import ImgCover from "$components/global/ImgCover.svelte";
+	import FavoriteIcon from "$components/app/artists/partials/FavoriteIcon.svelte";
 
     export let artist: ArtistID3;
     export let api: SubsonicAPI;
@@ -24,6 +25,8 @@
                     </div>
                 </div>
             </a>
+
+            <FavoriteIcon bind:artist={artist} api={api} width="w-12" height="h-6" />
             
             <a href="/artists?id={artist.id}" on:click={refreshViewOnClick} class="ml-auto">
                 <ArrowRight class="stroke-current text-slate-900 dark:text-white h-6 w-12 ml-auto"/>

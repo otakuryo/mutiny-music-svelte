@@ -105,30 +105,29 @@
                 <LineBack url="/playlists" name="Playlists" />
             </div>
             
-            {#if response.starred.song && response.starred.song.length > 0}
+            <div class="divide-y border-theme mx-2 mt-2">
+                <ControlsNavigationPlaylist
+                    api={api}
+                    list={response.starred.song}
+                    callbackCheckSonByIndex={callbackCheckSonByIndex}
+                    callbackUncheckSonByIndex={callbackUncheckSonByIndex} >
 
-                <div class="divide-y border-theme mx-2 mt-2">
-                    <ControlsNavigationPlaylist
-                        api={api}
-                        list={response.starred.song}
-                        callbackCheckSonByIndex={callbackCheckSonByIndex}
-                        callbackUncheckSonByIndex={callbackUncheckSonByIndex} >
-
-                        <div slot="extra-options">
-                            <div class="flex flex-row">
-                                <button
-                                    type="button"
-                                    class="btn-small-control-list"
-                                    on:click={clearCache}
-                                    on:keypress={clearCache}>
-                                        Clear cache
-                                </button>
-                            </div>
+                    <div slot="extra-options">
+                        <div class="flex flex-row">
+                            <button
+                                type="button"
+                                class="btn-small-control-list"
+                                on:click={clearCache}
+                                on:keypress={clearCache}>
+                                    Clear cache
+                            </button>
                         </div>
+                    </div>
 
-                    </ControlsNavigationPlaylist>
-                </div>
-    
+                </ControlsNavigationPlaylist>
+            </div>
+
+            {#if response.starred.song && response.starred.song.length > 0}
                 <div class="main-color divide-y border-theme m-2 overflow-y-auto">
 
                     {#each response.starred.song as song}
