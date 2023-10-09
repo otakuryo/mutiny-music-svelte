@@ -43,13 +43,17 @@ jobs:
     - name: Zip dist folder
       uses: montudor/action-zip@v1
       with:
-        args: zip -qq -r MutinyNginxBuildV1.0.0.zip build
+        args: zip -qq -r Mutynic_Build_${{ github.ref_name }}.zip build
 
     - name: Create Release - Node.js ${{ matrix.node-version }}
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: MutinyNginxBuildV1.0.0.zip
+        file: Mutynic_Build_${{ github.ref_name }}.zip
         release_name: Release ${{ github.ref_name }}
         body: |
-            Description of release
+          Release ${{ github.ref_name }}
+          tag: ${{ github.ref_name }}
+          branch: ${{ github.ref_name }}
+          This is an automated release.
+          
