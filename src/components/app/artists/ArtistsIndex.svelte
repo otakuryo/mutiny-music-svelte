@@ -13,7 +13,7 @@
 
     let dataFromServer : Promise<IndexesTypeLocal> = Promise.resolve({} as (IndexesTypeLocal));
     let api: SubsonicAPI;
-    let letters: Array<LetterLocal>;
+    let letters: Array<LetterLocal> = [];
 
     onMount(async () => {
         dataFromServer = getDataFromServer();
@@ -25,7 +25,7 @@
             api = MainServerSubsonicAPI();
 
             let resMusic: IndexesTypeLocal = await api.getArtists();
-            letters = getFirstLetterFromArtists(resMusic.artists);
+            getFirstLetterFromArtists(resMusic.artists);
 
             AddItemToBreadcrumbs('Artists', `/artists` );
             
@@ -37,16 +37,18 @@
         }
     }
 
-    function getFirstLetterFromArtists(artists: ArtistsID3): Array<LetterLocal> {
+    async function getFirstLetterFromArtists(artists: ArtistsID3): Promise<void> {
         if (!artists.index) {
-            return [];
+            return Promise.resolve();
         }
 
-        let letters = artists.index.map((element, index) => {
+        let _letters = artists.index.map((element, index) => {
             return { name: element.name, active: false, id: `letter-${element.name}`};
         });
 
-        return letters;
+        letters =  _letters;
+
+        return Promise.resolve();
     }
 
     function refreshViewOnClick() {
@@ -77,7 +79,7 @@
             </div>
 
             <div class="main-color divide-y px-2 border-theme m-2">
-                <IndexLetters letters={letters} />
+                <IndexLetters bind:letters={letters} />
             </div>
 
             <div class="main-color divide-y border-theme mx-2 mt-2">

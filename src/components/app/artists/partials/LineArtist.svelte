@@ -16,13 +16,11 @@
     data-id={artist.id}>
         <div class="p-2 flex items-center ">
             
-            <ImgCover api={api} title={artist.name} songId={artist.coverArt} />
+            <!-- <ImgCover api={api} title={artist.name} songId={artist.coverArt} /> -->
 
             <a href="/artists?id={artist.id}" on:click={refreshViewOnClick} class="w-full">
                 <div class="flex flex-col">
                     <span data-amplitude-song-info="name" class="font-sans text-lg font-medium leading-7 text-slate-900 dark:text-white">{artist.name}</span>
-                    <div>
-                    </div>
                 </div>
             </a>
 

@@ -37,8 +37,7 @@
             
             let resMusicPlaylist: IndexesTypeLocal = await api.getIndexesID3({musicFolderId: musicFolderId});
 
-            letters = getFirstLetterFromIndexes(resMusicPlaylist.indexes);
-            console.log(">>",letters);
+            getFirstLetterFromIndexes(resMusicPlaylist.indexes);
             
             AddItemToBreadcrumbs('Directories', `/indexes` );
 
@@ -54,16 +53,17 @@
         dataFromServer = getDataFromServer();
 	}
 
-    function getFirstLetterFromIndexes(indexes: IndexesID3): Array<LetterLocal> {
+    function getFirstLetterFromIndexes(indexes: IndexesID3): Promise<void> {
         if (!indexes.index) {
-            return [];
+            return Promise.resolve();
         }
 
-        let letters = indexes.index.map((element, index) => {
+        let _letters = indexes.index.map((element, index) => {
             return { name: element.name, active: false, id: `letter-${element.name}`};
         });
 
-        return letters;
+        letters = _letters;
+        return Promise.resolve();
     }
 
     let lastActiveIndex = 0;
