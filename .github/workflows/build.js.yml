@@ -5,8 +5,8 @@ name: Create Release - Node.js
 
 on:
   push:
-    # branches:
-    #   - "build/nginx-production"
+    branches:
+      - "build/nginx-production"
     # Sequence of patterns matched against refs/tags
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
@@ -50,6 +50,6 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: MutinyNginxBuild.zip
-        release_name: Release ${{ github.action_ref }}
+        release_name: Release ${{ github.ref_name }}
         body: |
             Description of release
