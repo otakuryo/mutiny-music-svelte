@@ -2,7 +2,7 @@
     import type { LetterLocal } from '$lib/types/global.d';
 	import { Loader2 } from 'lucide-svelte';
 
-    export let letters: Array<LetterLocal>;
+    export let letters: Array<LetterLocal> = [];
 
     function scrollToElement(e: Event) {
         let element = e.target as HTMLElement;
@@ -22,7 +22,9 @@
             </div>
         </div>
     {/if}
+
     {#each letters as letter}
         <div on:click={scrollToElement} on:keydown={scrollToElement} data-id="{letter.id}" class="opacity-50 cursor-pointer hover:opacity-100" class:opacity-100={letter.active}>{letter.name}</div>
     {/each}
+
 </div>
