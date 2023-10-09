@@ -16,6 +16,7 @@
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
+[![Create Release - Node.js][github-action]][github-action-url]
 
 <!-- PROJECT LOGO -->
 <br />
@@ -254,3 +255,5 @@ Project Link: [https://github.com/otakuryo/mutiny-music-svelte](https://github.c
 [howler-url]: https://howlerjs.com/
 [Vite.js]: https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white
 [Vite-url]: https://vitejs.dev/
+[github-action]: https://github.com/otakuryo/mutiny-music-svelte/actions/workflows/build.js.yml/badge.svg?branch=build%2Fnginx-production
+[github-action-url]: https://github.com/otakuryo/mutiny-music-svelte/actions/workflows/build.js.yml
