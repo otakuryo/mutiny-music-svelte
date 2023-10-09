@@ -40,7 +40,8 @@ jobs:
     - name: Build Svelte - Node.js ${{ matrix.node-version }}
       run: pnpm run build
 
-    - uses: montudor/action-zip@v1
+    - name: Zip dist folder
+      uses: montudor/action-zip@v1
       with:
         args: zip -qq -r mutiny-nginx-dist.zip . -i dist
 
@@ -48,7 +49,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./mutiny-nginx-dist.zip
+        file: mutiny-nginx-dist.zip
         release_name: Release ${{ github.ref }}
         body: |
             Description of release
