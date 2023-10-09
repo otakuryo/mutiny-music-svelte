@@ -23,12 +23,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build Svelte - Node.js ${{ matrix.node-version }}
+
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 8
+    - name: Install dependences Svelte - Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm run build
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+    - name: Build Svelte - Node.js ${{ matrix.node-version }}
+      run: pnpm run build
+
     - uses: montudor/action-zip@v1
       with:
         args: zip -qq -r mutiny-nginx-dist-${{ github.ref }}.zip dist
