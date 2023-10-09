@@ -48,10 +48,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: mutiny-nginx-dist.zip
-        tag_name: ${{ github.ref }}
+        file: ./mutiny-nginx-dist.zip
         release_name: Release ${{ github.ref }}
         body: |
             Description of release
-        draft: false
-        prerelease: false
