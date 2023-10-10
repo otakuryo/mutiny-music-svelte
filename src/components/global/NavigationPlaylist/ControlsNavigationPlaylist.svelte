@@ -266,7 +266,7 @@
         disabled={selectAllDisabled}
         on:click={addAllSongToTemporalListV2}
         on:keypress={addAllSongToTemporalListV2}>
-            Seleccionar todos
+            Select All
     </button>
 
     <button
@@ -275,7 +275,7 @@
         disabled={deselectAllDisabled}
         on:click={clearAllSongToTemporalList}
         on:keypress={clearAllSongToTemporalList}>
-            Deseleccionar todos
+            Deselect All
     </button>
 
     <button
@@ -284,7 +284,7 @@
         disabled={addAllToPlaylistToEndDisabled}
         on:click={addAllSongToMainPlaylistStore}
         on:keypress={addAllSongToMainPlaylistStore}>
-            Añadir al final
+            Add To End
     </button>
 
     <button
@@ -293,17 +293,17 @@
         disabled={addAllToPlaylistToEndAndPlayDisabled}
         on:click={addAllSongToMainPlaylistStoreAndPlay}
         on:keypress={addAllSongToMainPlaylistStoreAndPlay}>
-            Añadir al final y Reproducir
+            Add to end and play
     </button>
 
-    <button
+    <!-- <button
         type="button"
         class="btn-small-control-list cursor-help"
         disabled={showListDisabled}
         on:click={shoGetSongList}
         on:keypress={shoGetSongList}>
             Show list
-    </button>
+    </button> -->
 
     <!-- <button
         type="button"
