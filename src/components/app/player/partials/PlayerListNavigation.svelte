@@ -33,9 +33,9 @@
         <Settings2 class=" btn-small-control-list main-color-icon w-auto cursor-pointer select-none"/>
     </div> -->
 
-    <button type="button" class="btn-small-control-list" on:click={selectAllSongs} on:keypress={selectAllSongs}>Seleccionar todos</button>
-    <button type="button" class="btn-small-control-list" on:click={unselectAllSongs} on:keypress={unselectAllSongs}>Deseleccionar todos</button>
-    <button type="button" class="btn-small-control-list" on:click={removeAllSongsChecked} on:keypress={removeAllSongsChecked}>Eliminar</button>
+    <button type="button" class="btn-small-control-list" on:click={selectAllSongs} on:keypress={selectAllSongs}>Select All</button>
+    <button type="button" class="btn-small-control-list" on:click={unselectAllSongs} on:keypress={unselectAllSongs}>Deselect All</button>
+    <button type="button" class="btn-small-control-list" on:click={removeAllSongsChecked} on:keypress={removeAllSongsChecked}>Delete</button>
     <!-- <button type="button" class="btn-small-control-list" on:click={showAllSongsChecked} on:keypress={showAllSongsChecked}>Actualizar</button> -->
 
     <slot name="extra-options"></slot>
