@@ -202,7 +202,7 @@ Don't forget to give the project a star! Thanks again!
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the Apache License 2.0. See `LICENSE` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -211,7 +211,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Agustin Mita - [@twitter_handle](https://twitter.com/twitter_handle)
+<!-- Agustin Mita - [@twitter_handle](https://twitter.com/twitter_handle) -->
 
 Project Link: [https://github.com/otakuryo/mutiny-music-svelte](https://github.com/otakuryo/mutiny-music-svelte)
 
@@ -244,7 +244,7 @@ Project Link: [https://github.com/otakuryo/mutiny-music-svelte](https://github.c
 [license-url]: https://github.com/otakuryo/mutiny-music-svelte/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/agustin-mita
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: z_readme_images/demo.gif
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
 [Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
