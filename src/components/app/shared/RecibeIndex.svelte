@@ -70,7 +70,7 @@
                 <h5 class="mb-1 text-xl font-medium text-zinc-900 dark:text-white">Error</h5>
                 <span class="text-sm text-zinc-500 dark:text-zinc-400 text-center break-all">Invalid config</span>
                 <div class="flex mt-4 space-x-3 md:mt-6">
-                    <a href="/directory">
+                    <a href="/">
                         <div class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 dark:bg-zinc-800 dark:text-white dark:border-zinc-600 dark:hover:bg-zinc-700 dark:hover:border-zinc-700 dark:focus:ring-zinc-700 cursor-pointer">Go to home</div>
                     </a>
                 </div>
